@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinigami Couture - Modern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <!-- Navbar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-side-left">
+                <div class="burger-menu" id="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <a href="#" class="logo"><img src="img/logo/shinigami.webp" alt="logo"></a>
+            </div>
+            <nav class="nav-links" id="nav-links">
+                <a href="#shop" class="nav-link">Магазин</a>
+                <a href="#about" class="nav-link">Про нас</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+            </nav>
+            <div class="nav-actions">
+                <span class="lang-selector">UK</span>
+                <button class="cart-btn" id="cart-btn">
+                    <img src="img/icons/basket-white.svg" alt="cart" style="height: 28px;">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Ваш кошик</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-body">
+            <p class="empty-cart-msg">Ваш кошик порожній.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Розрахункова сума</span>
+                <span>₴0</span>
+            </div>
+            <button class="checkout-btn">Оформити замовлення</button>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-card">
+                <div class="hero-card-image">
+                    SHINIGAMI
+                </div>
+                <div class="hero-card-content">
+                    <div>
+                        <h2 class="hero-card-title">NEW COLLECTION 2026</h2>
+                        <p class="hero-card-subtitle">Преміальний вуличний одяг з темною естетикою.</p>
+                    </div>
+                    <a href="#shop" class="btn-primary">Дивитись колекцію</a>
+                </div>
+            </div>
+            <div class="hero-bg"></div>
+        </section>
+
+        <!-- Marquee Ticker -->
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <!-- Group 1 -->
+                <div class="marquee-content">
+                    <img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text"><img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">НОВІ РЕЧІ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">БЕЗКОМПРОМІСНА ЯКІСТЬ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">
+                    <img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text"><img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">НОВІ РЕЧІ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">БЕЗКОМПРОМІСНА ЯКІСТЬ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">
+                </div>
+                <!-- Group 2 for seamless loop -->
+                 <div class="marquee-content">
+                    <img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text"><img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">НОВІ РЕЧІ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">БЕЗКОМПРОМІСНА ЯКІСТЬ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">
+                    <img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text"><img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">НОВІ РЕЧІ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">БЕЗКОМПРОМІСНА ЯКІСТЬ<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <section id="shop" class="shop-section">
+            <h2 class="section-title">Асортимент</h2>
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be dynamically generated by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>SHINIGAMI</h2>
+                <p>Ексклюзивний дизайн та безкомпромісна якість.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Інформація</h3>
+                <a href="#">FAQ</a>
+                <a href="#">Доставка</a>
+                <a href="#">Повернення</a>
+                <a href="#">Умови використання</a>
+            </div>
+            <div class="footer-social">
+                <h3>Соціальні мережі</h3>
+                <a href="https://www.instagram.com/shinigami.couture/" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shinigami Couture. developed by Xamilio</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

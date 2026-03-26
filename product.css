@@ -1,0 +1,320 @@
+/* ================================================
+   PRODUCT PAGE — Dedicated styles
+   ================================================ */
+
+/* Absolute navbar on product page (stays at top of page, not screen) */
+.navbar {
+    position: absolute !important;
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.navbar a,
+.navbar .nav-link,
+.navbar .lang-selector {
+    color: #000 !important;
+    text-decoration: none !important;
+}
+
+.navbar .nav-link:hover {
+    opacity: 0.6;
+}
+
+.navbar .burger-menu span {
+    background: #000 !important;
+}
+
+.navbar .cart-btn {
+    color: #000 !important;
+    border-color: #000 !important;
+}
+
+.breadcrumb {
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #aaa;
+}
+.breadcrumb a {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.breadcrumb a:hover { color: #000; }
+.breadcrumb span { color: #ccc; }
+
+/* ---- Main layout ---- */
+.product-page {
+    padding: 120px 40px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+/* ---- Gallery ---- */
+.product-gallery-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.gallery-main-wrap {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.gallery-main-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+}
+
+.gallery-arrow {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 6px 14px;
+    cursor: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+.gallery-arrow:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: #fff;
+}
+
+.gallery-counter {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+}
+
+.gallery-thumbnails img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: none;
+    transition: border-color 0.25s, opacity 0.25s;
+    opacity: 0.55;
+}
+.gallery-thumbnails img:hover,
+.gallery-thumbnails img.active-thumb {
+    border-color: #000;
+    opacity: 1;
+}
+
+/* ---- Info Column ---- */
+.product-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 16px;
+}
+
+.product-tags {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.tag-available {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a8a50;
+}
+.tag-category {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: #000;
+    color: #fff;
+    padding: 4px 12px;
+}
+
+.detail-title {
+    font-size: clamp(2rem, 3.5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: #000;
+}
+
+.price-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.detail-price {
+    font-size: 2.22rem;
+    font-weight: 500;
+    letter-spacing: -1px;
+    color: #000;
+    line-height: 1.1;
+    margin-top: 5px;
+}
+.detail-price-note {
+    font-size: 0.85rem;
+    color: #000;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+}
+
+.detail-divider {
+    height: 2px;
+    background: #000;
+    width: 100%;
+}
+
+.detail-description p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #333;
+    font-weight: 300;
+}
+
+.detail-features {
+    list-style: disc;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-features li {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #222;
+    font-weight: 300;
+}
+
+.detail-dims {
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 400;
+    margin-top: 16px;
+    line-height: 1.6;
+}
+
+/* ---- CTA Button ---- */
+.detail-add-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    padding: 22px 30px;
+    background: #000;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 2px solid #000;
+    cursor: none;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.detail-add-cart:hover {
+    background: transparent;
+    color: #000;
+}
+.detail-add-cart:hover img {
+    filter: invert(1);
+}
+.detail-add-cart img {
+    transition: filter 0.3s;
+}
+
+/* ---- Meta table ---- */
+.detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.meta-row:first-child { border-top: 1px solid #e0e0e0; }
+.meta-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+.meta-val {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: right;
+    color: #000;
+    max-width: 60%;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .product-gallery-col {
+        position: static;
+    }
+    .gallery-thumbnails {
+        grid-template-columns: repeat(6, 1fr);
+    }
+    .breadcrumb {
+        padding: 100px 20px 0;
+    }
+    .product-page {
+        padding: 20px 20px 60px;
+    }
+}

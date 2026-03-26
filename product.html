@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>«BEEP THE BAT» LEATHER BACKPACK — Shinigami Couture</title>
+    <meta name="description" content="Преміальний шкіряний рюкзак Beep The Bat від Shinigami Couture. Темна естетика, бездоганна якість.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <!-- Navbar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-side-left">
+                <div class="burger-menu" id="burger-menu">
+                    <span></span><span></span><span></span>
+                </div>
+                <a href="index.html" class="logo"><img src="img/logo/shinigami.webp" alt="logo"></a>
+            </div>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html#shop" class="nav-link">Магазин</a>
+                <a href="index.html#about" class="nav-link">Про нас</a>
+                <a href="index.html#faq" class="nav-link">FAQ</a>
+            </nav>
+            <div class="nav-actions">
+                <span class="lang-selector">UK</span>
+                <button class="cart-btn" id="cart-btn">
+                    <img src="img/icons/basket-black.svg" alt="cart" style="height: 24px;">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+
+    <!-- Product Detail -->
+    <main class="product-page">
+        <div class="breadcrumb">
+            <a href="index.html">Головна</a>
+            <span>/</span>
+            <a href="index.html#shop">Магазин</a>
+            <span>/</span>
+            <span id="breadcrumb-title">Товар</span>
+        </div>
+        <div class="product-detail-container" id="product-detail-view" style="display: none;">
+
+
+            <!-- Gallery Column -->
+            <div class="product-gallery-col">
+                <div class="gallery-main-wrap">
+                    <img 
+                        src="" 
+                        alt="Product Image" 
+                        class="gallery-main-img" 
+                        id="main-product-image">
+                    <div class="gallery-nav" id="gallery-nav-ui" style="display: none;">
+                        <button class="gallery-arrow" id="prev-img">&#8592;</button>
+                        <span class="gallery-counter" id="gallery-counter">1 / 1</span>
+                        <button class="gallery-arrow" id="next-img">&#8594;</button>
+                    </div>
+                </div>
+                <div class="gallery-thumbnails" id="gallery-thumbs">
+                    <!-- Thumbnails go here -->
+                </div>
+
+            </div>
+
+            <!-- Info Column -->
+            <div class="product-detail-info">
+                <div class="product-tags">
+                    <span class="tag-available" id="availability-tag">● В НАЯВНОСТІ</span>
+                    <span class="tag-category">АКСЕСУАРИ</span>
+                </div>
+
+                <h1 class="detail-title" id="detail-title">НАЗВА ТОВАРУ</h1>
+
+                <div class="price-block">
+                    <p class="detail-price" id="detail-price">₴0</p>
+                    <p class="detail-price-note">Включаючи ПДВ · Безкоштовна доставка</p>
+                </div>
+
+                <div class="detail-divider"></div>
+
+                <div class="detail-description">
+                    <ul class="detail-features" id="detail-features">
+                        <li>Преміальна якість</li>
+                        <li>Ексклюзивний дизайн</li>
+                    </ul>
+                </div>
+
+                <div class="detail-divider"></div>
+
+                <button class="detail-add-cart" id="add-to-cart-detail">
+                    <img src="img/icons/basket-white.svg" alt="cart" style="height:22px;">
+                    ДОДАТИ В КОШИК
+                </button>
+
+                <div class="detail-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Матеріал</span>
+                        <span class="meta-val">Натуральні матеріали</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Доставка</span>
+                        <span class="meta-val">Нова Пошта · Укрпошта · Світ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="product-error" style="display: none; text-align: center; padding: 100px 20px;">
+            <h2>Товар не знайдено</h2>
+            <a href="index.html#shop" class="btn-primary" style="margin-top: 20px;">Повернутись до магазину</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>SHINIGAMI</h2>
+                <p>Преміальний вуличний одяг з темною естетикою.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Навігація</h3>
+                <a href="index.html#shop">Магазин</a>
+                <a href="index.html#about">Про нас</a>
+                <a href="index.html#faq">FAQ</a>
+            </div>
+            <div class="footer-social">
+                <h3>Соціальні мережі</h3>
+                <a href="https://www.instagram.com/shinigami.couture/" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shinigami Couture. developed by Xamilio</p>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Кошик</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-body">
+            <p>Ваш кошик порожній</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id')?.trim(); // This is now the product Name
+            
+            if (!productId) {
+                document.getElementById('product-error').style.display = 'block';
+                return;
+            }
+
+            let product = null;
+
+            try {
+                // Try fetching by name (User's primary key)
+                const { data, error } = await window.supabaseClient
+                    .from('products')
+                    .select('*')
+                    .eq('name', productId)
+                    .single();
+                
+                if (error) {
+                    console.error('Supabase fetch error:', error);
+                    throw error;
+                }
+                
+                if (data) {
+                    product = data;
+                } else {
+                    console.warn('Product not found in Supabase for ID/Name:', productId);
+                    const products = JSON.parse(localStorage.getItem('shinigami_products')) || [];
+                    product = products[productId];
+                }
+            } catch (err) {
+                console.error('Error fetching product:', err);
+                const products = JSON.parse(localStorage.getItem('shinigami_products')) || [];
+                product = products[productId];
+            }
+
+            if (!product) {
+                document.getElementById('product-error').style.display = 'block';
+                return;
+            }
+
+            // Map user specific database fields to JS property names for the UI logic
+            const title = product.name || product.title;
+            let price = product.price;
+            if (typeof price === 'number') {
+                price = `₴${price.toLocaleString('uk-UA')}`;
+            } else if (typeof price === 'string' && !isNaN(parseFloat(price.replace(/[^\d.-]/g, '')))) {
+                // If it's a string but contains a number, try to add currency if missing
+                if (!price.includes('₴')) price = `₴${price}`;
+            }
+            const specifications = product.specifications || '';
+            const recommendations = product.recommendations || '';
+            const configuration = product.configuration || '';
+
+            document.getElementById('product-detail-view').style.display = 'grid';
+            
+            // Populate data
+            document.title = `${title} — Shinigami Couture`;
+            document.getElementById('breadcrumb-title').textContent = title;
+            document.getElementById('detail-title').textContent = title;
+            document.getElementById('detail-price').textContent = price;
+            
+            // Status Tag
+            const tag = document.getElementById('availability-tag');
+            const status = product.status || 'none';
+            
+            if (status === 'new') {
+                tag.textContent = '● НОВИНКА';
+                tag.style.color = '#fff';
+                tag.style.background = '#000';
+                tag.style.padding = '5px 10px';
+            } else if (status === 'preorder') {
+                tag.textContent = '● ПЕРЕДЗАМОВЛЕННЯ';
+            } else if (status === 'soldout') {
+                tag.textContent = '● РОЗПРОДАНО';
+            } else {
+                tag.textContent = '● В НАЯВНОСТІ';
+            }
+
+            if (product.category) {
+                document.querySelector('.tag-category').textContent = product.category;
+            }
+
+            // Description
+            if (product.description) {
+                const descContainer = document.querySelector('.detail-description');
+                descContainer.querySelectorAll('p.dynamic-desc').forEach(p => p.remove());
+
+                const lines = product.description.split(';').map(l => l.trim()).filter(l => l !== '');
+                lines.forEach(line => {
+                    const p = document.createElement('p');
+                    p.className = 'dynamic-desc';
+                    p.style.display = 'flex';
+                    p.style.alignItems = 'flex-start';
+                    p.style.gap = '10px';
+                    p.style.marginBottom = '10px';
+                    p.style.fontWeight = '600';
+                    
+                    p.innerHTML = `
+                        <img src="img/running-strip/black-bat.png" style="width: 20px; height: auto; margin-top: 4px;" alt="icon">
+                        <span>${line}</span>
+                    `;
+                    descContainer.appendChild(p);
+                });
+            }
+
+            // Specifications (Features)
+            if (specifications) {
+                const featuresList = document.getElementById('detail-features');
+                featuresList.innerHTML = '';
+                featuresList.style.listStyle = 'none';
+                featuresList.style.padding = '0';
+                
+                const features = specifications.split(';').map(f => f.trim()).filter(f => f !== '');
+                features.forEach(f => {
+                    const li = document.createElement('li');
+                    li.style.display = 'flex';
+                    li.style.alignItems = 'flex-start';
+                    li.style.gap = '10px';
+                    li.style.marginBottom = '8px';
+                    li.style.fontWeight = '500';
+
+                    li.innerHTML = `
+                        <img src="img/running-strip/black-bat.png" style="width: 16px; height: auto; margin-top: 3px;" alt="icon">
+                        <span>${f}</span>
+                    `;
+                    featuresList.appendChild(li);
+                });
+            }
+
+            // Meta Info
+            const metaContainer = document.querySelector('.detail-meta');
+            metaContainer.innerHTML = '';
+            
+            const addMetaRow = (label, value) => {
+                if (!value) return;
+                const row = document.createElement('div');
+                row.className = 'meta-row';
+                row.innerHTML = `<span class="meta-label">${label}</span><span class="meta-val">${value}</span>`;
+                metaContainer.appendChild(row);
+            };
+
+            addMetaRow('Матеріал', product.material);
+            addMetaRow('Доставка', product.delivery);
+            addMetaRow('Рекомендації', recommendations);
+            addMetaRow('Комплектація', configuration);
+
+            // Image and Gallery
+            const mainImg = document.getElementById('main-product-image');
+            mainImg.src = product.image || 'img/placeholder.png';
+            
+            const galleryImages = [];
+            if (product.image) galleryImages.push(product.image);
+            // hover_image is missing in user table schema
+            
+            if (galleryImages.length > 1) {
+                const navUI = document.getElementById('gallery-nav-ui');
+                const counter = document.getElementById('gallery-counter');
+                const thumbsContainer = document.getElementById('gallery-thumbs');
+                
+                navUI.style.display = 'flex';
+                counter.textContent = `1 / ${galleryImages.length}`;
+                
+                galleryImages.forEach((src, idx) => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = product.title;
+                    if (idx === 0) img.className = 'active-thumb';
+                    img.addEventListener('click', () => {
+                        current = idx;
+                        updateGallery();
+                    });
+                    thumbsContainer.appendChild(img);
+                });
+
+                let current = 0;
+                function updateGallery() {
+                    mainImg.src = galleryImages[current];
+                    counter.textContent = `${current + 1} / ${galleryImages.length}`;
+                    document.querySelectorAll('#gallery-thumbs img').forEach((t, i) => {
+                        t.classList.toggle('active-thumb', i === current);
+                    });
+                }
+
+                document.getElementById('prev-img').addEventListener('click', () => {
+                    current = (current - 1 + galleryImages.length) % galleryImages.length;
+                    updateGallery();
+                });
+                document.getElementById('next-img').addEventListener('click', () => {
+                    current = (current + 1) % galleryImages.length;
+                    updateGallery();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

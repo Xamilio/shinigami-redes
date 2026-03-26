@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вхід — Shinigami Couture Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f0f0;
+            --main-black: #000;
+            --main-white: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--main-white);
+            border: 4px solid var(--main-black);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 15px 15px 0px var(--main-black);
+            position: relative;
+        }
+
+        .login-card::before {
+            content: "ADMIN ACCESS";
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            background: var(--main-black);
+            color: var(--main-white);
+            padding: 2px 12px;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 800;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            letter-spacing: 1.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid var(--main-black);
+            font-size: 18px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        input:focus {
+            background: #f9f9f9;
+        }
+
+        button {
+            width: 100%;
+            background: var(--main-black);
+            color: var(--main-white);
+            border: none;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 20px;
+            letter-spacing: 4px;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: none;
+            border: 3px solid #000;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading-overlay">ЗАВАНТАЖЕННЯ...</div>
+
+    <div class="login-card">
+        <h1>Вхід в<br>адмінку</h1>
+        
+        <div id="error-msg" class="error-message"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required placeholder="admin@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <button type="submit">УВІЙТИ</button>
+        </form>
+    </div>
+
+    <!-- SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
