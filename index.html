@@ -57,6 +57,40 @@
         </div>
     </div>
 
+    <!-- Checkout Modal -->
+    <div class="checkout-modal-overlay" id="checkout-modal">
+        <div class="checkout-modal">
+            <div class="checkout-header">
+                <h3>Оформлення замовлення</h3>
+                <button id="close-checkout" class="btn-close">&times;</button>
+            </div>
+            <form id="checkout-form">
+                <div class="form-group-cart">
+                    <label>ПІБ</label>
+                    <input type="text" id="cust-name" required placeholder="Іван Іванов">
+                </div>
+                <div class="form-group-cart">
+                    <label>Телефон</label>
+                    <input type="tel" id="cust-phone" required placeholder="+380...">
+                </div>
+                <div class="form-group-cart">
+                    <label>Адреса доставки (Нова Пошта)</label>
+                    <textarea id="cust-address" required placeholder="Місто, № відділення..."></textarea>
+                </div>
+                <div class="order-summary-box">
+                    <p>До сплати: <span id="final-total">₴0</span></p>
+                </div>
+                <button type="submit" class="btn-final-order">ПІДТВЕРДИТИ ЗАМОВЛЕННЯ</button>
+            </form>
+            <div id="order-success" style="display: none; text-align: center; padding: 40px 0;">
+                <div style="font-size: 4rem; color: #000; margin-bottom: 20px;">✓</div>
+                <h3>Дякуємо!</h3>
+                <p>Ваше замовлення прийнято. Ми зв'яжемося з вами найближчим часом.</p>
+                <button class="btn-primary" onclick="location.reload()" style="margin-top: 20px; width: 100%;">ПОВЕРНУТИСЬ В МАГАЗИН</button>
+            </div>
+        </div>
+    </div>
+
     <main>
         <!-- Hero Section -->
         <section class="hero">
@@ -116,7 +150,10 @@
             </div>
             <div class="footer-social">
                 <h3>Соціальні мережі</h3>
-                <a href="https://www.instagram.com/shinigami.couture/" target="_blank">Instagram</a>
+                <div class="social-links-grid">
+                    <a href="#" target="_blank" class="social-link insta">Instagram</a>
+                    <a href="#" target="_blank" class="social-link tiktok">TikTok</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">

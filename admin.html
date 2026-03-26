@@ -28,6 +28,9 @@
                 <a href="#" class="nav-item" data-tab="products">
                     <span class="nav-icon">📦</span> Товари
                 </a>
+                <a href="#" class="nav-item" data-tab="settings">
+                    <span class="nav-icon">⚙️</span> Налаштування
+                </a>
                 <a href="index.html" class="nav-item">
                     <span class="nav-icon">🌐</span> На сайт
                 </a>
@@ -75,7 +78,6 @@
                                     <th>Товар</th>
                                     <th>Ціна</th>
                                     <th>Статус</th>
-                                    <th>Дії</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,6 +89,97 @@
             </section>
 
             <section id="products-tab" class="tab-content">
+                <!-- Modal Overlay for Product Form -->
+                <div class="modal-overlay" id="product-modal" style="display: none;">
+                    <div class="modal-content" id="form-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 id="modal-title">Додати товар</h2>
+                            <button type="button" class="btn-close-modal" onclick="closeProductModal()">&times;</button>
+                        </div>
+                        <form id="product-form">
+                            <input type="hidden" id="product-index">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="title">Назва товару</label>
+                                    <input type="text" id="title" required placeholder="Напр: BLACK HOODIE">
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Ціна (тільки текст та цифри)</label>
+                                    <input type="text" id="price" required placeholder="Напр: 2500 або ЗАПИТ">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="category">Категорія</label>
+                                    <input type="text" id="category" placeholder="Напр: АКСЕСУАРИ">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">URL зображення</label>
+                                    <input type="text" id="image" placeholder="img/products/...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gallery">Папка галереї (bucket/folder/)</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input type="text" id="gallery" placeholder="products/jacket-gallery/" style="flex: 1;">
+                                        <input type="file" id="gallery-upload-input" multiple accept="image/*" style="display: none;">
+                                        <button type="button" id="gallery-upload-btn" class="btn-action" style="background: #000; color: #fff; white-space: nowrap; font-size: 10px; padding: 0 10px;">+ ЗАВАНТАЖИТИ ГАЛЕРЕЮ</button>
+                                    </div>
+                                    <small id="upload-status" style="display: block; margin-top: 4px; font-size: 10px; color: #666;"></small>
+                                </div>
+                            </div>
+                            <!-- Product Image Preview -->
+                            <div id="product-img-preview" style="margin-bottom: 20px; height: 151px; border: 2px solid #000; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f9f9f9;">
+                                <span style="font-size: 0.7rem; color: #999;">Прев'ю основного фото</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Опис</label>
+                                <textarea id="description" rows="3" placeholder="Загальний опис товару..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="features">Характеристики (через крапку з комою)</label>
+                                <textarea id="features" rows="3" placeholder="Напр: Натуральна шкіра; Блискавка YKK..."></textarea>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="material">Матеріал</label>
+                                    <input type="text" id="material" placeholder="Напр: 100% Cotton">
+                                </div>
+                                <div class="form-group">
+                                    <label for="delivery">Доставка</label>
+                                    <input type="text" id="delivery" placeholder="Напр: Нова Пошта; 1-3 дні">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sku">ID / SKU</label>
+                                    <input type="text" id="sku" placeholder="Напр: SN-001">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="care">Рекомендації по догляду</label>
+                                    <input type="text" id="care" placeholder="Напр: Тільки ручне прання">
+                                </div>
+                                <div class="form-group">
+                                    <label for="packageContents">Комплектація</label>
+                                    <input type="text" id="packageContents" placeholder="Напр: Рюкзак, брелок, стікерпак">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Статус товару</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="product-status" value="none" checked> Звичайний</label>
+                                    <label><input type="radio" name="product-status" value="new"> Новинка (NEW)</label>
+                                    <label><input type="radio" name="product-status" value="preorder"> Передзамовлення (PRE)</label>
+                                    <label><input type="radio" name="product-status" value="soldout"> Розпродано (SOLD)</label>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn-primary" style="flex: 2;">ЗБЕРЕГТИ ЗМІНИ</button>
+                                <button type="button" class="btn-action" style="flex: 1;" onclick="closeProductModal()">Скасувати</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <table id="all-products-table">
                         <thead>
@@ -94,7 +187,7 @@
                                 <th>Зображення</th>
                                 <th>Назва</th>
                                 <th>Ціна</th>
-                                <th>Передзамовлення</th>
+                                <th>Статус</th>
                                 <th>Дії</th>
                             </tr>
                         </thead>
@@ -104,82 +197,73 @@
                     </table>
                 </div>
             </section>
-        </main>
-    </div>
 
-    <!-- Product Modal -->
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title">Додати товар</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="product-form">
-                <input type="hidden" id="product-index">
-                <div class="form-group">
-                    <label for="title">Назва товару</label>
-                    <input type="text" id="title" required placeholder="Напр: BLACK HOODIE">
+            <section id="settings-tab" class="tab-content">
+                <div class="card" style="background: #fff; border: 2px solid #000; padding: 30px; margin-bottom: 30px;">
+                    <h3>Глобальні налаштування</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Налаштуйте зовнішній вигляд головної сторінки.</p>
+                    
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label>URL Логотипу (Header Logo)</label>
+                            <input type="text" id="setting-logo" placeholder="URL зображення логотипу...">
+                            <div id="preview-logo" class="setting-preview" style="margin-top: 10px; height: 50px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9;">
+                                <span style="font-size: 0.7rem; color: #999;">Прев'ю логотипу</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Текст рухомого рядка (Marquee)</label>
+                            <input type="text" id="setting-marquee" placeholder="Напр: SHINIGAMI COUTURE • NEW COLLECTION...">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>URL головного банера (Hero Card)</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="setting-main_banner" placeholder="URL банера..." style="flex: 1;">
+                                </div>
+                                <div id="preview-main_banner" class="setting-preview" style="margin-top: 10px; height: 80px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9; background-size: cover; background-position: center;">
+                                    <span style="font-size: 0.7rem; color: #999;">Прев'ю банера</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>URL фону (Hero Background)</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="setting-hero_bg" placeholder="URL фону..." style="flex: 1;">
+                                </div>
+                                <div id="preview-hero_bg" class="setting-preview" style="margin-top: 10px; height: 80px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9; background-size: cover; background-position: center;">
+                                    <span style="font-size: 0.7rem; color: #999;">Прев'ю фону</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Instagram URL</label>
+                                <input type="text" id="setting-instagram" placeholder="https://instagram.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label>TikTok URL</label>
+                                <input type="text" id="setting-tiktok" placeholder="https://tiktok.com/@...">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-banner" style="width: 100%; margin-top: 10px;">ЗБЕРЕГТИ ВСІ НАЛАШТУВАННЯ</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="price">Ціна (з валютою)</label>
-                    <input type="text" id="price" required placeholder="Напр: ₴2,500">
-                </div>
-                <div class="form-group">
-                    <label for="category">Категорія</label>
-                    <input type="text" id="category" placeholder="Напр: АКСЕСУАРИ">
-                </div>
-                <div class="form-group">
-                    <label for="image">URL зображення</label>
-                    <input type="text" id="image" placeholder="img/products/...">
-                </div>
-                <div class="form-group">
-                    <label for="description">Опис</label>
-                    <textarea id="description" rows="3" placeholder="Загальний опис товару..." style="width: 100%; border: 2px solid #000; padding: 10px; font-family: inherit; outline: none;"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="features">Характеристики (через крапку з комою)</label>
-                    <textarea id="features" rows="3" placeholder="Напр: Натуральна шкіра; Блискавка YKK..." style="width: 100%; border: 2px solid #000; padding: 10px; font-family: inherit; outline: none;"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="material">Матеріал</label>
-                    <input type="text" id="material" placeholder="Напр: 100% Cotton">
-                </div>
-                <div class="form-group">
-                    <label for="delivery">Доставка</label>
-                    <input type="text" id="delivery" placeholder="Напр: Нова Пошта; 1-3 дні">
-                </div>
-                <div class="form-group">
-                    <label for="sku">ID / SKU</label>
-                    <input type="text" id="sku" placeholder="Напр: SN-001">
-                </div>
-                <div class="form-group">
-                    <label for="care">Рекомендації по догляду</label>
-                    <input type="text" id="care" placeholder="Напр: Тільки ручне прання">
-                </div>
-                <div class="form-group">
-                    <label for="packageContents">Комплектація</label>
-                    <input type="text" id="packageContents" placeholder="Напр: Рюкзак, брелок, стікерпак">
-                </div>
-                <div class="form-group">
-                    <label>Статус товару</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="product-status" value="none" checked> Звичайний
-                        </label>
-                        <label>
-                            <input type="radio" name="product-status" value="new"> Новинка (NEW)
-                        </label>
-                        <label>
-                            <input type="radio" name="product-status" value="preorder"> Передзамовлення (PRE)
-                        </label>
-                        <label>
-                            <input type="radio" name="product-status" value="soldout"> Розпродано (SOLD)
-                        </label>
+
+                <div class="card" style="background: #fff; border: 2px solid #000; padding: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                        <h3>Медіа-бібліотека (Bucket: banner)</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="file" id="upload-banner-input" style="display: none;" accept="image/*">
+                            <button id="upload-banner-btn" class="btn-action" style="background: #000; color: #fff;">+ ЗАВАНТАЖИТИ</button>
+                            <button id="refresh-storage-btn" class="btn-action">Оновити список</button>
+                        </div>
+                    </div>
+                    <div id="storage-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">
+                        <p style="grid-column: 1/-1; color: #888;">Завантаження зображень з бази...</p>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%;">ЗБЕРЕГТИ</button>
-            </form>
-        </div>
+            </section>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

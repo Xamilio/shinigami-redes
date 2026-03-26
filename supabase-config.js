@@ -7,3 +7,36 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Экспортируем для использования в других файлах
 window.supabaseClient = supabaseClient;
+
+// --- Глобальна функція для вирішення шляхів зображень ---
+window.resolveImage = function(path) {
+    if (!path) return '';
+    let sPath = String(path).trim();
+    
+    // Видаляємо початковий слеш, якщо він є
+    if (sPath.startsWith('/')) sPath = sPath.substring(1);
+    
+    // Якщо це вже повний URL або локальний шлях, або data-url — повертаємо як є
+    if (sPath.startsWith('http') || sPath.startsWith('img/') || sPath.startsWith('assets/') || sPath.startsWith('data:')) {
+        return sPath;
+    }
+    
+    try {
+        const slashIdx = sPath.indexOf('/');
+        if (slashIdx > -1) {
+            const bucket = sPath.substring(0, slashIdx);
+            const fileName = sPath.substring(slashIdx + 1);
+            
+            if (window.supabaseClient) {
+                const { data } = window.supabaseClient.storage.from(bucket).getPublicUrl(fileName);
+                if (data && data.publicUrl) {
+                    return data.publicUrl;
+                }
+            }
+        }
+    } catch (err) {
+        console.error('[ResolveImage] Error parsing path:', sPath, err);
+    }
+    
+    return sPath;
+};

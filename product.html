@@ -54,11 +54,19 @@
             <!-- Gallery Column -->
             <div class="product-gallery-col">
                 <div class="gallery-main-wrap">
-                    <img 
-                        src="" 
-                        alt="Product Image" 
-                        class="gallery-main-img" 
-                        id="main-product-image">
+                    <div class="detail-image reveal">
+                        <div class="product-slider-wrapper" id="product-slider">
+                            <div class="product-slides" id="slider-track">
+                                <!-- Slides will be injected by JavaScript -->
+                                <div class="product-slide">
+                                    <img src="img/placeholder.png" alt="Loading...">
+                                </div>
+                            </div>
+                            <button class="slider-btn slider-prev" id="prev-btn" style="display: none;">&#10094;</button>
+                            <button class="slider-btn slider-next" id="next-btn" style="display: none;">&#10095;</button>
+                            <div class="slider-dots" id="slider-dots"></div>
+                        </div>
+                    </div>
                     <div class="gallery-nav" id="gallery-nav-ui" style="display: none;">
                         <button class="gallery-arrow" id="prev-img">&#8592;</button>
                         <span class="gallery-counter" id="gallery-counter">1 / 1</span>
@@ -88,10 +96,7 @@
                 <div class="detail-divider"></div>
 
                 <div class="detail-description">
-                    <ul class="detail-features" id="detail-features">
-                        <li>Преміальна якість</li>
-                        <li>Ексклюзивний дизайн</li>
-                    </ul>
+                    <ul class="detail-features" id="detail-features"></ul>
                 </div>
 
                 <div class="detail-divider"></div>
@@ -101,16 +106,9 @@
                     ДОДАТИ В КОШИК
                 </button>
 
-                <div class="detail-meta">
-                    <div class="meta-row">
-                        <span class="meta-label">Матеріал</span>
-                        <span class="meta-val">Натуральні матеріали</span>
-                    </div>
-                    <div class="meta-row">
-                        <span class="meta-label">Доставка</span>
-                        <span class="meta-val">Нова Пошта · Укрпошта · Світ</span>
-                    </div>
-                </div>
+                <div class="detail-meta"></div>
+            </div>
+
             </div>
         </div>
         
@@ -119,6 +117,14 @@
             <a href="index.html#shop" class="btn-primary" style="margin-top: 20px;">Повернутись до магазину</a>
         </div>
     </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightbox-close">&times;</button>
+            <img src="" alt="Zoomed view" class="lightbox-img" id="lightbox-img">
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer id="about">
@@ -135,7 +141,10 @@
             </div>
             <div class="footer-social">
                 <h3>Соціальні мережі</h3>
-                <a href="https://www.instagram.com/shinigami.couture/" target="_blank">Instagram</a>
+                <div class="social-links-grid">
+                    <a href="#" target="_blank" class="social-link insta">Instagram</a>
+                    <a href="#" target="_blank" class="social-link tiktok">TikTok</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -185,15 +194,9 @@
                 
                 if (data) {
                     product = data;
-                } else {
-                    console.warn('Product not found in Supabase for ID/Name:', productId);
-                    const products = JSON.parse(localStorage.getItem('shinigami_products')) || [];
-                    product = products[productId];
                 }
             } catch (err) {
                 console.error('Error fetching product:', err);
-                const products = JSON.parse(localStorage.getItem('shinigami_products')) || [];
-                product = products[productId];
             }
 
             if (!product) {
@@ -217,6 +220,7 @@
             document.getElementById('product-detail-view').style.display = 'grid';
             
             // Populate data
+            // document.querySelector('.product-page').classList.add('loaded'); // Removed - will add after images load
             document.title = `${title} — Shinigami Couture`;
             document.getElementById('breadcrumb-title').textContent = title;
             document.getElementById('detail-title').textContent = title;
@@ -307,51 +311,168 @@
             addMetaRow('Рекомендації', recommendations);
             addMetaRow('Комплектація', configuration);
 
-            // Image and Gallery
-            const mainImg = document.getElementById('main-product-image');
-            mainImg.src = product.image || 'img/placeholder.png';
-            
-            const galleryImages = [];
-            if (product.image) galleryImages.push(product.image);
-            // hover_image is missing in user table schema
-            
-            if (galleryImages.length > 1) {
-                const navUI = document.getElementById('gallery-nav-ui');
-                const counter = document.getElementById('gallery-counter');
-                const thumbsContainer = document.getElementById('gallery-thumbs');
-                
-                navUI.style.display = 'flex';
-                counter.textContent = `1 / ${galleryImages.length}`;
-                
-                galleryImages.forEach((src, idx) => {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = product.title;
-                    if (idx === 0) img.className = 'active-thumb';
-                    img.addEventListener('click', () => {
-                        current = idx;
-                        updateGallery();
+            // Add to Cart Logic
+            const detailAddToCartBtn = document.getElementById('add-to-cart-detail');
+            if (detailAddToCartBtn) {
+                detailAddToCartBtn.addEventListener('click', () => {
+                    const priceValue = typeof product.price === 'string' 
+                        ? parseFloat(product.price.replace(/[^\d.]/g, '')) 
+                        : product.price;
+                    
+                    window.addToCart({
+                        id: product.id || product.name,
+                        name: product.name,
+                        price: priceValue,
+                        image: product.image
                     });
-                    thumbsContainer.appendChild(img);
                 });
+            }
 
-                let current = 0;
-                function updateGallery() {
-                    mainImg.src = galleryImages[current];
-                    counter.textContent = `${current + 1} / ${galleryImages.length}`;
-                    document.querySelectorAll('#gallery-thumbs img').forEach((t, i) => {
-                        t.classList.toggle('active-thumb', i === current);
-                    });
+            // 4. Handle Gallery (Single Image or Folder)
+            const sliderTrack = document.getElementById('slider-track');
+            const dotsContainer = document.getElementById('slider-dots');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let images = [];
+            const imagePath = String(product.image || '').trim();
+            const galleryPath = String(product.gallery || '').trim();
+            
+            // Priority: explicitly defined gallery path, or fallback to image path if it's a folder (ends with /)
+            const pathToFetch = galleryPath || (imagePath.endsWith('/') ? imagePath : null);
+            
+            if (pathToFetch) {
+                // It's a folder, list files
+                try {
+                    const cleanPath = pathToFetch.replace(/\/+$/, ''); // Remove trailing slashes for parsing
+                    const slashIdx = cleanPath.indexOf('/');
+                    
+                    if (slashIdx > -1) {
+                        const bucket = cleanPath.substring(0, slashIdx);
+                        let folder = cleanPath.substring(slashIdx + 1);
+                        if (folder.startsWith('/')) folder = folder.substring(1);
+                        
+                        console.log(`[Gallery] Bucket: "${bucket}", Folder: "${folder}"`);
+                        
+                        const { data: files, error: storageError } = await window.supabaseClient
+                            .storage.from(bucket)
+                            .list(folder, { limit: 100 });
+                            
+                        if (storageError) {
+                            console.error('[Gallery] Folder listing error:', storageError);
+                        } else if (files && files.length > 0) {
+                            // Filter only image-like files and exclude placeholders
+                            images = files
+                                .filter(f => f.name !== '.emptyFolderPlaceholder' && !f.name.startsWith('.'))
+                                .map(f => `${bucket}/${folder}/${f.name}`.replace(/\/+/g, '/'));
+                            console.log('[Gallery] Loaded images:', images);
+                        }
+                    }
+                } catch (e) {
+                    console.error('[Gallery] Error listing folder:', e);
                 }
+            }
+            
+            // If no folder images found or it was a single file path
+            if (images.length === 0) {
+                images = [imagePath || 'img/placeholder.png'];
+            }
+            
+            // Render slides
+            sliderTrack.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            
+            images.forEach((imgUrl, index) => {
+                const fullUrl = window.resolveImage(imgUrl);
+                const slide = document.createElement('div');
+                slide.className = 'product-slide';
+                slide.innerHTML = `<img src="${fullUrl}" alt="${product.name} - ${index + 1}" class="gallery-clickable">`;
+                sliderTrack.appendChild(slide);
+                
+                // Lightbox binding
+                slide.querySelector('img').addEventListener('click', () => openLightbox(fullUrl));
 
-                document.getElementById('prev-img').addEventListener('click', () => {
-                    current = (current - 1 + galleryImages.length) % galleryImages.length;
-                    updateGallery();
+                if (images.length > 1) {
+                    const dot = document.createElement('div');
+                    dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+                    dot.onclick = () => goToSlide(index);
+                    dotsContainer.appendChild(dot);
+                }
+            });
+            
+            let currentSlide = 0;
+            const totalSlides = images.length;
+            
+            if (totalSlides > 1) {
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+                prevBtn.onclick = () => goToSlide(currentSlide - 1);
+                nextBtn.onclick = () => goToSlide(currentSlide + 1);
+            }
+            
+            function goToSlide(n) {
+                currentSlide = (n + totalSlides) % totalSlides;
+                sliderTrack.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+                document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === currentSlide);
                 });
-                document.getElementById('next-img').addEventListener('click', () => {
-                    current = (current + 1) % galleryImages.length;
-                    updateGallery();
+            }
+
+            // Lightbox Logic
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            function openLightbox(url) {
+                lightboxImg.src = url;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target.id === 'lightbox') closeLightbox();
+            });
+            
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+            });
+
+            // --- REVEAL PAGE ONLY AFTER ALL IMAGES ARE LOADED ---
+            const allImages = Array.from(document.querySelectorAll('.product-slide img, .gallery-thumbnails img'));
+            let loadedCount = 0;
+            const totalToLoad = allImages.length;
+
+            if (totalToLoad === 0) {
+                revealPage();
+            } else {
+                allImages.forEach(img => {
+                    if (img.complete) {
+                        onImageLoad();
+                    } else {
+                        img.addEventListener('load', onImageLoad);
+                        img.addEventListener('error', onImageLoad); // Count errors as "done" to avoid infinite wait
+                    }
                 });
+            }
+
+            function onImageLoad() {
+                loadedCount++;
+                if (loadedCount >= totalToLoad) {
+                    revealPage();
+                }
+            }
+
+            function revealPage() {
+                setTimeout(() => {
+                    document.querySelector('.product-page').classList.add('loaded');
+                }, 100); // Tiny delay for smoother feel
             }
         });
     </script>

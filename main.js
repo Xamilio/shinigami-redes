@@ -7,51 +7,80 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Add hover effect logic for cursor
-    const interactiveElements = document.querySelectorAll('.product-card, .gallery-thumbnails img, .btn-primary, .close-cart');
+    const interactiveElements = document.querySelectorAll('.product-card, .gallery-thumbnails img, .btn-primary, .close-cart, .social-link');
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
 
-    // 1. Products Data Management
-    const initialProducts = [
-        { name: '«BEEP THE BAT» LEATHER BACKPACK', price: '₴6,666.00', status: 'none', color: 'black', image: 'img/products/beep-the-bat-leather-backpack/Backpack_1.webp', hoverImage: 'img/products/beep-the-bat-leather-backpack/Backpack_2.webp' },
-        { name: '«BEEP THE BAT» THERMOCHROMIC CROSSBODY BAG WHITE', price: '₴2,800', status: 'preorder', color: 'white' },
-        { name: '«BEEP THE BAT» THERMOCHROMIC CROSSBODY BAG BLUE', price: '₴2,800', status: 'none', color: 'blue' },
-        { name: '«BEEP THE BAT» THERMOCHROMIC CROSSBODY BAG PURPLE', price: '₴2,800', status: 'preorder', color: 'purple' },
-        { name: 'DARK LORD PUFFER JACKET', price: '₴6,500', status: 'preorder', color: 'black' },
-        { name: 'Сумка через плече "Beep the Bat" - чорна', price: '₴2,600', status: 'preorder', color: 'black' },
-        { name: 'COAT OF ARMS TEE - DARK GRAY', price: '₴1,200', status: 'none', color: '#333' },
-        { name: 'COAT OF ARMS TEE - LIGHT GRAY', price: '₴1,200', status: 'none', color: '#ccc' },
-        { name: 'ANARCHY SHINE TEE BLACK', price: '₴1,400', status: 'none', color: '#111' },
-        { name: 'ANARCHY SHINE TEE WHITE', price: '₴1,400', status: 'none', color: '#fff' },
-        { name: 'ШКАПЕТКИ ANARCHY (3 УПАКОВКИ)', price: '₴600', status: 'none', color: 'mixed' },
-        { name: 'DARK CRUSADER SILK SHAWL', price: '₴1,800', status: 'none', color: 'black' },
-        { name: 'ТЕРМОХРОМНА ВІТРОВКА З КИШЕНЯМИ - СІРА', price: '₴4,200', status: 'preorder', color: 'grey' },
-        { name: 'ВІТРОВКА З ВЕНЗЕЛЕМ І КИШЕНЯМИ - ЗЕЛЕНА', price: '₴4,200', status: 'preorder', color: 'green' }
-    ];
+    // --- Helper for Dynamic Images (Now global in supabase-config.js) ---
+    // window.resolveImage is used instead
 
+    // 1. Products Data Management - Removed hardcoded array, now using Supabase exclusively.
+    
     // Initialize products from Supabase
     async function fetchProducts() {
         try {
+            console.log('Fetching products from Supabase...');
             const { data, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
-                .order('created_at', { ascending: false });
+                .order('name', { ascending: true }); // Changed from created_at (not in schema) to name
 
             if (error) throw error;
-            
-            if (data && data.length > 0) {
-                return data;
-            } else {
-                // If DB is empty, use initialProducts and maybe seed them (optional)
-                return JSON.parse(localStorage.getItem('shinigami_products')) || initialProducts;
-            }
+            console.log('Fetched products from Supabase:', data);
+            return data || [];
         } catch (err) {
             console.error('Supabase fetch error:', err);
-            return JSON.parse(localStorage.getItem('shinigami_products')) || initialProducts;
+            return [];
         }
     }
+
+    // 1.5 Dynamic Site Settings
+    async function applySiteSettings() {
+        try {
+            const { data, error } = await window.supabaseClient.from('site_settings').select('*');
+            if (error || !data) return;
+
+            data.forEach(s => {
+                if (!s.value) return;
+                
+                if (s.key === 'main_banner') {
+                    const bannerImg = document.querySelector('.hero-card-image');
+                    if (bannerImg) bannerImg.style.backgroundImage = `url('${window.resolveImage(s.value)}')`;
+                }
+                if (s.key === 'hero_bg') {
+                    const heroSec = document.querySelector('.hero');
+                    if (heroSec) heroSec.style.backgroundImage = `url('${window.resolveImage(s.value)}')`;
+                }
+                if (s.key === 'logo') {
+                    const logoImg = document.querySelector('.logo img');
+                    if (logoImg) logoImg.src = window.resolveImage(s.value);
+                }
+                if (s.key === 'marquee') {
+                    const marqueeContents = document.querySelectorAll('.marquee-content');
+                    marqueeContents.forEach(mc => {
+                        const bat = '<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">';
+                        const logoText = '<img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text">';
+                        mc.innerHTML = `${logoText}${bat}${s.value}${bat}${logoText}${bat}${s.value}${bat}`;
+                    });
+                }
+                if (s.key === 'instagram') {
+                    const links = document.querySelectorAll('.social-link.insta');
+                    links.forEach(l => l.href = s.value);
+                }
+                if (s.key === 'tiktok') {
+                    const links = document.querySelectorAll('.social-link.tiktok');
+                    links.forEach(l => l.href = s.value);
+                }
+            });
+        } catch (err) {
+            console.warn('Dynamic settings not available:', err);
+        }
+    }
+    
+    // Call it
+    applySiteSettings();
 
     // 2. Render Products
     const productGrid = document.getElementById('product-grid');
@@ -85,9 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const pattern = `repeating-linear-gradient(45deg, #e0e0e0, #e0e0e0 ${stripeSize}px, #f5f5f5 ${stripeSize}px, #f5f5f5 ${stripeSize * 2}px)`;
 
             // Map user's specific database fields
-            const image = product.image;
+            let imageSource = product.image || '';
+            if (String(imageSource).endsWith('/')) {
+                imageSource = `${imageSource}/1.jpg`.replace(/\/+/g, '/'); // Dynamic preview for folders
+            }
+            const image = window.resolveImage(imageSource);
             const title = product.name || product.title;
             const price = typeof product.price === 'number' ? `₴${product.price}` : product.price;
+
+            // Use name as ID for the detail page
+            const productId = product.name || product.title || product.id;
 
             const imageHTML = image 
                 ? `<img src="${image}" class="product-img main-img" alt="${title}">`
@@ -104,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="product-title">${title}</h3>
                     <div class="product-bottom">
                         <p class="product-price">${price}</p>
-                        <button class="add-to-cart-btn" aria-label="Add to cart">
+                        <button class="add-to-cart-btn" aria-label="Add to cart" data-product-id="${productId}">
                             <img src="img/icons/basket-black.svg" alt="cart">
                         </button>
                     </div>
@@ -112,14 +148,32 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             productGrid.appendChild(card);
             
-            // Use name as ID for the detail page
-            const productId = product.name || product.title || product.id;
-            if (productId) {
-                card.addEventListener('click', () => { 
+            // Fix: Separate click for image/title vs add-to-cart button
+            const imageWrap = card.querySelector('.product-image-wrap');
+            const infoTitle = card.querySelector('.product-title');
+            const addToCartBtn = card.querySelector('.add-to-cart-btn');
+
+            [imageWrap, infoTitle].forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     window.location.href = `product.html?id=${encodeURIComponent(productId)}`; 
                 });
-            } else {
-                console.error('Product has no valid identifier:', product);
+            });
+
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const cleanPrice = typeof product.price === 'string' 
+                        ? parseFloat(product.price.replace(/[^\d.]/g, '')) 
+                        : product.price;
+                    
+                    window.addToCart({
+                        id: productId,
+                        name: productId,
+                        price: cleanPrice,
+                        image: imageSource
+                    });
+                });
             }
         });
 
@@ -212,5 +266,147 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCart.addEventListener('click', toggleCart);
     cartOverlay.addEventListener('click', toggleCart);
 
-    // Add empty cart check logic if needed later
+    // --- CART SYSTEM ---
+    window.cart = JSON.parse(localStorage.getItem('shinigami_cart')) || [];
+
+    window.saveCart = () => {
+        localStorage.setItem('shinigami_cart', JSON.stringify(window.cart));
+        window.updateCartUI();
+    };
+
+    window.addToCart = (product) => {
+        const existing = window.cart.find(item => item.id === product.id);
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            window.cart.push({
+                ...product,
+                quantity: 1
+            });
+        }
+        window.saveCart();
+        
+        // Open cart to show addition
+        if (!cartDrawer.classList.contains('active')) toggleCart();
+    };
+
+    window.removeFromCart = (productId) => {
+        window.cart = window.cart.filter(item => item.id !== productId);
+        window.saveCart();
+    };
+
+    window.updateQuantity = (productId, delta) => {
+        const item = window.cart.find(item => item.id === productId);
+        if (item) {
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                window.removeFromCart(productId);
+            } else {
+                window.saveCart();
+            }
+        }
+    };
+
+    window.updateCartUI = () => {
+        const cartBody = document.querySelector('.cart-body');
+        const cartTotal = document.querySelector('.cart-total span:last-child');
+        const cartCount = document.querySelector('.cart-btn .cart-badge'); // We might need to add this to HTML later
+        
+        if (!cartBody) return;
+
+        if (window.cart.length === 0) {
+            cartBody.innerHTML = '<p class="empty-cart-msg">Ваш кошик порожній.</p>';
+            if (cartTotal) cartTotal.textContent = '₴0';
+            return;
+        }
+
+        let total = 0;
+        cartBody.innerHTML = window.cart.map(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            const imgPath = window.resolveImage(item.image);
+            
+            return `
+                <div class="cart-item">
+                    <div class="cart-item-img">
+                        <img src="${imgPath}" alt="${item.name}">
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-header">
+                            <h4>${item.name}</h4>
+                            <button class="remove-item" onclick="window.removeFromCart('${item.id.replace(/'/g, "\\'")}')">&times;</button>
+                        </div>
+                        <div class="cart-item-bottom">
+                            <div class="quantity-controls">
+                                <button onclick="window.updateQuantity('${item.id.replace(/'/g, "\\'")}', -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="window.updateQuantity('${item.id.replace(/'/g, "\\'")}', 1)">+</button>
+                            </div>
+                            <span class="item-price">₴${itemTotal.toLocaleString('uk-UA')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (cartTotal) cartTotal.textContent = `₴${total.toLocaleString('uk-UA')}`;
+        const finalTotal = document.getElementById('final-total');
+        if (finalTotal) finalTotal.textContent = `₴${total.toLocaleString('uk-UA')}`;
+    };
+
+    // --- CHECKOUT LOGIC ---
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    const checkoutModal = document.getElementById('checkout-modal');
+    const closeCheckout = document.getElementById('close-checkout');
+    const checkoutForm = document.getElementById('checkout-form');
+    const orderSuccess = document.getElementById('order-success');
+
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (window.cart.length === 0) {
+                alert('Кошик порожній!');
+                return;
+            }
+            toggleCart(); // Close drawer
+            checkoutModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (closeCheckout) {
+        closeCheckout.addEventListener('click', () => {
+            checkoutModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Here you would normally send data to a server
+            const orderData = {
+                customer: {
+                    name: document.getElementById('cust-name').value,
+                    phone: document.getElementById('cust-phone').value,
+                    address: document.getElementById('cust-address').value
+                },
+                items: window.cart,
+                total: window.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+            };
+
+            console.log('Order placed:', orderData);
+            
+            // Simulated success
+            checkoutForm.style.display = 'none';
+            orderSuccess.style.display = 'block';
+            
+            // Clear cart
+            window.cart = [];
+            window.saveCart();
+        });
+    }
+
+    // Initial UI update
+    window.updateCartUI();
 });
