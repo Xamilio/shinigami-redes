@@ -22,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (error) throw error;
 
                 // Success
-                window.location.href = 'admin.html';
+                if (window.location.pathname.includes('/admin/')) {
+                    window.location.href = './index.html';
+                } else {
+                    window.location.href = 'admin/';
+                }
             } catch (err) {
                 errorMsg.textContent = 'ПОМИЛКА: ' + (err.message || 'Невірний логін або пароль');
                 errorMsg.style.display = 'block';
@@ -33,16 +37,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Helper for relative redirects
+function safeRedirect(target) {
+    const isSubdir = window.location.pathname.includes('/admin/');
+    if (isSubdir && !target.startsWith('http')) {
+        window.location.href = '../' + target;
+    } else {
+        window.location.href = target;
+    }
+}
+
 // Helper function to check session in other pages
 async function checkAuth() {
     try {
         const { data: { session } } = await window.supabaseClient.auth.getSession();
         if (!session) {
-            window.location.href = 'login.html';
+            safeRedirect('login.html');
         }
         return session;
     } catch (err) {
-        window.location.href = 'login.html';
+        safeRedirect('login.html');
         return null;
     }
 }
@@ -50,5 +64,5 @@ async function checkAuth() {
 // Logout function
 async function handleLogout() {
     await window.supabaseClient.auth.signOut();
-    window.location.href = 'login.html';
+    safeRedirect('login.html');
 }

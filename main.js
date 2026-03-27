@@ -1,17 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Custom Cursor Logic
     const cursor = document.getElementById('custom-cursor');
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    });
-    
-    // Add hover effect logic for cursor
-    const interactiveElements = document.querySelectorAll('.product-card, .gallery-thumbnails img, .btn-primary, .close-cart, .social-link');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
+    if (cursor) {
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        // Use event delegation for hover effects to handle dynamic content
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('button, a, .product-card, .gallery-thumbnails img, .nav-link, .cart-btn, .close-cart, .social-link')) {
+                cursor.classList.add('hover');
+            } else {
+                cursor.classList.remove('hover');
+            }
+        });
+    }
 
     // --- Helper for Dynamic Images (Now global in supabase-config.js) ---
     // window.resolveImage is used instead
@@ -43,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error || !data) return;
 
             data.forEach(s => {
-                if (!s.value) return;
+                // Apply setting even if value is empty string, but skip if missing/null
+                if (s.value === null || s.value === undefined) return;
                 
                 if (s.key === 'main_banner') {
                     const bannerImg = document.querySelector('.hero-card-image');
@@ -53,16 +58,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     const heroSec = document.querySelector('.hero');
                     if (heroSec) heroSec.style.backgroundImage = `url('${window.resolveImage(s.value)}')`;
                 }
+                if (s.key === 'hero_title') {
+                    const title = document.querySelector('.hero-card-title');
+                    if (title) title.textContent = s.value;
+                }
+                if (s.key === 'hero_subtitle') {
+                    const subtitle = document.querySelector('.hero-card-subtitle');
+                    if (subtitle) subtitle.textContent = s.value;
+                }
                 if (s.key === 'logo') {
-                    const logoImg = document.querySelector('.logo img');
-                    if (logoImg) logoImg.src = window.resolveImage(s.value);
+                    const logos = document.querySelectorAll('.logo img');
+                    logos.forEach(img => img.src = window.resolveImage(s.value));
+                }
+                if (s.key === 'cursor_img') {
+                    const cursor = document.getElementById('custom-cursor');
+                    if (cursor) cursor.style.backgroundImage = `url('${window.resolveImage(s.value)}')`;
+                }
+                if (s.key === 'cursor_negative') {
+                    const cursor = document.getElementById('custom-cursor');
+                    if (cursor) cursor.style.mixBlendMode = s.value === 'true' ? 'difference' : 'normal';
+                }
+                if (s.key === 'cart_icon_white') {
+                    const icons = document.querySelectorAll('img[src*="basket-white"]');
+                    icons.forEach(img => img.src = window.resolveImage(s.value));
+                }
+                if (s.key === 'cart_icon_black') {
+                    const icons = document.querySelectorAll('img[src*="basket-black"]');
+                    icons.forEach(img => img.src = window.resolveImage(s.value));
                 }
                 if (s.key === 'marquee') {
+                    applyMarquee();
+                }
+                
+                // Helper to re-apply marquee with dynamic icons
+                function applyMarquee() {
                     const marqueeContents = document.querySelectorAll('.marquee-content');
+                    if (marqueeContents.length === 0) return;
+
+                    const marqueeText = data.find(item => item.key === 'marquee')?.value || '';
+                    const marqueeBat = data.find(item => item.key === 'marquee_bat')?.value || 'img/running-strip/black-bat.png';
+                    const marqueeLogo = data.find(item => item.key === 'marquee_logo')?.value || 'img/running-strip/Shinigami-text.png';
+
+                    const batHtml = `<img src="${window.resolveImage(marqueeBat)}" class="marquee-bat" alt="bat">`;
+                    const logoHtml = `<img src="${window.resolveImage(marqueeLogo)}" class="marquee-logo" alt="shinigami text">`;
+
+                    const segment = `${logoHtml}${batHtml}${marqueeText}${batHtml}`;
                     marqueeContents.forEach(mc => {
-                        const bat = '<img src="img/running-strip/black-bat.png" class="marquee-bat" alt="bat">';
-                        const logoText = '<img src="img/running-strip/Shinigami-text.png" class="marquee-logo" alt="shinigami text">';
-                        mc.innerHTML = `${logoText}${bat}${s.value}${bat}${logoText}${bat}${s.value}${bat}`;
+                        mc.innerHTML = segment.repeat(10);
                     });
                 }
                 if (s.key === 'instagram') {
@@ -72,6 +114,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (s.key === 'tiktok') {
                     const links = document.querySelectorAll('.social-link.tiktok');
                     links.forEach(l => l.href = s.value);
+                }
+                
+                // Info Modal Content
+                if (s.key.startsWith('info_')) {
+                    const type = s.key.replace('info_', '');
+                    if (infoContent[type]) {
+                        infoContent[type].body = s.value;
+                    } else {
+                        infoContent[type] = { 
+                            title: type === 'faq' ? 'FAQ' : (type === 'shipping' ? 'Доставка' : 'Повернення'),
+                            body: s.value 
+                        };
+                    }
                 }
             });
         } catch (err) {
@@ -406,6 +461,62 @@ document.addEventListener('DOMContentLoaded', () => {
             window.saveCart();
         });
     }
+
+    // --- INFO MODAL LOGIC ---
+    const infoModal = document.getElementById('info-modal-overlay');
+    const infoBody = document.getElementById('info-modal-body');
+    const infoTitle = document.getElementById('info-modal-title');
+    const closeInfoBtn = document.getElementById('close-info-btn');
+
+    const infoContent = {
+        faq: {
+            title: 'FAQ — Часті питання',
+            body: `Завантаження...`
+        },
+        shipping: {
+            title: 'Доставка та Оплата',
+            body: `Завантаження...`
+        },
+        returns: {
+            title: 'Повернення та Обмін',
+            body: `Завантаження...`
+        },
+        terms: {
+            title: 'Умови використання',
+            body: `Завантаження...`
+        }
+    };
+
+    const openInfoModal = (type) => {
+        const content = infoContent[type];
+        if (!content) return;
+        
+        infoTitle.textContent = content.title;
+        // Replace semicolons and following whitespace with line breaks, hiding the semicolon
+        infoBody.innerHTML = content.body.replace(/;\s*(?![^<]*>)/g, '<br>');
+        infoModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeInfoModal = () => {
+        infoModal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    if (closeInfoBtn) closeInfoBtn.onclick = closeInfoModal;
+    if (infoModal) {
+        infoModal.onclick = (e) => {
+            if (e.target === infoModal) closeInfoModal();
+        };
+    }
+
+    // Attach listeners to footer links
+    document.querySelectorAll('[data-info]').forEach(link => {
+        link.onclick = (e) => {
+            e.preventDefault();
+            openInfoModal(link.getAttribute('data-info'));
+        };
+    });
 
     // Initial UI update
     window.updateCartUI();

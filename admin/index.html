@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinigami Couture - Адмін-панель</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo"><img src="../img/logo/shinigami.webp" alt="logo"></a>
+                <button id="logout-btn" style="background: transparent; color: #000; border: 2px solid #000; padding: 2px 8px; font-weight: 800; cursor: pointer; font-size: 10px; margin-left: 10px;">ВИЙТИ</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <span class="nav-icon">📊</span> Дашборд
+                </a>
+                <a href="#" class="nav-item" data-tab="products">
+                    <span class="nav-icon">📦</span> Товари
+                </a>
+                <a href="#" class="nav-item" data-tab="settings">
+                    <span class="nav-icon">⚙️</span> Налаштування
+                </a>
+                <a href="#" class="nav-item" data-tab="media">
+                    <span class="nav-icon">📁</span> Медіа
+                </a>
+                <a href="../index.html" class="nav-item">
+                    <span class="nav-icon">🌐</span> На сайт
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>&copy; 2026 Admin UI</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <header class="content-header">
+                <h1 id="page-title">Дашборд</h1>
+                <div class="header-actions">
+                    <button id="add-product-btn" class="btn-primary" style="padding: 10px 20px; font-size: 0.8rem;">+ ДОДАТИ ТОВАР</button>
+                    <div class="user-profile">
+                        <span class="user-name">Xamilio</span>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <section id="dashboard-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Усього товарів</h3>
+                        <p class="stat-value" id="total-products-count">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Передзамовлення</h3>
+                        <p class="stat-value" id="preorder-count">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Розпродано</h3>
+                        <p class="stat-value" id="soldout-count">0</p>
+                    </div>
+                </div>
+                
+                <div class="recent-products-section">
+                    <h2>Останні додані товари</h2>
+                    <div class="table-container">
+                        <table id="recent-products-table">
+                            <thead>
+                                <tr>
+                                    <th>Товар</th>
+                                    <th>Ціна</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="products-tab" class="tab-content">
+                <!-- Modal Overlay for Product Form -->
+                <div class="modal-overlay" id="product-modal" style="display: none;">
+                    <div class="modal-content" id="form-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 id="modal-title">Додати товар</h2>
+                            <button type="button" class="btn-close-modal" onclick="closeProductModal()">&times;</button>
+                        </div>
+                        <form id="product-form">
+                            <input type="hidden" id="product-index">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="title">Назва товару</label>
+                                    <input type="text" id="title" required placeholder="Напр: BLACK HOODIE">
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Ціна (тільки текст та цифри)</label>
+                                    <input type="text" id="price" required placeholder="Напр: 2500 або ЗАПИТ">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="category">Категорія</label>
+                                    <input type="text" id="category" placeholder="Напр: АКСЕСУАРИ">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">URL зображення (bucket/folder/file.jpg)</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input type="text" id="image" placeholder="Оберіть файл через 📁" style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="image">📁</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gallery">Папка галереї (bucket/folder/)</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input type="text" id="gallery" placeholder="Оберіть папку через 📁" style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="gallery">📁</button>
+                                        <input type="file" id="gallery-upload-input" multiple accept="image/*" style="display: none;">
+                                        <button type="button" id="gallery-upload-btn" class="btn-action" style="background: #000; color: #fff; white-space: nowrap; font-size: 10px; padding: 0 10px;">+ ЗАВАНТ. ФОТО</button>
+                                    </div>
+                                    <small id="upload-status" style="display: block; margin-top: 4px; font-size: 10px; color: #666;"></small>
+                                </div>
+                            </div>
+                            <!-- Product Image Preview -->
+                            <div id="product-img-preview" style="margin-bottom: 20px; height: 151px; border: 2px solid #000; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f9f9f9;">
+                                <span style="font-size: 0.7rem; color: #999;">Прев'ю основного фото</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Опис</label>
+                                <textarea id="description" rows="3" placeholder="Загальний опис товару..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="features">Характеристики (через крапку з комою)</label>
+                                <textarea id="features" rows="3" placeholder="Напр: Натуральна шкіра; Блискавка YKK..."></textarea>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="material">Матеріал</label>
+                                    <input type="text" id="material" placeholder="Напр: 100% Cotton">
+                                </div>
+                                <div class="form-group">
+                                    <label for="delivery">Доставка</label>
+                                    <input type="text" id="delivery" placeholder="Напр: Нова Пошта; 1-3 дні">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sku">ID / SKU</label>
+                                    <input type="text" id="sku" placeholder="Напр: SN-001">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="care">Рекомендації по догляду</label>
+                                    <input type="text" id="care" placeholder="Напр: Тільки ручне прання">
+                                </div>
+                                <div class="form-group">
+                                    <label for="packageContents">Комплектація</label>
+                                    <input type="text" id="packageContents" placeholder="Напр: Рюкзак, брелок, стікерпак">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Статус товару</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="product-status" value="none" checked> Звичайний</label>
+                                    <label><input type="radio" name="product-status" value="new"> Новинка (NEW)</label>
+                                    <label><input type="radio" name="product-status" value="preorder"> Передзамовлення (PRE)</label>
+                                    <label><input type="radio" name="product-status" value="soldout"> Розпродано (SOLD)</label>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn-primary" style="flex: 2;">ЗБЕРЕГТИ ЗМІНИ</button>
+                                <button type="button" class="btn-action" style="flex: 1;" onclick="closeProductModal()">Скасувати</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="all-products-table">
+                        <thead>
+                            <tr>
+                                <th>Зображення</th>
+                                <th>Назва</th>
+                                <th>Ціна</th>
+                                <th>Статус</th>
+                                <th>Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="settings-tab" class="tab-content">
+                <div class="card" style="background: #fff; border: 2px solid #000; padding: 30px; margin-bottom: 30px;">
+                    <h3>Глобальні налаштування</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Налаштуйте зовнішній вигляд головної сторінки.</p>
+                    
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label>URL Логотипу (Header Logo)</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="setting-logo" placeholder="URL зображення логотипу..." style="flex: 1;">
+                                <button type="button" class="btn-action open-picker-btn" data-target="setting-logo">📁</button>
+                                <input type="file" id="upload-logo-input" accept="image/*" style="display: none;">
+                                <button type="button" class="btn-action upload-setting-btn" data-input="upload-logo-input" data-target="setting-logo" style="background: #000; color: #fff; font-size: 10px; padding: 0 10px;">+ ЗАВАНТАЖИТИ</button>
+                            </div>
+                            <div id="preview-logo" class="setting-preview" style="margin-top: 10px; height: 50px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #f9f9f9; overflow: hidden;">
+                                <span style="font-size: 0.7rem; color: #999;">Прев'ю логотипу</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Текст рухомого рядка (Marquee)</label>
+                            <input type="text" id="setting-marquee" placeholder="Напр: SHINIGAMI COUTURE • NEW COLLECTION...">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>URL головного банера (Hero Card)</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="setting-main_banner" placeholder="URL банера..." style="flex: 1;">
+                                    <button type="button" class="btn-action open-picker-btn" data-target="setting-main_banner">📁</button>
+                                    <input type="file" id="upload-banner-setting-input" accept="image/*" style="display: none;">
+                                    <button type="button" class="btn-action upload-setting-btn" data-input="upload-banner-setting-input" data-target="setting-main_banner" style="background: #000; color: #fff; font-size: 10px; padding: 0 10px;">+ ЗАВАНТАЖИТИ</button>
+                                </div>
+                                <div id="preview-main_banner" class="setting-preview" style="margin-top: 10px; height: 80px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #f9f9f9; background-size: cover; background-position: center; overflow: hidden;">
+                                    <span style="font-size: 0.7rem; color: #999;">Прев'ю банера</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>URL фону (Hero Background)</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="setting-hero_bg" placeholder="URL фону..." style="flex: 1;">
+                                    <button type="button" class="btn-action open-picker-btn" data-target="setting-hero_bg">📁</button>
+                                    <input type="file" id="upload-hero-bg-input" accept="image/*" style="display: none;">
+                                    <button type="button" class="btn-action upload-setting-btn" data-input="upload-hero-bg-input" data-target="setting-hero_bg" style="background: #000; color: #fff; font-size: 10px; padding: 0 10px;">+ ЗАВАНТАЖИТИ</button>
+                                </div>
+                                <div id="preview-hero_bg" class="setting-preview" style="margin-top: 10px; height: 80px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; background: #f9f9f9; background-size: cover; background-position: center; overflow: hidden;">
+                                    <span style="font-size: 0.7rem; color: #999;">Прев'ю фону</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Hero Banner Text Customization -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Заголовок банера (Title)</label>
+                                <input type="text" id="setting-hero_title" placeholder="Напр: NEW COLLECTION 2026">
+                            </div>
+                            <div class="form-group">
+                                <label>Підзаголовок банера (Subtitle)</label>
+                                <input type="text" id="setting-hero_subtitle" placeholder="Напр: Преміальний вуличний одяг...">
+                            </div>
+                        </div>
+
+                        <!-- Asset Management Section -->
+                        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                            <h4 style="margin-bottom: 15px; text-transform: uppercase; font-size: 0.9rem;">Медіа-активи та іконки</h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label>Курсор (Cursor Image)</label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="text" id="setting-cursor_img" placeholder="img/cursor/..." style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="setting-cursor_img">📁</button>
+                                        <div id="preview-cursor_img" class="setting-preview" style="width: 40px; height: 40px; border: 1px solid #000; background: #fff;"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Логотип для стрічки (Marquee Logo)</label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="text" id="setting-marquee_logo" placeholder="img/running-strip/..." style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="setting-marquee_logo">📁</button>
+                                        <div id="preview-marquee_logo" class="setting-preview" style="width: 40px; height: 40px; border: 1px solid #000; background: #fff;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label>Іконка корзини (White)</label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="text" id="setting-cart_icon_white" placeholder="img/icons/..." style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="setting-cart_icon_white">📁</button>
+                                        <div id="preview-cart_icon_white" class="setting-preview" style="width: 40px; height: 40px; border: 1px solid #000; background: #333;"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Іконка корзини (Black)</label>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <input type="text" id="setting-cart_icon_black" placeholder="img/icons/..." style="flex: 1;">
+                                        <button type="button" class="btn-action open-picker-btn" data-target="setting-cart_icon_black">📁</button>
+                                        <div id="preview-cart_icon_black" class="setting-preview" style="width: 40px; height: 40px; border: 1px solid #000; background: #fff;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Значок-розділювач стрічки (Marquee Bat/Bat Icon)</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="text" id="setting-marquee_bat" placeholder="img/running-strip/..." style="flex: 1;">
+                                    <button type="button" class="btn-action open-picker-btn" data-target="setting-marquee_bat">📁</button>
+                                    <div id="preview-marquee_bat" class="setting-preview" style="width: 40px; height: 40px; border: 1px solid #000; background: #fff;"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: flex; align-items: center; gap: 15px; margin-top: 15px; background: #eee; padding: 10px; border: 2px solid #000;">
+                                <label style="margin-bottom: 0; font-weight: 800;">ЕФЕКТ ІНВЕРСІЇ (NEGATIVE)</label>
+                                <input type="checkbox" id="setting-cursor_negative" style="width: 24px; height: 24px; cursor: pointer;">
+                                <span style="font-size: 0.7rem; color: #444; text-transform: uppercase;">(Курсор змінює колір залежно від фону)</span>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Instagram URL</label>
+                                <input type="text" id="setting-instagram" placeholder="https://instagram.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label>TikTok URL</label>
+                                <input type="text" id="setting-tiktok" placeholder="https://tiktok.com/@...">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                            <h4 style="margin-bottom: 15px; text-transform: uppercase; font-size: 0.9rem;">Інформаційні вікна (HTML підтримується)</h4>
+                            <div class="form-group">
+                                <label>FAQ (Питання та відповіді)</label>
+                                <textarea id="setting-info_faq" rows="4" style="width: 100%; padding: 10px; border: 2px solid #000; font-family: inherit;" placeholder="HTML контент для FAQ..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Доставка та Оплата</label>
+                                <textarea id="setting-info_shipping" rows="4" style="width: 100%; padding: 10px; border: 2px solid #000; font-family: inherit;" placeholder="HTML контент для доставки..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Повернення та Обмін</label>
+                                <textarea id="setting-info_returns" rows="4" style="width: 100%; padding: 10px; border: 2px solid #000; font-family: inherit;" placeholder="HTML контент для повернення..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Умови використання (Terms of Service)</label>
+                                <textarea id="setting-info_terms" rows="4" style="width: 100%; padding: 10px; border: 2px solid #000; font-family: inherit;" placeholder="HTML контент для правил..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-banner" style="width: 100%; margin-top: 10px;">ЗБЕРЕГТИ ВСІ НАЛАШТУВАННЯ</button>
+                    </form>
+                </div>
+
+            </section>
+
+            <section id="media-tab" class="tab-content">
+                <div class="card" style="background: #fff; border: 2px solid #000; padding: 30px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <h3 style="margin: 0;">Менеджер файлів</h3>
+                            <select id="media-bucket-select" class="admin-select" style="padding: 5px 10px; border: 2px solid #000; font-weight: 800;">
+                                <option value="">Завантаження бакетів...</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="media-back-btn" class="btn-action" style="display: none;">⬅ НАЗАД</button>
+                            <button id="media-new-folder-btn" class="btn-action" style="border: 2px solid #000;">+ НОВА ПАПКА</button>
+                            <input type="file" id="media-upload-input" style="display: none;" multiple>
+                            <button id="media-upload-btn" class="btn-action" style="background: #000; color: #fff;">+ ЗАВАНТАЖИТИ СЮДИ</button>
+                        </div>
+                    </div>
+                    
+                    <div id="media-breadcrumb" style="margin-bottom: 15px; font-size: 12px; font-weight: 600; color: #666;">
+                        Коренева папка
+                    </div>
+
+                    <div id="media-explorer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px;">
+                        <!-- Folders and Files will appear here -->
+                        <p style="grid-column: 1/-1; color: #888;">Завантаження...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Folder Picker Modal -->
+    <div class="modal-overlay" id="picker-modal" style="display: none; z-index: 5000;">
+        <div class="modal-content" style="width: 500px; max-height: 80vh;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3>Вибір шляху</h3>
+                <button type="button" class="btn-close-modal" id="close-picker-btn">&times;</button>
+            </div>
+            
+            <div id="picker-breadcrumb" style="margin-bottom: 10px; font-size: 11px; font-weight: 800; text-transform: uppercase;">
+                Корінь
+            </div>
+
+            <div id="picker-list" style="border: 2px solid #000; height: 300px; overflow-y: auto; padding: 10px; background: #fff;">
+                <!-- Folders/Files will appear here -->
+                <p style="color: #888;">Завантаження...</p>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button id="picker-select-btn" class="btn-primary" style="flex: 1;">ВИБРАТИ ЦЕЙ ШЛЯХ</button>
+                <button id="picker-back-btn" class="btn-action">⬅ НАЗАД</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../auth.js"></script>
+    <script src="../admin.js"></script>
+    <!-- New Folder Modal -->
+    <div class="modal-overlay" id="folder-modal" style="display: none; z-index: 6000;">
+        <div class="modal-content" style="width: 400px; padding: 30px;">
+            <h2 style="margin-bottom: 20px;">Нова папка</h2>
+            <div class="form-group">
+                <label>Назва папки</label>
+                <input type="text" id="new-folder-name" placeholder="Введіть назву..." style="width: 100%; border: 2px solid #000; padding: 10px;">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="folder-create-confirm" class="btn-primary" style="flex: 1;">СТВОРИТИ</button>
+                <button id="folder-create-cancel" class="btn-action" style="flex: 1; border: 2px solid #000;">СКАСУВАТИ</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -12,7 +12,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* Custom cursor */
 }
 
 html {
@@ -20,6 +19,7 @@ html {
 }
 
 body {
+    cursor: none; /* Custom cursor everywhere by default */
     font-family: var(--font-main);
     background-color: #ffffff;
     color: var(--text-light);
@@ -35,6 +35,11 @@ a, button {
     text-decoration: none;
 }
 
+/* Restore normal cursor for admin panel */
+.admin-body, .admin-body * {
+    cursor: auto !important;
+}
+
 /* Custom Cursor */
 .custom-cursor {
     position: fixed;
@@ -48,7 +53,6 @@ a, button {
     background-repeat: no-repeat;
     pointer-events: none;
     z-index: 9999;
-    mix-blend-mode: difference;
     transform: translate(-50%, -50%) rotate(-20deg);
     transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -91,17 +95,19 @@ a, button {
 
 .cart-body {
     flex: 1;
-    padding: 30px;
+    padding: 20px 30px;
     overflow-y: auto;
-    max-height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .cart-item {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
 }
 
 .cart-item-img {
@@ -459,7 +465,7 @@ a, button {
 .marquee-track {
     display: flex;
     white-space: nowrap;
-    animation: marquee 25s linear infinite;
+    animation: marquee 80s linear infinite;
     width: max-content;
 }
 
@@ -753,17 +759,26 @@ a, button {
     transform: rotate(90deg);
 }
 
-.cart-body {
-    flex: 1;
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .cart-footer {
     padding: 30px;
     border-top: 2px solid #000;
+    background: #fff;
+}
+
+.footer-bottom p {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.admin-link-footer {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 600;
+}
+
+.admin-link-footer:hover {
+    color: #000;
 }
 
 .cart-total {
@@ -792,6 +807,48 @@ a, button {
 
 .checkout-btn:hover {
     transform: scale(1.02);
+}
+
+/* Modal Shared Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+}
+
+.modal-content {
+    background: #fff;
+    border: 3px solid #000;
+    padding: 30px;
+    position: relative;
+    box-shadow: 10px 10px 0 #000;
+    animation: modalIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.btn-close-modal:hover {
+    transform: rotate(90deg);
 }
 
 /* Checkout Modal */

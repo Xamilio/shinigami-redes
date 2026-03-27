@@ -1,21 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 0. Custom Cursor (Move to top for reliability)
-    const cursor = document.getElementById('custom-cursor');
-    if (cursor) {
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-        
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('button, a, .nav-item, tr')) {
-                cursor.classList.add('hover');
-            } else {
-                cursor.classList.remove('hover');
-            }
-        });
-    }
-
     // 0.5 Security Check
     const session = await checkAuth();
     if (!session) return;
@@ -48,7 +31,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function setupSettingsPreviews() {
-        const inputs = ['setting-logo', 'setting-main_banner', 'setting-hero_bg'];
+        const inputs = [
+            'setting-logo', 
+            'setting-main_banner', 
+            'setting-hero_bg',
+            'setting-cursor_img',
+            'setting-marquee_logo',
+            'setting-marquee_bat',
+            'setting-cart_icon_white',
+            'setting-cart_icon_black'
+        ];
         inputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
@@ -79,6 +71,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             // Update title
             pageTitle.textContent = item.textContent.trim();
+
+            // Toggle Add Product button visibility
+            const addProductBtn = document.getElementById('add-product-btn');
+            if (addProductBtn) {
+                addProductBtn.style.display = tabId === 'products' ? 'block' : 'none';
+            }
         });
     });
 
@@ -223,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${displayPrice}</td>
                 <td>${statusText}</td>
                 <td>
-                    <a href="product.html?id=${p.name}" target="_blank" class="btn-action btn-view">Перегляд</a>
+                    <a href="../product.html?id=${p.name}" target="_blank" class="btn-action btn-view">Перегляд</a>
                     <button class="btn-action btn-edit" onclick="editProductByName('${p.name.replace(/'/g, "\\'")}')">Ред.</button>
                     <button class="btn-action btn-delete" onclick="deleteProductByName('${p.name.replace(/'/g, "\\'")}')">Вид.</button>
                 </td>
@@ -414,8 +412,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 6. Site Settings Logic
     const settingsForm = document.getElementById('settings-form');
-    const storageGallery = document.getElementById('storage-gallery');
-    const refreshStorageBtn = document.getElementById('refresh-storage-btn');
     
     let activeSettingInput = null; // Track which input we are filling
 
@@ -429,7 +425,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             data.forEach(s => {
                 const input = document.getElementById(`setting-${s.key}`);
                 if (input) {
-                    input.value = s.value;
+                    if (input.type === 'checkbox') {
+                        input.checked = s.value === 'true';
+                    } else {
+                        input.value = s.value;
+                    }
                     updatePreview(s.key, s.value);
                 }
                 
@@ -447,105 +447,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     const uploadBtn = document.getElementById('upload-banner-btn');
     const uploadInput = document.getElementById('upload-banner-input');
 
-    const fetchStorageImages = async () => {
-        if (!storageGallery) return;
-        storageGallery.innerHTML = '<p style="grid-column: 1/-1; color: #888;">Завантаження...</p>';
-        
-        try {
-            const { data, error } = await window.supabaseClient.storage.from('banner').list('', {
-                limit: 100,
-                offset: 0,
-                sortBy: { column: 'name', order: 'desc' }
-            });
+    let storageBuckets = [];
 
-            if (error) throw error;
-
-            if (!data || data.length === 0) {
-                storageGallery.innerHTML = '<p style="grid-column: 1/-1; color: #888;">У бакеті "banner" немає файлів.</p>';
-                return;
-            }
-
-            storageGallery.innerHTML = '';
-            data.forEach(file => {
-                // Skip placeholder files or folders if any
-                if (file.name === '.emptyFolderPlaceholder') return;
-
-                const { data: { publicUrl } } = window.supabaseClient.storage.from('banner').getPublicUrl(file.name);
-                
-                const item = document.createElement('div');
-                item.style.border = '1px solid #ddd';
-                item.style.cursor = 'pointer';
-                item.style.position = 'relative';
-                item.style.aspectRatio = '1/1';
-                item.style.overflow = 'hidden';
-                item.innerHTML = `<img src="${publicUrl}" style="width: 100%; height: 100%; object-fit: cover;" alt="${file.name}">`;
-                
-                item.onclick = () => {
-                    // Save PATH instead of URL
-                    const path = `banner/${file.name}`;
-                    const targetInput = activeSettingInput || document.getElementById('setting-main_banner');
-                    if (targetInput) {
-                        targetInput.value = path;
-                        if (targetInput.id.startsWith('setting-')) {
-                            updatePreview(targetInput.id.replace('setting-', ''), path);
-                        }
-                    }
-                    
-                    // Visual feedback
-                    document.querySelectorAll('#storage-gallery div').forEach(d => d.style.borderColor = '#ddd');
-                    item.style.borderColor = '#000';
-                    item.style.borderWidth = '3px';
-                };
-
-                storageGallery.appendChild(item);
-            });
-        } catch (err) {
-            console.error('Error fetching storage:', err);
-            storageGallery.innerHTML = `<p style="grid-column: 1/-1; color: red;">Помилка: ${err.message}</p>`;
-        }
-    };
 
     // Track last focused input in settings
-    const settingInputs = [document.getElementById('setting-main_banner'), document.getElementById('setting-hero_bg')];
+    const settingInputs = [
+        document.getElementById('setting-main_banner'), 
+        document.getElementById('setting-hero_bg'),
+        document.getElementById('setting-hero_title'),
+        document.getElementById('setting-hero_subtitle'),
+        document.getElementById('setting-cursor_img'),
+        document.getElementById('setting-marquee_logo'),
+        document.getElementById('setting-marquee_bat'),
+        document.getElementById('setting-cart_icon_white'),
+        document.getElementById('setting-cart_icon_black')
+    ];
     settingInputs.forEach(input => {
         if (input) input.addEventListener('focus', () => activeSettingInput = input);
     });
 
-    if (uploadBtn && uploadInput) {
-        uploadBtn.addEventListener('click', () => uploadInput.click());
+    // Helper for direct settings uploads
+    const handleSettingUpload = async (fileInputId, targetId) => {
+        const fileInput = document.getElementById(fileInputId);
+        const targetInput = document.getElementById(targetId);
+        const file = fileInput.files[0];
+        if (!file || !targetInput) return;
+
+        const originalBtn = document.querySelector(`button[data-input="${fileInputId}"]`);
+        const originalText = originalBtn.textContent;
+        originalBtn.textContent = '...';
+        originalBtn.disabled = true;
+
+        try {
+            const bucketName = storageBuckets.find(b => b.name === 'banner') ? 'banner' : (storageBuckets[0]?.name || 'products');
+            const fileName = `${bucketName}/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+            const { error } = await window.supabaseClient.storage
+                .from(bucketName)
+                .upload(fileName.replace(`${bucketName}/`, ''), file);
+
+            if (error) throw error;
+            
+            targetInput.value = fileName;
+            updatePreview(targetId.replace('setting-', ''), fileName);
+            alert('Зображение завантажено!');
+        } catch (err) {
+            console.error('Setting upload error:', err);
+            alert('Помилка: ' + err.message);
+        } finally {
+            originalBtn.textContent = originalText;
+            originalBtn.disabled = false;
+            fileInput.value = ''; // Reset
+        }
+    };
+
+    document.querySelectorAll('.upload-setting-btn').forEach(btn => {
+        const inputId = btn.getAttribute('data-input');
+        const targetId = btn.getAttribute('data-target');
+        const fileInput = document.getElementById(inputId);
         
-        uploadInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        btn.onclick = () => fileInput.click();
+        fileInput.onchange = () => handleSettingUpload(inputId, targetId);
+    });
 
-            const originalBtnText = uploadBtn.textContent;
-            uploadBtn.textContent = 'ЗАВАНТАЖЕННЯ...';
-            uploadBtn.disabled = true;
 
-            try {
-                const fileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
-                const { error } = await window.supabaseClient.storage
-                    .from('banner')
-                    .upload(fileName, file);
-
-                if (error) throw error;
-                
-                alert('Зображення успішно завантажено!');
-                fetchStorageImages(); // Refresh the gallery
-            } catch (err) {
-                console.error('Upload error:', err);
-                alert('Помилка завантаження: ' + err.message);
-            } finally {
-                uploadBtn.textContent = originalBtnText;
-                uploadBtn.disabled = false;
-                uploadInput.value = ''; // Reset input
-            }
-        });
-    }
-
-    if (refreshStorageBtn) {
-        refreshStorageBtn.addEventListener('click', fetchStorageImages);
-    }
 
     if (settingsForm) {
         settingsForm.addEventListener('submit', async (e) => {
@@ -555,8 +519,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 { key: 'marquee', value: document.getElementById('setting-marquee').value.trim() },
                 { key: 'main_banner', value: document.getElementById('setting-main_banner').value.trim() },
                 { key: 'hero_bg', value: document.getElementById('setting-hero_bg').value.trim() },
+                { key: 'hero_title', value: document.getElementById('setting-hero_title').value.trim() },
+                { key: 'hero_subtitle', value: document.getElementById('setting-hero_subtitle').value.trim() },
+                { key: 'cursor_img', value: document.getElementById('setting-cursor_img').value.trim() },
+                { key: 'marquee_logo', value: document.getElementById('setting-marquee_logo').value.trim() },
+                { key: 'marquee_bat', value: document.getElementById('setting-marquee_bat').value.trim() },
+                { key: 'cart_icon_white', value: document.getElementById('setting-cart_icon_white').value.trim() },
+                { key: 'cart_icon_black', value: document.getElementById('setting-cart_icon_black').value.trim() },
+                { key: 'cursor_negative', value: document.getElementById('setting-cursor_negative').checked ? 'true' : 'false' },
                 { key: 'instagram', value: document.getElementById('setting-instagram').value.trim() },
-                { key: 'tiktok', value: document.getElementById('setting-tiktok').value.trim() }
+                { key: 'tiktok', value: document.getElementById('setting-tiktok').value.trim() },
+                { key: 'info_faq', value: document.getElementById('setting-info_faq').value.trim() },
+                { key: 'info_shipping', value: document.getElementById('setting-info_shipping').value.trim() },
+                { key: 'info_returns', value: document.getElementById('setting-info_returns').value.trim() },
+                { key: 'info_terms', value: document.getElementById('setting-info_terms').value.trim() }
             ];
             
             try {
@@ -577,11 +553,479 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // 7. Media Manager Logic (The NEW Section)
+    let currentBucket = '';
+    let currentPrefix = ''; // Folder path
+    
+    const mediaExplorer = document.getElementById('media-explorer');
+    const mediaBucketSelect = document.getElementById('media-bucket-select');
+    const mediaBackBtn = document.getElementById('media-back-btn');
+    const mediaBreadcrumb = document.getElementById('media-breadcrumb');
+    const mediaUploadBtn = document.getElementById('media-upload-btn');
+    const mediaUploadInput = document.getElementById('media-upload-input');
+    const mediaNewFolderBtn = document.getElementById('media-new-folder-btn');
+
+    // 8. Folder Picker Loader
+    let pickerBucket = 'products';
+    let pickerPrefix = '';
+    let pickerTargetInput = null;
+
+    const pickerModal = document.getElementById('picker-modal');
+    const pickerList = document.getElementById('picker-list');
+    const pickerBreadcrumb = document.getElementById('picker-breadcrumb');
+    const pickerSelectBtn = document.getElementById('picker-select-btn');
+    const pickerBackBtn = document.getElementById('picker-back-btn');
+    const closePickerBtn = document.getElementById('close-picker-btn');
+
+    const openPicker = (targetId) => {
+        pickerTargetInput = document.getElementById(targetId);
+        const currentVal = pickerTargetInput.value.trim();
+        
+        // Try to auto-detect bucket and prefix from current value
+        if (currentVal && currentVal.includes('/')) {
+            const parts = currentVal.split('/');
+            pickerBucket = parts[0];
+            // Only set prefix if it's more than just bucket/filename
+            if (parts.length > 2) {
+                pickerPrefix = parts.slice(1, -1).join('/') + '/';
+            } else {
+                pickerPrefix = '';
+            }
+        } else {
+            // No valid path, start at bucket selection
+            pickerBucket = '';
+            pickerPrefix = '';
+        }
+
+        pickerModal.style.display = 'flex';
+        fetchPickerItems();
+    };
+
+    const fetchPickerItems = async () => {
+        if (!pickerList) return;
+        pickerList.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">Завантаження...</p>';
+        
+        // Update breadcrumb
+        if (!pickerBucket) {
+            pickerBreadcrumb.textContent = 'Оберіть бакет';
+        } else {
+            pickerBreadcrumb.textContent = pickerPrefix ? `${pickerBucket}/${pickerPrefix}` : `${pickerBucket}/`;
+        }
+
+        try {
+            if (!window.supabaseClient) throw new Error('Supabase client missing');
+
+            // 1. If no bucket selected, show buckets list
+            if (!pickerBucket) {
+                if (storageBuckets.length === 0) {
+                    try {
+                        const { data: buckets, error: bErr } = await window.supabaseClient.storage.listBuckets();
+                        if (bErr || !buckets || buckets.length === 0) {
+                            storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
+                        } else {
+                            storageBuckets = buckets;
+                        }
+                    } catch (e) {
+                        storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
+                    }
+                }
+
+                pickerList.innerHTML = '';
+                storageBuckets.forEach(b => {
+                    const div = document.createElement('div');
+                    div.className = 'picker-item';
+                    div.style.padding = '15px';
+                    div.style.borderBottom = '2px solid #000';
+                    div.style.cursor = 'pointer';
+                    div.style.fontWeight = 'bold';
+                    div.style.display = 'flex';
+                    div.style.alignItems = 'center';
+                    div.style.gap = '10px';
+                    
+                    div.innerHTML = `<span style="font-size: 20px;">📦</span> <span>${b.name.toUpperCase()}</span>`;
+                    
+                    div.onclick = () => {
+                        pickerBucket = b.name;
+                        pickerPrefix = '';
+                        fetchPickerItems();
+                    };
+                    pickerList.appendChild(div);
+                });
+                return; // Early return for bucket list
+            }
+
+            // 2. If bucket selected, list its items
+            const { data, error } = await window.supabaseClient.storage.from(pickerBucket).list(pickerPrefix, {
+                limit: 100,
+                sortBy: { column: 'name', order: 'asc' }
+            });
+
+            if (error) throw error;
+
+            pickerList.innerHTML = '';
+            
+            if (!data || data.length === 0) {
+                pickerList.innerHTML = '<p style="padding: 20px; color: #888; text-align: center;">Тут порожньо</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                if (item.name === '.emptyFolderPlaceholder') return;
+                const isFolder = !item.metadata;
+
+                const div = document.createElement('div');
+                div.className = 'picker-item';
+                div.style.padding = '8px';
+                div.style.borderBottom = '1px solid #eee';
+                div.style.cursor = 'pointer';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.gap = '10px';
+                
+                let icon = isFolder ? '📁' : '📄';
+                if (!isFolder && /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(item.name)) {
+                    const filePath = pickerPrefix + item.name;
+                    const { data: { publicUrl } } = window.supabaseClient.storage.from(pickerBucket).getPublicUrl(filePath);
+                    console.log(`[Picker] Thumbnail for ${item.name}:`, publicUrl);
+                    icon = `<img src="${publicUrl}" 
+                                 style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #000;" 
+                                 onerror="this.parentElement.innerHTML='⚠️'; console.error('Failed to load thumb:', this.src);">`;
+                }
+
+                div.innerHTML = `
+                    <div class="picker-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">${icon}</div>
+                    <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</span>
+                `;
+
+                div.onclick = () => {
+                    if (isFolder) {
+                        pickerPrefix += item.name + '/';
+                        fetchPickerItems();
+                    } else {
+                        // If it's a file, we might want to select it immediately or just highlight
+                        // For 'image' target, we select the file. For 'gallery', we probably want the folder.
+                        const fullPath = `${pickerBucket}/${pickerPrefix}${item.name}`;
+                        if (confirm(`Вибрати цей файл: ${fullPath}?`)) {
+                            pickerTargetInput.value = fullPath;
+                            pickerModal.style.display = 'none';
+                            
+                            // Trigger preview updates
+                            if (pickerTargetInput.id === 'image') {
+                                updateProductModalPreview(fullPath);
+                            } else if (pickerTargetInput.id.startsWith('setting-')) {
+                                const key = pickerTargetInput.id.replace('setting-', '');
+                                updatePreview(key, fullPath);
+                            }
+                        }
+                    }
+                };
+                pickerList.appendChild(div);
+            });
+        } catch (err) {
+            pickerList.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+        }
+    };
+
+    if (pickerSelectBtn) {
+        pickerSelectBtn.onclick = () => {
+            if (!pickerBucket) {
+                alert('Сначала выберите бакет');
+                return;
+            }
+            const currentPath = `${pickerBucket}/${pickerPrefix}`;
+            pickerTargetInput.value = currentPath;
+            pickerModal.style.display = 'none';
+            
+            // Trigger preview updates
+            if (pickerTargetInput.id === 'image') {
+                updateProductModalPreview(currentPath);
+            } else if (pickerTargetInput.id.startsWith('setting-')) {
+                const key = pickerTargetInput.id.replace('setting-', '');
+                updatePreview(key, currentPath);
+            }
+        };
+    }
+
+    if (pickerBackBtn) {
+        pickerBackBtn.addEventListener('click', () => {
+            if (pickerPrefix) {
+                const parts = pickerPrefix.split('/').filter(p => p !== '');
+                parts.pop();
+                pickerPrefix = parts.length > 0 ? parts.join('/') + '/' : '';
+                fetchPickerItems();
+            } else if (pickerBucket) {
+                // We are in the root of a bucket, go back to bucket selection
+                pickerBucket = '';
+                fetchPickerItems();
+            }
+        });
+    }
+
+    if (closePickerBtn) {
+        closePickerBtn.onclick = () => pickerModal.style.display = 'none';
+    }
+
+    // Attach to form buttons
+    document.querySelectorAll('.open-picker-btn').forEach(btn => {
+        btn.onclick = () => openPicker(btn.getAttribute('data-target'));
+    });
+
+    const fetchMedia = async (bucket, prefix = '') => {
+        if (!mediaExplorer) return;
+        mediaExplorer.innerHTML = '<p style="grid-column: 1/-1; color: #888;">Завантаження...</p>';
+        
+        try {
+            if (!window.supabaseClient) {
+                throw new Error('Supabase client not initialized. Check your credentials.');
+            }
+
+            // 1. If NO bucket selected, show buckets list (just like the picker)
+            if (!bucket) {
+                if (storageBuckets.length === 0) {
+                    try {
+                        const { data: buckets, error: bErr } = await window.supabaseClient.storage.listBuckets();
+                        if (bErr || !buckets || buckets.length === 0) {
+                            storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
+                        } else {
+                            storageBuckets = buckets;
+                        }
+                    } catch (e) {
+                        storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
+                    }
+                }
+                
+                // Populate select
+                if (mediaBucketSelect) {
+                    mediaBucketSelect.innerHTML = '<option value="">📦 Оберіть бакет...</option>' + 
+                        storageBuckets.map(b => `<option value="${b.name}">📦 Бакет: ${b.name}</option>`).join('');
+                }
+
+                mediaExplorer.innerHTML = '';
+                mediaBreadcrumb.textContent = 'Оберіть бакет';
+                mediaBackBtn.style.display = 'none';
+
+                storageBuckets.forEach(b => {
+                    const card = document.createElement('div');
+                    card.className = 'media-item-card';
+                    card.style.border = '2px solid #000';
+                    card.style.padding = '20px';
+                    card.style.cursor = 'pointer';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'column';
+                    card.style.alignItems = 'center';
+                    card.style.gap = '10px';
+                    
+                    card.innerHTML = `
+                        <div style="font-size: 50px;">📦</div>
+                        <div style="font-weight: 800; text-transform: uppercase;">${b.name}</div>
+                        <button class="btn-action" style="width: 100%;">ВІДКРИТИ</button>
+                    `;
+                    
+                    card.onclick = () => {
+                        currentBucket = b.name;
+                        currentPrefix = '';
+                        if (mediaBucketSelect) mediaBucketSelect.value = b.name;
+                        fetchMedia(currentBucket, currentPrefix);
+                    };
+                    mediaExplorer.appendChild(card);
+                });
+                return;
+            }
+
+            // 2. Fetch buckets if needed anyway (to keep select populated)
+
+            const { data, error } = await window.supabaseClient.storage.from(bucket).list(prefix, {
+                limit: 100,
+                offset: 0,
+                sortBy: { column: 'name', order: 'asc' }
+            });
+
+            if (error) throw error;
+
+            mediaExplorer.innerHTML = '';
+            
+            // Update UI components
+            mediaBackBtn.style.display = prefix ? 'block' : 'none';
+            mediaBreadcrumb.textContent = prefix ? `Папка: ${prefix}` : 'Коренева папка';
+
+            if (!data || data.length === 0) {
+                mediaExplorer.innerHTML = '<p style="grid-column: 1/-1; color: #888; text-align: center; padding: 40px;">Тут порожньо</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                if (item.name === '.emptyFolderPlaceholder') return;
+
+                const isFolder = !item.metadata; // In Supabase, folders don't have metadata in list()
+                const card = document.createElement('div');
+                card.className = 'media-item-card'; // We should add some basic styles to admin.css or inline
+                card.style.border = '2px solid #000';
+                card.style.padding = '10px';
+                card.style.display = 'flex';
+                card.style.flexDirection = 'column';
+                card.style.gap = '10px';
+                card.style.position = 'relative';
+
+                if (isFolder) {
+                    card.innerHTML = `
+                        <div style="font-size: 40px; text-align: center;">📁</div>
+                        <div style="font-size: 11px; font-weight: 800; text-align: center; word-break: break-all;">${item.name}</div>
+                        <button class="btn-action" style="width: 100%; margin-top: auto;">ВІДКРИТИ</button>
+                    `;
+                    card.onclick = () => {
+                        currentPrefix = prefix ? `${prefix}${item.name}/` : `${item.name}/`;
+                        fetchMedia(currentBucket, currentPrefix);
+                    };
+                } else {
+                    const { data: { publicUrl } } = window.supabaseClient.storage.from(bucket).getPublicUrl(prefix + item.name);
+                    const isImage = /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(item.name);
+                    
+                    card.innerHTML = `
+                        <div style="height: 100px; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fdfdfd;">
+                            ${isImage ? `<img src="${publicUrl}" style="width: 100%; height: 100%; object-fit: contain;">` : `<span style="font-size: 30px;">📄</span>`}
+                        </div>
+                        <div style="font-size: 10px; font-weight: 600; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
+                        <div style="display: flex; gap: 5px; margin-top: auto;">
+                            <button class="btn-action btn-copy" style="flex: 1; font-size: 9px; padding: 4px;">URL</button>
+                            <button class="btn-action btn-delete-file" style="background: #000; color: #fff; flex: 1; font-size: 9px; padding: 4px;">ВИД.</button>
+                        </div>
+                    `;
+
+                    // Copy URL logic
+                    card.querySelector('.btn-copy').onclick = (e) => {
+                        e.stopPropagation();
+                        // Copy path relative to bucket or absolute URL? Let's do absolute but maybe short path is better for DB
+                        const path = `${bucket}/${prefix}${item.name}`;
+                        navigator.clipboard.writeText(path);
+                        alert('Шлях скопійовано: ' + path);
+                    };
+
+                    // Delete file logic
+                    card.querySelector('.btn-delete-file').onclick = async (e) => {
+                        e.stopPropagation();
+                        if (confirm(`Видалити файл "${item.name}"?`)) {
+                            const { error } = await window.supabaseClient.storage.from(bucket).remove([prefix + item.name]);
+                            if (error) alert('Помилка: ' + error.message);
+                            else fetchMedia(currentBucket, currentPrefix);
+                        }
+                    };
+                }
+                
+                mediaExplorer.appendChild(card);
+            });
+
+        } catch (err) {
+            console.error('Media fetch error:', err);
+            mediaExplorer.innerHTML = `<p style="grid-column: 1/-1; color: red;">Помилка: ${err.message}</p>`;
+        }
+    };
+
+    if (mediaBucketSelect) {
+        mediaBucketSelect.addEventListener('change', (e) => {
+            currentBucket = e.target.value;
+            currentPrefix = '';
+            fetchMedia(currentBucket, currentPrefix);
+        });
+    }
+
+    if (mediaBackBtn) {
+        mediaBackBtn.addEventListener('click', () => {
+            const parts = currentPrefix.split('/').filter(p => p !== '');
+            parts.pop();
+            currentPrefix = parts.length > 0 ? parts.join('/') + '/' : '';
+            fetchMedia(currentBucket, currentPrefix);
+        });
+    }
+
+    if (mediaUploadBtn && mediaUploadInput) {
+        mediaUploadBtn.addEventListener('click', () => mediaUploadInput.click());
+        mediaUploadInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            mediaUploadBtn.disabled = true;
+            mediaUploadBtn.textContent = 'ЗАВАНТАЖЕННЯ...';
+
+            try {
+                for (const file of files) {
+                    const path = currentPrefix + file.name.replace(/\s+/g, '_');
+                    const { error } = await window.supabaseClient.storage.from(currentBucket).upload(path, file);
+                    if (error) throw error;
+                }
+                alert(`Успішно завантажено ${files.length} файлів.`);
+                fetchMedia(currentBucket, currentPrefix);
+            } catch (err) {
+                alert('Помилка: ' + err.message);
+            } finally {
+                mediaUploadBtn.disabled = false;
+                mediaUploadBtn.textContent = '+ ЗАВАНТАЖИТИ СЮДИ';
+                mediaUploadInput.value = '';
+            }
+        });
+    }
+
+    if (mediaNewFolderBtn) {
+        const folderModal = document.getElementById('folder-modal');
+        const folderInput = document.getElementById('new-folder-name');
+        const folderConfirmBtn = document.getElementById('folder-create-confirm');
+        const folderCancelBtn = document.getElementById('folder-create-cancel');
+
+        mediaNewFolderBtn.addEventListener('click', () => {
+            if (!currentBucket) {
+                alert('Спочатку оберіть бакет');
+                return;
+            }
+            folderInput.value = '';
+            folderModal.style.display = 'flex';
+            folderInput.focus();
+        });
+
+        folderCancelBtn.onclick = () => folderModal.style.display = 'none';
+
+        folderConfirmBtn.onclick = async () => {
+            const folderName = folderInput.value.trim();
+            if (!folderName) return;
+
+            const cleanFolderName = folderName.replace(/\s+/g, '_').replace(/\/+$/, '');
+            if (!cleanFolderName) return;
+
+            const path = `${currentPrefix}${cleanFolderName}/.emptyFolderPlaceholder`;
+            
+            try {
+                folderConfirmBtn.disabled = true;
+                folderConfirmBtn.textContent = 'СТВОРЕННЯ...';
+                const { error } = await window.supabaseClient.storage.from(currentBucket).upload(path, new Blob([''], { type: 'text/plain' }));
+                if (error) throw error;
+                
+                folderModal.style.display = 'none';
+                fetchMedia(currentBucket, currentPrefix);
+            } catch (err) {
+                alert('Помилка створення папки: ' + err.message);
+            } finally {
+                folderConfirmBtn.disabled = false;
+                folderConfirmBtn.textContent = 'СТВОРИТИ';
+            }
+        };
+
+        // Support Enter key
+        folderInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') folderConfirmBtn.click();
+        });
+    }
+
+    // Initialize Media when tab is clicked
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (item.getAttribute('data-tab') === 'media') {
+                fetchMedia(currentBucket, currentPrefix);
+            }
+        });
+    });
+
     // Initialize
     setupSettingsPreviews();
     fetchSettings();
     updateDashboard();
-    fetchStorageImages();
 
     // Initial load
     fetchProducts();
