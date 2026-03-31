@@ -92,7 +92,7 @@
 
                 <div class="price-block">
                     <p class="detail-price" id="detail-price">₴0</p>
-                    <p class="detail-price-note">Включаючи ПДВ · Безкоштовна доставка</p>
+                    <p class="detail-price-note" data-i18n="price_note">З податком. Вартість доставки розраховується при оформленні замовлення.</p>
                 </div>
 
                 <div class="detail-divider"></div>
@@ -263,8 +263,10 @@
                 tag.textContent = `● ${_t('status_preorder')}`;
             } else if (status === 'soldout') {
                 tag.textContent = `● ${_t('status_soldout')}`;
+                tag.style.color = '#dc2626'; // Red for sold out
             } else {
                 tag.textContent = `● ${_t('status_instock')}`;
+                tag.style.color = '#4ade80'; // Green for in stock
             }
 
             if (categoryObj) {
