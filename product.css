@@ -478,3 +478,47 @@
         font-size: 2.5rem;
     }
 }
+
+/* ================================================
+   ADAPTIVE 2K & 4K SCREENS
+   ================================================ */
+
+@media (min-width: 1600px) {
+    .breadcrumb,
+    .product-detail-container {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .breadcrumb,
+    .product-detail-container {
+        max-width: 1800px;
+    }
+    .product-detail-container {
+        gap: 80px;
+    }
+    .product-gallery-col {
+        grid-template-columns: 120px 1fr;
+    }
+}
+
+@media (min-width: 2560px) {
+    .breadcrumb,
+    .product-detail-container {
+        max-width: 2400px;
+    }
+    .product-detail-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 120px;
+    }
+    .product-gallery-col {
+        grid-template-columns: 150px 1fr;
+    }
+    .detail-title {
+        font-size: 4rem;
+    }
+    .detail-price {
+        font-size: 3rem;
+    }
+}

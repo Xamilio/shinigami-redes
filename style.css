@@ -1208,3 +1208,55 @@ footer {
 .social-link.insta::before,
 .social-link.tiktok::before,
 .social-link.whatsapp::before { display: none; }
+
+/* ================================================
+   ADAPTIVE 2K & 4K SCREENS
+   ================================================ */
+
+@media (min-width: 1600px) {
+    .nav-container,
+    .shop-section,
+    .footer-container {
+        max-width: 1600px;
+    }
+    .product-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (min-width: 1920px) {
+    .nav-container,
+    .shop-section,
+    .footer-container {
+        max-width: 1800px;
+    }
+    .product-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 40px;
+    }
+    .section-title {
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 2560px) {
+    .nav-container,
+    .shop-section,
+    .footer-container {
+        max-width: 2400px;
+    }
+    .product-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 50px;
+    }
+    .section-title {
+        font-size: 4rem;
+        margin-bottom: 100px;
+    }
+    .hero-card {
+        height: 700px;
+    }
+    .hero-card-image {
+        font-size: 15rem;
+    }
+}
