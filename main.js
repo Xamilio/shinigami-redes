@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Preloader Hide Logic
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+            }, 1000); // 1s delay for better UX and animation visibility
+        });
+    }
+
     // Custom Cursor Logic
     const cursor = document.getElementById('custom-cursor');
     if (cursor) {
@@ -66,10 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const subtitle = document.querySelector('.hero-card-subtitle');
                     if (subtitle) subtitle.textContent = s.value;
                 }
-                if (s.key === 'logo') {
+                if (s.key === 'logo' && s.value) {
                     const logos = document.querySelectorAll('.logo img');
                     logos.forEach(img => img.src = window.resolveImage(s.value));
                 }
+
                 if (s.key === 'cursor_img') {
                     const cursor = document.getElementById('custom-cursor');
                     if (cursor) cursor.style.backgroundImage = `url('${window.resolveImage(s.value)}')`;
@@ -78,14 +89,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cursor = document.getElementById('custom-cursor');
                     if (cursor) cursor.style.mixBlendMode = s.value === 'true' ? 'difference' : 'normal';
                 }
-                if (s.key === 'cart_icon_white') {
+                if (s.key === 'hero_negative') {
+                    const heroCard = document.querySelector('.hero-card');
+                    if (heroCard) {
+                        // FORCE REMOVE negative on init if that's what user considers broken.
+                        heroCard.classList.remove('is-negative');
+                    }
+                }
+
+
+                if (s.key === 'cart_icon_white' && s.value) {
                     const icons = document.querySelectorAll('img[src*="basket-white"]');
                     icons.forEach(img => img.src = window.resolveImage(s.value));
                 }
-                if (s.key === 'cart_icon_black') {
+
+                if (s.key === 'cart_icon_black' && s.value) {
                     const icons = document.querySelectorAll('img[src*="basket-black"]');
                     icons.forEach(img => img.src = window.resolveImage(s.value));
                 }
+
+
                 if (s.key === 'marquee') {
                     applyMarquee();
                 }
@@ -144,6 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchProducts().then(products => {
             renderProducts(products);
         });
+
+        // Listen for language changes to re-render dynamic content
+        window.addEventListener('languageChanged', () => {
+            fetchProducts().then(products => renderProducts(products));
+            updateCartUI();
+        });
     }
 
     function renderProducts(products) {
@@ -158,10 +187,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = product.status || 'none';
             
             if (status !== 'none') {
-                let badgeText = '';
-                if (status === 'new') badgeText = 'NEW';
-                if (status === 'preorder') badgeText = 'PRE-ORDER';
-                if (status === 'soldout') badgeText = 'SOLD OUT';
+                let badgeKey = '';
+                if (status === 'new') badgeKey = 'status_new';
+                if (status === 'preorder') badgeKey = 'status_preorder';
+                if (status === 'soldout') badgeKey = 'status_soldout';
+                
+                const badgeText = typeof t === 'function' ? t(badgeKey) : badgeKey;
                 badgeHTML = `<div class="badge">${badgeText}</div>`;
             }
             
@@ -174,11 +205,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageSource = `${imageSource}/1.jpg`.replace(/\/+/g, '/'); // Dynamic preview for folders
             }
             const image = window.resolveImage(imageSource);
-            const title = product.name || product.title;
+            
+            const currentLang = localStorage.getItem('shinigami_lang') || 'uk';
+            const title = (currentLang === 'en' && product.name_en) ? product.name_en : (product.name || product.title);
             const price = typeof product.price === 'number' ? `₴${product.price}` : product.price;
 
             // Use name as ID for the detail page
             const productId = product.name || product.title || product.id;
+
+            const basePrefix = (window.location.pathname.includes('/product/') || window.location.pathname.includes('/admin/')) ? '../' : '';
 
             const imageHTML = image 
                 ? `<img src="${image}" class="product-img main-img" alt="${title}">`
@@ -196,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-bottom">
                         <p class="product-price">${price}</p>
                         <button class="add-to-cart-btn" aria-label="Add to cart" data-product-id="${productId}">
-                            <img src="img/icons/basket-black.svg" alt="cart">
+                            <img src="${basePrefix}img/icons/basket-white.svg" alt="cart">
                         </button>
                     </div>
                 </div>
@@ -211,7 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
             [imageWrap, infoTitle].forEach(el => {
                 el.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    window.location.href = `product.html?id=${encodeURIComponent(productId)}`; 
+                    const isProductPath = window.location.pathname.includes('/product/');
+                    window.location.href = isProductPath ? `?id=${encodeURIComponent(productId)}` : `product/?id=${encodeURIComponent(productId)}`; 
                 });
             });
 

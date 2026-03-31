@@ -8,10 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../product.css">
+    <link rel="stylesheet" href="../preloader.css">
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="../img/running-strip/black-bat.png" alt="Logo" class="preloader-logo">
+            <div class="preloader-text">SHINIGAMI</div>
+        </div>
+    </div>
+
     <div class="custom-cursor" id="custom-cursor"></div>
 
     <!-- Navbar -->
@@ -21,17 +30,17 @@
                 <div class="burger-menu" id="burger-menu">
                     <span></span><span></span><span></span>
                 </div>
-                <a href="index.html" class="logo"><img src="img/logo/shinigami.webp" alt="logo"></a>
+                <a href="../" class="logo"><img src="../img/logo/shinigami.webp" alt="logo"></a>
             </div>
             <nav class="nav-links" id="nav-links">
-                <a href="index.html#shop" class="nav-link">Магазин</a>
-                <a href="#" class="nav-link" data-info="shipping">Доставка</a>
-                <a href="#" class="nav-link" data-info="faq">FAQ</a>
+                <a href="../#shop" class="nav-link" data-i18n="nav_shop">Магазин</a>
+                <a href="#" class="nav-link" data-info="shipping" data-i18n="nav_shipping">Доставка</a>
+                <a href="#" class="nav-link" data-info="faq" data-i18n="nav_faq">FAQ</a>
             </nav>
             <div class="nav-actions">
                 <span class="lang-selector">UK</span>
                 <button class="cart-btn" id="cart-btn">
-                    <img src="img/icons/basket-black.svg" alt="cart" style="height: 24px;">
+                    <img src="../img/icons/basket-white.svg" alt="cart" style="height: 24px;">
                 </button>
             </div>
         </div>
@@ -42,11 +51,11 @@
     <!-- Product Detail -->
     <main class="product-page">
         <div class="breadcrumb">
-            <a href="index.html">Головна</a>
+            <a href="../" data-i18n="home">Головна</a>
             <span>/</span>
-            <a href="index.html#shop">Магазин</a>
+            <a href="../#shop" data-i18n="nav_shop">Магазин</a>
             <span>/</span>
-            <span id="breadcrumb-title">Товар</span>
+            <span id="breadcrumb-title" data-i18n="breadcrumb_product">Товар</span>
         </div>
         <div class="product-detail-container" id="product-detail-view" style="display: none;">
 
@@ -62,7 +71,7 @@
                         <div class="product-slides" id="slider-track">
                             <!-- Slides will be injected by JavaScript -->
                             <div class="product-slide">
-                                <img src="img/placeholder.png" alt="Loading...">
+                                <img src="../img/placeholder.png" alt="Loading...">
                             </div>
                         </div>
                         <button class="slider-btn slider-prev" id="prev-btn" style="display: none;">&#10094;</button>
@@ -95,8 +104,8 @@
                 <div class="detail-divider"></div>
 
                 <button class="detail-add-cart" id="add-to-cart-detail">
-                    <img src="img/icons/basket-white.svg" alt="cart" style="height:22px;">
-                    ДОДАТИ В КОШИК
+                    <img src="../img/icons/basket-white.svg" alt="cart" style="height:22px;">
+                    <span id="add-to-cart-text">ДОДАТИ В КОШИК</span>
                 </button>
 
                 <div class="detail-meta"></div>
@@ -106,8 +115,8 @@
         </div>
         
         <div id="product-error" style="display: none; text-align: center; padding: 100px 20px;">
-            <h2>Товар не знайдено</h2>
-            <a href="index.html#shop" class="btn-primary" style="margin-top: 20px;">Повернутись до магазину</a>
+            <h2 data-i18n="not_found">Товар не знайдено</h2>
+            <a href="../#shop" class="btn-primary" style="margin-top: 20px;" data-i18n="back_to_shop">Повернутись до магазину</a>
         </div>
     </main>
 
@@ -137,17 +146,17 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <h2>SHINIGAMI</h2>
-                <p>Преміальний вуличний одяг з темною естетикою.</p>
+                <p data-i18n="footer_desc">Преміальний вуличний одяг з темною естетикою.</p>
             </div>
             <div class="footer-links">
-                <h3>Інформація</h3>
-                <a href="#" data-info="faq">FAQ</a>
-                <a href="#" data-info="shipping">Доставка</a>
-                <a href="#" data-info="returns">Повернення</a>
-                <a href="#" data-info="terms">Умови використання</a>
+                <h3 data-i18n="footer_info">Інформація</h3>
+                <a href="#" data-info="faq" data-i18n="nav_faq">FAQ</a>
+                <a href="#" data-info="shipping" data-i18n="nav_shipping">Доставка</a>
+                <a href="#" data-info="returns" data-i18n="footer_returns">Повернення</a>
+                <a href="#" data-info="terms" data-i18n="footer_terms">Умови використання</a>
             </div>
             <div class="footer-social">
-                <h3>Соціальні мережі</h3>
+                <h3 data-i18n="footer_social">Соціальні мережі</h3>
                 <div class="social-links-grid">
                     <a href="#" target="_blank" class="social-link insta">Instagram</a>
                     <a href="#" target="_blank" class="social-link tiktok">TikTok</a>
@@ -163,17 +172,18 @@
     <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
     <div class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
-            <h3>Кошик</h3>
+            <h3 data-i18n="cart_title">Кошик</h3>
             <button class="close-cart" id="close-cart">&times;</button>
         </div>
         <div class="cart-body">
-            <p>Ваш кошик порожній</p>
+            <p class="empty-cart-msg" data-i18n="cart_empty">Ваш кошик порожній</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="main.js"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../i18n.js"></script>
+    <script src="../main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -211,8 +221,11 @@
                 return;
             }
 
+            const currentLang = localStorage.getItem('shinigami_lang') || 'uk';
+            const _t = (key) => typeof t === 'function' ? t(key) : key;
+
             // Map user specific database fields to JS property names for the UI logic
-            const title = product.name || product.title;
+            const title = (currentLang === 'en' && product.name_en) ? product.name_en : (product.name || product.title);
             let price = product.price;
             if (typeof price === 'number') {
                 price = `₴${price.toLocaleString('uk-UA')}`;
@@ -220,9 +233,13 @@
                 // If it's a string but contains a number, try to add currency if missing
                 if (!price.includes('₴')) price = `₴${price}`;
             }
-            const specifications = product.specifications || '';
-            const recommendations = product.recommendations || '';
-            const configuration = product.configuration || '';
+            const specifications = (currentLang === 'en' && product.specifications_en) ? product.specifications_en : (product.specifications || '');
+            const recommendations = (currentLang === 'en' && product.recommendations_en) ? product.recommendations_en : (product.recommendations || '');
+            const configuration = (currentLang === 'en' && product.configuration_en) ? product.configuration_en : (product.configuration || '');
+            const descriptionObj = (currentLang === 'en' && product.description_en) ? product.description_en : product.description;
+            const categoryObj = (currentLang === 'en' && product.category_en) ? product.category_en : product.category;
+            const materialObj = (currentLang === 'en' && product.material_en) ? product.material_en : product.material;
+            const deliveryObj = (currentLang === 'en' && product.delivery_en) ? product.delivery_en : product.delivery;
 
             document.getElementById('product-detail-view').style.display = 'grid';
             
@@ -238,28 +255,28 @@
             const status = product.status || 'none';
             
             if (status === 'new') {
-                tag.textContent = '● НОВИНКА';
+                tag.textContent = `● ${_t('status_new')}`;
                 tag.style.color = '#fff';
                 tag.style.background = '#000';
                 tag.style.padding = '5px 10px';
             } else if (status === 'preorder') {
-                tag.textContent = '● ПЕРЕДЗАМОВЛЕННЯ';
+                tag.textContent = `● ${_t('status_preorder')}`;
             } else if (status === 'soldout') {
-                tag.textContent = '● РОЗПРОДАНО';
+                tag.textContent = `● ${_t('status_soldout')}`;
             } else {
-                tag.textContent = '● В НАЯВНОСТІ';
+                tag.textContent = `● ${_t('status_instock')}`;
             }
 
-            if (product.category) {
-                document.querySelector('.tag-category').textContent = product.category;
+            if (categoryObj) {
+                document.querySelector('.tag-category').textContent = categoryObj;
             }
 
             // Description
-            if (product.description) {
+            if (descriptionObj) {
                 const descContainer = document.querySelector('.detail-description');
                 descContainer.querySelectorAll('p.dynamic-desc').forEach(p => p.remove());
 
-                const lines = product.description.split(';').map(l => l.trim()).filter(l => l !== '');
+                const lines = descriptionObj.split(';').map(l => l.trim()).filter(l => l !== '');
                 lines.forEach(line => {
                     const p = document.createElement('p');
                     p.className = 'dynamic-desc';
@@ -270,7 +287,7 @@
                     p.style.fontWeight = '600';
                     
                     p.innerHTML = `
-                        <img src="img/running-strip/black-bat.png" style="width: 20px; height: auto; margin-top: 4px;" alt="icon">
+                        <img src="../img/running-strip/black-bat.png" style="width: 20px; height: auto; margin-top: 4px;" alt="icon">
                         <span>${line}</span>
                     `;
                     descContainer.appendChild(p);
@@ -294,7 +311,7 @@
                     li.style.fontWeight = '500';
 
                     li.innerHTML = `
-                        <img src="img/running-strip/black-bat.png" style="width: 16px; height: auto; margin-top: 3px;" alt="icon">
+                        <img src="../img/running-strip/black-bat.png" style="width: 16px; height: auto; margin-top: 3px;" alt="icon">
                         <span>${f}</span>
                     `;
                     featuresList.appendChild(li);
@@ -315,10 +332,10 @@
                 metaContainer.appendChild(row);
             };
 
-            addMetaRow('Матеріал', product.material);
-            addMetaRow('Доставка', product.delivery);
-            addMetaRow('Рекомендації', recommendations);
-            addMetaRow('Комплектація', configuration);
+            addMetaRow(_t('label_material'), materialObj);
+            addMetaRow(_t('label_delivery'), deliveryObj);
+            addMetaRow(_t('label_recommendations'), recommendations);
+            addMetaRow(_t('label_configuration'), configuration);
 
             // Add to Cart Logic
             const detailAddToCartBtn = document.getElementById('add-to-cart-detail');
@@ -384,7 +401,7 @@
             
             // If no folder images found or it was a single file path
             if (images.length === 0) {
-                images = [imagePath || 'img/placeholder.png'];
+                images = [imagePath || '../img/placeholder.png'];
             }
             
             // Render slides & thumbnails
@@ -501,6 +518,11 @@
                     document.querySelector('.product-page').classList.add('loaded');
                 }, 100); // Tiny delay for smoother feel
             }
+
+            // Reload page on language switch
+            window.addEventListener('languageChanged', () => {
+                window.location.reload();
+            });
         });
     </script>
 </body>

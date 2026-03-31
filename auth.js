@@ -9,8 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
 
-            loading.style.display = 'flex';
+            if (loading) loading.style.display = 'flex';
+            if (submitBtn) submitBtn.textContent = 'ЗАВАНТАЖЕННЯ...';
             errorMsg.style.display = 'none';
 
             try {
@@ -23,15 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Success
                 if (window.location.pathname.includes('/admin/')) {
-                    window.location.href = './index.html';
+                    window.location.href = './';
+                } else if (window.location.pathname.includes('/login/')) {
+                    window.location.href = '../admin/';
                 } else {
                     window.location.href = 'admin/';
                 }
             } catch (err) {
                 errorMsg.textContent = 'ПОМИЛКА: ' + (err.message || 'Невірний логін або пароль');
                 errorMsg.style.display = 'block';
+                if (submitBtn) submitBtn.textContent = 'УВІЙТИ';
             } finally {
-                loading.style.display = 'none';
+                if (loading) loading.style.display = 'none';
             }
         });
     }
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Helper for relative redirects
 function safeRedirect(target) {
-    const isSubdir = window.location.pathname.includes('/admin/');
+    const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/login/');
     if (isSubdir && !target.startsWith('http')) {
         window.location.href = '../' + target;
     } else {
@@ -52,11 +57,11 @@ async function checkAuth() {
     try {
         const { data: { session } } = await window.supabaseClient.auth.getSession();
         if (!session) {
-            safeRedirect('login.html');
+            safeRedirect('login/');
         }
         return session;
     } catch (err) {
-        safeRedirect('login.html');
+        safeRedirect('login/');
         return null;
     }
 }
@@ -64,5 +69,5 @@ async function checkAuth() {
 // Logout function
 async function handleLogout() {
     await window.supabaseClient.auth.signOut();
-    safeRedirect('login.html');
+    safeRedirect('login/');
 }

@@ -112,16 +112,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const dbData = {
                 name: productData.title, // Map UI title to DB name
+                name_en: productData.title_en,
                 price: cleanPrice(productData.price),
                 category: productData.category,
+                category_en: productData.category_en,
                 image: productData.image,
                 gallery: productData.gallery,
                 description: productData.description,
+                description_en: productData.description_en,
                 specifications: productData.features.join('; '), // Map features to specifications (text)
+                specifications_en: productData.features_en.join('; '),
                 material: productData.material,
+                material_en: productData.material_en,
                 delivery: productData.delivery,
+                delivery_en: productData.delivery_en,
                 recommendations: productData.care, // Map care to recommendations
+                recommendations_en: productData.care_en,
                 configuration: productData.packageContents, // Map packageContents to configuration
+                configuration_en: productData.packageContents_en,
                 status: productData.status
             };
 
@@ -221,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${displayPrice}</td>
                 <td>${statusText}</td>
                 <td>
-                    <a href="../product.html?id=${p.name}" target="_blank" class="btn-action btn-view">Перегляд</a>
+                    <a href="../product/?id=${p.name}" target="_blank" class="btn-action btn-view">Перегляд</a>
                     <button class="btn-action btn-edit" onclick="editProductByName('${p.name.replace(/'/g, "\\'")}')">Ред.</button>
                     <button class="btn-action btn-delete" onclick="deleteProductByName('${p.name.replace(/'/g, "\\'")}')">Вид.</button>
                 </td>
@@ -262,16 +270,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         document.getElementById('product-index').value = p.name;
         document.getElementById('title').value = p.name;
+        document.getElementById('title_en').value = p.name_en || '';
         document.getElementById('price').value = p.price;
         document.getElementById('category').value = p.category || '';
+        document.getElementById('category_en').value = p.category_en || '';
         document.getElementById('image').value = p.image || '';
         document.getElementById('gallery').value = p.gallery || '';
         document.getElementById('description').value = p.description || '';
+        document.getElementById('description_en').value = p.description_en || '';
         document.getElementById('features').value = p.specifications || '';
+        document.getElementById('features_en').value = p.specifications_en || '';
         document.getElementById('material').value = p.material || '';
+        document.getElementById('material_en').value = p.material_en || '';
         document.getElementById('delivery').value = p.delivery || '';
+        document.getElementById('delivery_en').value = p.delivery_en || '';
         document.getElementById('care').value = p.recommendations || '';
+        document.getElementById('care_en').value = p.recommendations_en || '';
         document.getElementById('packageContents').value = p.configuration || '';
+        document.getElementById('packageContents_en').value = p.configuration_en || '';
         
         const radio = document.querySelector(`input[name="product-status"][value="${p.status || 'none'}"]`);
         if (radio) radio.checked = true;
@@ -374,12 +390,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 
                 uploadStatus.textContent = '✅ Готово!';
-                uploadStatus.style.color = 'green';
+                uploadStatus.style.color = '#000';
+
             } catch (err) {
                 console.error('Gallery upload error:', err);
                 alert('Помилка завантаження: ' + err.message);
                 uploadStatus.textContent = '❌ Помилка';
-                uploadStatus.style.color = 'red';
+                uploadStatus.style.color = '#000';
+
             } finally {
                 galleryUploadBtn.disabled = false;
                 galleryUploadBtn.textContent = '+ ЗАВАНТАЖИТИ ГАЛЕРЕЮ';
@@ -393,16 +411,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const originalName = document.getElementById('product-index').value;
         const productData = {
             title: document.getElementById('title').value,
+            title_en: document.getElementById('title_en').value,
             price: document.getElementById('price').value,
             category: document.getElementById('category').value,
+            category_en: document.getElementById('category_en').value,
             image: document.getElementById('image').value,
             gallery: document.getElementById('gallery').value,
             description: document.getElementById('description').value,
+            description_en: document.getElementById('description_en').value,
             features: document.getElementById('features').value.split(';').map(f => f.trim()).filter(f => f !== ''),
+            features_en: document.getElementById('features_en').value.split(';').map(f => f.trim()).filter(f => f !== ''),
             material: document.getElementById('material').value,
+            material_en: document.getElementById('material_en').value,
             delivery: document.getElementById('delivery').value,
+            delivery_en: document.getElementById('delivery_en').value,
             care: document.getElementById('care').value,
+            care_en: document.getElementById('care_en').value,
             packageContents: document.getElementById('packageContents').value,
+            packageContents_en: document.getElementById('packageContents_en').value,
             status: document.querySelector('input[name="product-status"]:checked').value
         };
         
@@ -527,7 +553,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 { key: 'cart_icon_white', value: document.getElementById('setting-cart_icon_white').value.trim() },
                 { key: 'cart_icon_black', value: document.getElementById('setting-cart_icon_black').value.trim() },
                 { key: 'cursor_negative', value: document.getElementById('setting-cursor_negative').checked ? 'true' : 'false' },
+                { key: 'hero_negative', value: document.getElementById('setting-hero_negative').checked ? 'true' : 'false' },
+                { key: 'hero_hover_negative', value: document.getElementById('setting-hero_hover_negative').checked ? 'true' : 'false' },
                 { key: 'instagram', value: document.getElementById('setting-instagram').value.trim() },
+
+
                 { key: 'tiktok', value: document.getElementById('setting-tiktok').value.trim() },
                 { key: 'info_faq', value: document.getElementById('setting-info_faq').value.trim() },
                 { key: 'info_shipping', value: document.getElementById('setting-info_shipping').value.trim() },
