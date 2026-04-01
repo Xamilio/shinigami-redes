@@ -1,23 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Preloader Hide Logic
     const preloader = document.getElementById('preloader');
     if (preloader) {
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('fade-out');
-            }, 1000); // 1s delay for better UX and animation visibility
+            }, 1000);
         });
     }
 
-    // Custom Cursor Logic
     const cursor = document.getElementById('custom-cursor');
     if (cursor) {
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-        
-        // Use event delegation for hover effects to handle dynamic content
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('button, a, .product-card, .gallery-thumbnails img, .nav-link, .cart-btn, .close-cart, .social-link')) {
                 cursor.classList.add('hover');
@@ -27,19 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Helper for Dynamic Images (Now global in supabase-config.js) ---
-    // window.resolveImage is used instead
 
-    // 1. Products Data Management - Removed hardcoded array, now using Supabase exclusively.
-    
-    // Initialize products from Supabase
     async function fetchProducts() {
         try {
             console.log('Fetching products from Supabase...');
             const { data, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
-                .order('name', { ascending: true }); // Changed from created_at (not in schema) to name
+                .order('name', { ascending: true }); 
 
             if (error) throw error;
             console.log('Fetched products from Supabase:', data);
@@ -50,14 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 1.5 Dynamic Site Settings
+
     async function applySiteSettings() {
         try {
             const { data, error } = await window.supabaseClient.from('site_settings').select('*');
             if (error || !data) return;
 
             data.forEach(s => {
-                // Apply setting even if value is empty string, but skip if missing/null
                 if (s.value === null || s.value === undefined) return;
                 
                 if (s.key === 'main_banner') {
@@ -92,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (s.key === 'hero_negative') {
                     const heroCard = document.querySelector('.hero-card');
                     if (heroCard) {
-                        // FORCE REMOVE negative on init if that's what user considers broken.
                         heroCard.classList.remove('is-negative');
                     }
                 }
@@ -113,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyMarquee();
                 }
                 
-                // Helper to re-apply marquee with dynamic icons
+
                 function applyMarquee() {
                     const marqueeContents = document.querySelectorAll('.marquee-content');
                     if (marqueeContents.length === 0) return;
@@ -139,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     links.forEach(l => l.href = s.value);
                 }
                 
-                // Info Modal Content
+ 
                 if (s.key.startsWith('info_')) {
                     const type = s.key.replace('info_', '');
                     if (infoContent[type]) {
@@ -157,10 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Call it
+
     applySiteSettings();
 
-    // 2. Render Products
+
     const productGrid = document.getElementById('product-grid');
     
     if (productGrid) {
@@ -168,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderProducts(products);
         });
 
-        // Listen for language changes to re-render dynamic content
+
         window.addEventListener('languageChanged', () => {
             fetchProducts().then(products => renderProducts(products));
             updateCartUI();
@@ -182,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'product-card reveal';
             
-            // Render status badge
+
             let badgeHTML = '';
             const status = product.status || 'none';
             
@@ -199,10 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const stripeSize = 20;
             const pattern = `repeating-linear-gradient(45deg, #e0e0e0, #e0e0e0 ${stripeSize}px, #f5f5f5 ${stripeSize}px, #f5f5f5 ${stripeSize * 2}px)`;
 
-            // Map user's specific database fields
+
             let imageSource = product.image || '';
             if (String(imageSource).endsWith('/')) {
-                imageSource = `${imageSource}/1.jpg`.replace(/\/+/g, '/'); // Dynamic preview for folders
+                imageSource = `${imageSource}/1.jpg`.replace(/\/+/g, '/');
             }
             const image = window.resolveImage(imageSource);
             
@@ -210,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = (currentLang === 'en' && product.name_en) ? product.name_en : (product.name || product.title);
             const price = typeof product.price === 'number' ? `₴${product.price}` : product.price;
 
-            // Use name as ID for the detail page
+
             const productId = product.name || product.title || product.id;
 
             const basePrefix = (window.location.pathname.includes('/product/') || window.location.pathname.includes('/admin/')) ? '../' : '';
@@ -237,8 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             productGrid.appendChild(card);
-            
-            // Fix: Separate click for image/title vs add-to-cart button
+
             const imageWrap = card.querySelector('.product-image-wrap');
             const infoTitle = card.querySelector('.product-title');
             const addToCartBtn = card.querySelector('.add-to-cart-btn');
@@ -268,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize animations for new elements
         const revealElements = document.querySelectorAll('.reveal');
         if (typeof IntersectionObserver !== 'undefined') {
             const observer = new IntersectionObserver((entries) => {
@@ -282,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 2.5 Scroll Reveal Animation using Intersection Observer
+   
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -298,19 +285,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // 3. Setup Navbar scroll effect
+   
     const navbar = document.getElementById('navbar');
     const marqueeContainer = document.querySelector('.marquee-container');
 
     window.addEventListener('scroll', () => {
-        // Navbar scrolled state logic remains, but removed dynamic hiding logic
+       
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
 
-        // Hide navbar just before reaching the marquee (Home page only)
+
         if (marqueeContainer) {
             const hideThreshold = marqueeContainer.offsetTop - navbar.offsetHeight - 50;
             if (window.scrollY > hideThreshold) {
@@ -321,23 +308,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Mobile Menu
+
     const burgerMenu = document.getElementById('burger-menu');
     const navLinks = document.getElementById('nav-links');
     
     burgerMenu.addEventListener('click', () => {
         navLinks.classList.toggle('active');
-        // Simple animation for burger lines could go here
+
     });
 
-    // Close menu when clicking a link
+  
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
         });
     });
 
-    // 5. Cart Drawer functionality
+   
     const cartBtn = document.getElementById('cart-btn');
     const closeCart = document.getElementById('close-cart');
     const cartDrawer = document.getElementById('cart-drawer');
@@ -347,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cartDrawer.classList.toggle('active');
         cartOverlay.classList.toggle('active');
         if(cartDrawer.classList.contains('active')) {
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
+            document.body.style.overflow = 'hidden'; 
         } else {
             document.body.style.overflow = '';
         }
@@ -357,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCart.addEventListener('click', toggleCart);
     cartOverlay.addEventListener('click', toggleCart);
 
-    // --- CART SYSTEM ---
+   
     window.cart = JSON.parse(localStorage.getItem('shinigami_cart')) || [];
 
     window.saveCart = () => {
@@ -377,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         window.saveCart();
         
-        // Open cart to show addition
+
         if (!cartDrawer.classList.contains('active')) toggleCart();
     };
 
@@ -403,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartTotal = document.querySelector('.cart-total span:last-child');
         const cartBadges = document.querySelectorAll('.cart-badge');
         
-        // Update badges
+
         const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         cartBadges.forEach(badge => {
             if (totalItems > 0) {
@@ -456,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (finalTotal) finalTotal.textContent = `₴${total.toLocaleString('uk-UA')}`;
     };
 
-    // --- CHECKOUT LOGIC ---
+
     const checkoutBtn = document.querySelector('.checkout-btn');
     const checkoutModal = document.getElementById('checkout-modal');
     const closeCheckout = document.getElementById('close-checkout');
@@ -469,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Кошик порожній!');
                 return;
             }
-            toggleCart(); // Close drawer
+            toggleCart();
             checkoutModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
@@ -486,7 +473,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkoutForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Here you would normally send data to a server
             const orderData = {
                 customer: {
                     name: document.getElementById('cust-name').value,
@@ -499,17 +485,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log('Order placed:', orderData);
             
-            // Simulated success
+
             checkoutForm.style.display = 'none';
             orderSuccess.style.display = 'block';
             
-            // Clear cart
+
             window.cart = [];
             window.saveCart();
         });
     }
 
-    // --- INFO MODAL LOGIC ---
+
     const infoModal = document.getElementById('info-modal-overlay');
     const infoBody = document.getElementById('info-modal-body');
     const infoTitle = document.getElementById('info-modal-title');
@@ -539,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!content) return;
         
         infoTitle.textContent = content.title;
-        // Replace semicolons and following whitespace with line breaks, hiding the semicolon
+
         infoBody.innerHTML = content.body.replace(/;\s*(?![^<]*>)/g, '<br>');
         infoModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -557,15 +543,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Attach listeners to footer links
     document.querySelectorAll('[data-info]').forEach(link => {
         link.onclick = (e) => {
             e.preventDefault();
             openInfoModal(link.getAttribute('data-info'));
         };
     });
-
-    // --- SCROLL TO TOP ---
     const scrollTopBtn = document.getElementById('scroll-top-btn');
     if (scrollTopBtn) {
         window.addEventListener('scroll', () => {
@@ -584,6 +567,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial UI update
     window.updateCartUI();
 });
