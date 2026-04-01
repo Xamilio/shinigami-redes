@@ -13,12 +13,11 @@
     <link rel="stylesheet" href="../preloader.css">
 </head>
 <body>
-    <!-- Scroll to Top Button -->
     <button class="scroll-top-btn" id="scroll-top-btn" title="Вгору">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
 
-    <!-- Preloader -->
+
     <div id="preloader">
         <div class="preloader-content">
             <img src="../img/running-strip/black-bat.png" alt="Logo" class="preloader-logo">
@@ -28,7 +27,7 @@
 
     <div class="custom-cursor" id="custom-cursor"></div>
 
-    <!-- Navbar -->
+
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-side-left">
@@ -55,9 +54,6 @@
         </div>
     </header>
 
-    <!-- Breadcrumb -->
-
-    <!-- Product Detail -->
     <main class="product-page">
         <div class="breadcrumb">
             <a href="../" data-i18n="home">Головна</a>
@@ -69,16 +65,14 @@
         <div class="product-detail-container" id="product-detail-view" style="display: none;">
 
 
-            <!-- Gallery Column -->
+
             <div class="product-gallery-col">
                 <div class="gallery-thumbnails" id="gallery-thumbs">
-                    <!-- Thumbnails go here -->
                 </div>
                 
                 <div class="gallery-main-wrap">
                     <div class="product-slider-wrapper" id="product-slider">
                         <div class="product-slides" id="slider-track">
-                            <!-- Slides will be injected by JavaScript -->
                             <div class="product-slide">
                                 <img src="../img/placeholder.png" alt="Loading...">
                             </div>
@@ -89,8 +83,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Info Column -->
             <div class="product-detail-info">
                 <div class="product-tags">
                     <span class="tag-available" id="availability-tag">● В НАЯВНОСТІ</span>
@@ -129,7 +121,7 @@
         </div>
     </main>
 
-    <!-- Info Modal -->
+  
     <div class="modal-overlay" id="info-modal-overlay" style="display: none; z-index: 6000;">
         <div class="modal-content" style="width: 500px; max-height: 80vh;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -137,12 +129,12 @@
                 <button type="button" class="btn-close-modal" id="close-info-btn">&times;</button>
             </div>
             <div id="info-modal-body" style="font-size: 0.9rem; line-height: 1.6; max-height: 50vh; overflow-y: auto; padding-right: 10px;">
-                <!-- Dynamic content -->
+               
             </div>
         </div>
     </div>
 
-    <!-- Lightbox -->
+  
     <div class="lightbox-overlay" id="lightbox">
         <div class="lightbox-content">
             <button class="lightbox-close" id="lightbox-close">&times;</button>
@@ -150,7 +142,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    
     <footer id="about">
         <div class="footer-container">
             <div class="footer-brand">
@@ -177,7 +169,7 @@
         </div>
     </footer>
 
-    <!-- Cart Drawer -->
+
     <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
     <div class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
@@ -206,7 +198,6 @@
             let product = null;
 
             try {
-                // Try fetching by name (User's primary key)
                 const { data, error } = await window.supabaseClient
                     .from('products')
                     .select('*')
@@ -233,13 +224,12 @@
             const currentLang = localStorage.getItem('shinigami_lang') || 'uk';
             const _t = (key) => typeof t === 'function' ? t(key) : key;
 
-            // Map user specific database fields to JS property names for the UI logic
             const title = (currentLang === 'en' && product.name_en) ? product.name_en : (product.name || product.title);
             let price = product.price;
             if (typeof price === 'number') {
                 price = `₴${price.toLocaleString('uk-UA')}`;
             } else if (typeof price === 'string' && !isNaN(parseFloat(price.replace(/[^\d.-]/g, '')))) {
-                // If it's a string but contains a number, try to add currency if missing
+
                 if (!price.includes('₴')) price = `₴${price}`;
             }
             const specifications = (currentLang === 'en' && product.specifications_en) ? product.specifications_en : (product.specifications || '');
@@ -251,15 +241,13 @@
             const deliveryObj = (currentLang === 'en' && product.delivery_en) ? product.delivery_en : product.delivery;
 
             document.getElementById('product-detail-view').style.display = 'grid';
-            
-            // Populate data
-            // document.querySelector('.product-page').classList.add('loaded'); // Removed - will add after images load
+
             document.title = `${title} — Shinigami Couture`;
             document.getElementById('breadcrumb-title').textContent = title;
             document.getElementById('detail-title').textContent = title;
             document.getElementById('detail-price').textContent = price;
             
-            // Status Tag
+
             const tag = document.getElementById('availability-tag');
             const status = product.status || 'none';
             
@@ -272,18 +260,17 @@
                 tag.textContent = `● ${_t('status_preorder')}`;
             } else if (status === 'soldout') {
                 tag.textContent = `● ${_t('status_soldout')}`;
-                tag.style.color = '#dc2626'; // Red for sold out
+                tag.style.color = '#dc2626'; 
             } else {
                 tag.textContent = `● ${_t('status_instock')}`;
-                tag.style.color = '#4ade80'; // Green for in stock
+                tag.style.color = '#4ade80';
             }
 
             if (categoryObj) {
                 document.querySelector('.tag-category').textContent = categoryObj;
             }
 
-            // Description
-            if (descriptionObj) {
+                if (descriptionObj) {
                 const descContainer = document.querySelector('.detail-description');
                 descContainer.querySelectorAll('p.dynamic-desc').forEach(p => p.remove());
 
@@ -305,7 +292,7 @@
                 });
             }
 
-            // Specifications (Features)
+
             if (specifications) {
                 const featuresList = document.getElementById('detail-features');
                 featuresList.innerHTML = '';
@@ -329,7 +316,7 @@
                 });
             }
 
-            // Meta Info
+
             const metaContainer = document.querySelector('.detail-meta');
             metaContainer.innerHTML = '';
             
@@ -337,7 +324,7 @@
                 if (!value) return;
                 const row = document.createElement('div');
                 row.className = 'meta-row';
-                // Replace semicolons and following whitespace with line breaks, hiding the semicolon
+
                 const formattedValue = String(value).replace(/;\s*(?![^<]*>)/g, '<br>');
                 row.innerHTML = `<span class="meta-label">${label}</span><span class="meta-val">${formattedValue}</span>`;
                 metaContainer.appendChild(row);
@@ -348,7 +335,7 @@
             addMetaRow(_t('label_recommendations'), recommendations);
             addMetaRow(_t('label_configuration'), configuration);
 
-            // Add to Cart Logic
+
             const detailAddToCartBtn = document.getElementById('add-to-cart-detail');
             if (detailAddToCartBtn) {
                 detailAddToCartBtn.addEventListener('click', () => {
@@ -365,7 +352,7 @@
                 });
             }
 
-            // 4. Handle Gallery (Single Image or Folder)
+
             const sliderTrack = document.getElementById('slider-track');
             const dotsContainer = document.getElementById('slider-dots');
             const prevBtn = document.getElementById('prev-btn');
@@ -375,13 +362,13 @@
             const imagePath = String(product.image || '').trim();
             const galleryPath = String(product.gallery || '').trim();
             
-            // Priority: explicitly defined gallery path, or fallback to image path if it's a folder (ends with /)
+
             const pathToFetch = galleryPath || (imagePath.endsWith('/') ? imagePath : null);
             
             if (pathToFetch) {
-                // It's a folder, list files
+
                 try {
-                    const cleanPath = pathToFetch.replace(/\/+$/, ''); // Remove trailing slashes for parsing
+                    const cleanPath = pathToFetch.replace(/\/+$/, '');
                     const slashIdx = cleanPath.indexOf('/');
                     
                     if (slashIdx > -1) {
@@ -398,7 +385,7 @@
                         if (storageError) {
                             console.error('[Gallery] Folder listing error:', storageError);
                         } else if (files && files.length > 0) {
-                            // Filter only image-like files and exclude placeholders
+                            
                             images = files
                                 .filter(f => f.name !== '.emptyFolderPlaceholder' && !f.name.startsWith('.'))
                                 .map(f => `${bucket}/${folder}/${f.name}`.replace(/\/+/g, '/'));
@@ -410,12 +397,12 @@
                 }
             }
             
-            // If no folder images found or it was a single file path
+           
             if (images.length === 0) {
                 images = [imagePath || '../img/placeholder.png'];
             }
             
-            // Render slides & thumbnails
+           
             sliderTrack.innerHTML = '';
             dotsContainer.innerHTML = '';
             const thumbsContainer = document.getElementById('gallery-thumbs');
@@ -424,20 +411,20 @@
             images.forEach((imgUrl, index) => {
                 const fullUrl = window.resolveImage(imgUrl);
                 
-                // Slide
+               
                 const slide = document.createElement('div');
                 slide.className = 'product-slide';
                 slide.innerHTML = `<img src="${fullUrl}" alt="${product.name} - ${index + 1}" class="gallery-clickable">`;
                 sliderTrack.appendChild(slide);
                 
-                // Thumbnail
+              
                 const thumb = document.createElement('img');
                 thumb.src = fullUrl;
                 thumb.className = `gallery-thumb ${index === 0 ? 'active-thumb' : ''}`;
                 thumb.onclick = () => goToSlide(index);
                 thumbsContainer.appendChild(thumb);
                 
-                // Lightbox binding
+              
                 slide.querySelector('img').addEventListener('click', () => openLightbox(fullUrl));
 
                 if (images.length > 1) {
@@ -463,18 +450,18 @@
                 sliderTrack.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
                 sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
                 
-                // Update dots
+               
                 document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
                     dot.classList.toggle('active', idx === currentSlide);
                 });
                 
-                // Update thumbnails
+                
                 document.querySelectorAll('.gallery-thumb').forEach((thumb, idx) => {
                     thumb.classList.toggle('active-thumb', idx === currentSlide);
                 });
             }
 
-            // Lightbox Logic
+            
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxClose = document.getElementById('lightbox-close');
@@ -499,7 +486,7 @@
                 if (e.key === 'Escape') closeLightbox();
             });
 
-            // --- REVEAL PAGE ONLY AFTER ALL IMAGES ARE LOADED ---
+           
             const allImages = Array.from(document.querySelectorAll('.product-slide img, .gallery-thumbnails img'));
             let loadedCount = 0;
             const totalToLoad = allImages.length;
@@ -512,7 +499,7 @@
                         onImageLoad();
                     } else {
                         img.addEventListener('load', onImageLoad);
-                        img.addEventListener('error', onImageLoad); // Count errors as "done" to avoid infinite wait
+                        img.addEventListener('error', onImageLoad); 
                     }
                 });
             }
@@ -527,10 +514,9 @@
             function revealPage() {
                 setTimeout(() => {
                     document.querySelector('.product-page').classList.add('loaded');
-                }, 100); // Tiny delay for smoother feel
+                }, 100); 
             }
 
-            // Reload page on language switch
             window.addEventListener('languageChanged', () => {
                 window.location.reload();
             });
