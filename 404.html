@@ -8,124 +8,76 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="preloader.css">
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
-            background-color: var(--bg-light);
+            background-color: #18181a;
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+            text-align: center;
             cursor: none;
         }
 
-        .error-container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 10;
-        }
-
-        .error-code {
-            font-size: 12rem;
-            font-weight: 900;
-            letter-spacing: -10px;
-            line-height: 1;
-            margin: 0;
-            background: linear-gradient(to bottom, #f8fafc, rgba(248, 250, 252, 0.2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0.1;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            user-select: none;
-            background-clip: text;
-        }
-
-        .error-bat {
-            width: 150px;
-            height: auto;
-            animation: float 3s infinite ease-in-out;
-            filter: invert(1);
-            margin-bottom: 20px;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
         h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 10rem;
+            font-weight: 900;
             margin: 0;
+            letter-spacing: -5px;
+            line-height: 1;
         }
 
         p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 400px;
-            margin: 0 auto 30px;
+            font-size: 1.2rem;
+            color: #a1a1aa;
+            margin: 20px 0 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .back-home {
             display: inline-block;
-            padding: 18px 40px;
-            background-color: var(--accent);
-            color: var(--bg-light);
+            padding: 15px 35px;
+            background-color: #f8fafc;
+            color: #18181a;
             text-decoration: none;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border-radius: var(--radius-sm);
-            transition: var(--transition-premium);
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
         .back-home:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
             background-color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
         }
 
-        /* Decorative elements */
-        .decor-line {
-            position: absolute;
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
-            top: 0;
+        #custom-cursor {
+            position: fixed;
+            width: 28px;
+            height: 28px;
+            background-image: url('img/cursor/white-bat.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
-    <div class="custom-cursor" id="custom-cursor"></div>
+    <div id="custom-cursor"></div>
 
-    <div class="decor-line" style="left: 20%;"></div>
-    <div class="decor-line" style="left: 40%;"></div>
-    <div class="decor-line" style="left: 60%;"></div>
-    <div class="decor-line" style="left: 80%;"></div>
+    <h1>404</h1>
+    <p>Page Not Found</p>
+    <a href="./#" class="back-home">Main Menu</a>
 
-    <div class="error-code">404</div>
-
-    <div class="error-container">
-        <img src="img/running-strip/black-bat.png" alt="Bat" class="error-bat">
-        <h1 data-i18n="error_404_title">Загубилися в темряві?</h1>
-        <p data-i18n="error_404_sub">На жаль, такої сторінки не існує. Можливо, посилання застаріло або ви десь помилилися.</p>
-        <a href="./#" class="back-home" data-i18n="error_404_btn">Повернутися додому</a>
-        <span class="lang-selector" style="margin-top: 20px; color: var(--text-secondary); cursor: pointer; font-weight: 800; font-size: 0.9rem;">UK</span>
-    </div>
-
-    <!-- UI Logic for Cursor -->
-    <script src="i18n.js"></script>
     <script>
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
@@ -134,10 +86,10 @@
         });
 
         document.addEventListener('mouseover', (e) => {
-            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.classList.contains('lang-selector')) {
-                cursor.classList.add('hover');
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.2)';
             } else {
-                cursor.classList.remove('hover');
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
             }
         });
     </script>
