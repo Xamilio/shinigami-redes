@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // DOM Elements
     const authCard = document.getElementById('auth-card');
     const dashboardCard = document.getElementById('dashboard-card');
     
@@ -22,30 +21,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     const verifyCodeBtn = document.getElementById('verify-code-btn');
     const backToEmailBtn = document.getElementById('back-to-email');
 
-    // State
+
     let currentUserEmail = '';
 
-    // Error / Success helpers
+
     const showMsg = (el, msg) => {
         el.textContent = msg;
         el.style.display = 'block';
         setTimeout(() => el.style.display = 'none', 5000);
     };
 
-    // 1. Check if already logged in
+
     const checkUser = async () => {
         const { data: { session }, error } = await window.supabaseClient.auth.getSession();
         
         if (session && session.user) {
-            // Logged in!
+
             showDashboard(session.user);
         } else {
-            // Not logged in
+
             showAuth();
         }
     };
 
-    // UI Toggles
+
     const showAuth = () => {
         document.body.classList.remove('dashboard-active');
         authCard.style.display = 'block';
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // 2. Handle Send OTP Form
     emailForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = emailInput.value.trim();
@@ -87,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { error } = await window.supabaseClient.auth.signInWithOtp({
                 email: email,
                 options: {
-                    shouldCreateUser: true // creates user if not exists
+                    shouldCreateUser: true 
                 }
             });
 
@@ -104,13 +102,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Back button inside OTP view
+
     backToEmailBtn.addEventListener('click', () => {
         emailSection.style.display = 'block';
         otpSection.style.display = 'none';
     });
 
-    // 3. Handle Verify Code
     otpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const code = otpInput.value.trim();
@@ -129,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (error) throw error;
 
             if (session && session.user) {
-                // Success!
+
                 showDashboard(session.user);
             } else {
                 showMsg(errorMsg, 'Не вдалося авторизуватись. Спробуйте ще раз.');
@@ -145,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // 4. Handle Logout
+
     logoutBtn.addEventListener('click', async () => {
         logoutBtn.disabled = true;
         try {
@@ -157,7 +154,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             logoutBtn.disabled = false;
         }
     });
-
-    // Initialize checking
     checkUser();
 });
