@@ -43,12 +43,11 @@ a, button {
     text-decoration: none;
 }
 
-/* Restore normal cursor for admin panel */
 .admin-body, .admin-body * {
     cursor: auto !important;
 }
 
-/* Custom Cursor */
+
 .custom-cursor {
     position: fixed;
     top: 0;
@@ -72,7 +71,6 @@ a, button {
     height: 48px;
 }
 
-/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -309,7 +307,6 @@ a, button {
     opacity: 0.7;
 }
 
-/* Product Page Extras */
 .product-slider-wrapper {
     position: relative;
     width: 100%;
@@ -406,7 +403,6 @@ a, button {
     justify-content: center;
 }
 
-/* Hero Section */
 .hero {
     position: relative;
     min-height: 100vh;
@@ -478,7 +474,6 @@ a, button {
 }
 
 
-/* Negative Mode Refined */
 .hero-card.is-negative {
     background: var(--bg-dark);
     border-color: rgba(0,0,0,0.1);
@@ -496,7 +491,6 @@ a, button {
     background: var(--bg-surface);
     color: var(--text-primary);
 }
-
 
 .hero-card-content {
     display: flex;
@@ -522,7 +516,6 @@ a, button {
     line-height: 1.6;
 }
 
-/* Base Buttons */
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -547,7 +540,6 @@ a, button {
     opacity: 0.9;
 }
 
-/* Marquee Ticker */
 .marquee-container {
     width: 100%;
     background: var(--bg-light);
@@ -597,7 +589,6 @@ a, button {
     100% { transform: translateX(-50%); }
 }
 
-/* Shop Section */
 .shop-section {
     padding: 160px 40px;
     max-width: 1400px;
@@ -774,7 +765,6 @@ a, button {
     filter: invert(1);
 }
 
-/* Reveal Animation */
 .reveal {
     opacity: 0;
     transform: translateY(50px);
@@ -786,8 +776,7 @@ a, button {
     transform: translateY(0);
 }
 
-/* Cart Drawer - B/W design */
-/* ... existing basic layout ... */
+
 .cart-drawer-overlay {
     position: fixed;
     top: 0;
@@ -908,7 +897,7 @@ a, button {
     transform: scale(1.02);
 }
 
-/* Modal Shared Styles */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -952,7 +941,7 @@ a, button {
     transform: rotate(90deg);
 }
 
-/* Checkout Modal */
+
 .checkout-modal-overlay {
     position: fixed;
     top: 0;
@@ -1063,7 +1052,7 @@ a, button {
     background: #333;
 }
 
-/* Footer */
+
 footer {
     background: var(--bg-light);
     color: var(--text-primary);
@@ -1118,7 +1107,7 @@ footer {
     font-weight: 300;
 }
 
-/* Animations */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1130,7 +1119,7 @@ footer {
     }
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
     .product-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -1209,7 +1198,7 @@ footer {
 .social-link.tiktok::before,
 .social-link.whatsapp::before { display: none; }
 
-/* Cart Badge Elements */
+
 .cart-badge {
     position: absolute;
     top: -4px;
@@ -1228,7 +1217,7 @@ footer {
     z-index: 10;
 }
 
-/* Scroll To Top */
+
 .scroll-top-btn {
     position: fixed;
     bottom: 30px;
@@ -1260,9 +1249,7 @@ footer {
     transform: translateY(-5px);
 }
 
-/* ================================================
-   ADAPTIVE 2K & 4K SCREENS
-   ================================================ */
+
 
 @media (min-width: 1600px) {
     .nav-container,
