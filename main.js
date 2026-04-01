@@ -401,8 +401,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateCartUI = () => {
         const cartBody = document.querySelector('.cart-body');
         const cartTotal = document.querySelector('.cart-total span:last-child');
-        const cartCount = document.querySelector('.cart-btn .cart-badge'); // We might need to add this to HTML later
+        const cartBadges = document.querySelectorAll('.cart-badge');
         
+        // Update badges
+        const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartBadges.forEach(badge => {
+            if (totalItems > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = totalItems;
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+
         if (!cartBody) return;
 
         if (window.cart.length === 0) {
@@ -553,6 +564,25 @@ document.addEventListener('DOMContentLoaded', () => {
             openInfoModal(link.getAttribute('data-info'));
         };
     });
+
+    // --- SCROLL TO TOP ---
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 
     // Initial UI update
     window.updateCartUI();
