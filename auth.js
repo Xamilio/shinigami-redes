@@ -1,4 +1,4 @@
-// Auth logic for Shinigami Couture
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const errorMsg = document.getElementById('error-msg');
@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (error) throw error;
 
-                // Success
                 if (window.location.pathname.includes('/admin/')) {
                     window.location.href = './';
                 } else if (window.location.pathname.includes('/login/')) {
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Helper for relative redirects
+
 function safeRedirect(target) {
     const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/login/');
     if (isSubdir && !target.startsWith('http')) {
@@ -52,7 +51,6 @@ function safeRedirect(target) {
     }
 }
 
-// Helper function to check session in other pages
 async function checkAuth() {
     try {
         const { data: { session } } = await window.supabaseClient.auth.getSession();
@@ -66,7 +64,7 @@ async function checkAuth() {
     }
 }
 
-// Logout function
+
 async function handleLogout() {
     await window.supabaseClient.auth.signOut();
     safeRedirect('login/');
