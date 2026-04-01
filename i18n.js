@@ -39,7 +39,10 @@ const translations = {
         "profile_logout": "ВИЙТИ",
         "profile_your_email": "Ваш Email",
         "profile_orders": "Історія замовлень",
-        "profile_no_orders": "У вас поки немає замовлень."
+        "profile_no_orders": "У вас поки немає замовлень.",
+        "error_404_title": "Загубилися в темряві?",
+        "error_404_sub": "На жаль, такої сторінки не існує. Можливо, посилання застаріло або ви десь помилилися.",
+        "error_404_btn": "Повернутися додому"
     },
     en: {
         "nav_shop": "Shop",
@@ -81,7 +84,10 @@ const translations = {
         "profile_logout": "LOGOUT",
         "profile_your_email": "Your Email",
         "profile_orders": "Order History",
-        "profile_no_orders": "You do not have any orders yet."
+        "profile_no_orders": "You do not have any orders yet.",
+        "error_404_title": "Lost in the darkness?",
+        "error_404_sub": "Unfortunately, this page does not exist. The link might be outdated or incorrect.",
+        "error_404_btn": "Return Home"
     }
 };
 

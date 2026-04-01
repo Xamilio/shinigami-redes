@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Сторінку не знайдено — Shinigami Couture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="preloader.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-light);
+            cursor: none;
+        }
+
+        .error-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .error-code {
+            font-size: 12rem;
+            font-weight: 900;
+            letter-spacing: -10px;
+            line-height: 1;
+            margin: 0;
+            background: linear-gradient(to bottom, #f8fafc, rgba(248, 250, 252, 0.2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            user-select: none;
+            background-clip: text;
+        }
+
+        .error-bat {
+            width: 150px;
+            height: auto;
+            animation: float 3s infinite ease-in-out;
+            filter: invert(1);
+            margin-bottom: 20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .back-home {
+            display: inline-block;
+            padding: 18px 40px;
+            background-color: var(--accent);
+            color: var(--bg-light);
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-premium);
+        }
+
+        .back-home:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+            background-color: #fff;
+        }
+
+        /* Decorative elements */
+        .decor-line {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <div class="decor-line" style="left: 20%;"></div>
+    <div class="decor-line" style="left: 40%;"></div>
+    <div class="decor-line" style="left: 60%;"></div>
+    <div class="decor-line" style="left: 80%;"></div>
+
+    <div class="error-code">404</div>
+
+    <div class="error-container">
+        <img src="img/running-strip/black-bat.png" alt="Bat" class="error-bat">
+        <h1 data-i18n="error_404_title">Загубилися в темряві?</h1>
+        <p data-i18n="error_404_sub">На жаль, такої сторінки не існує. Можливо, посилання застаріло або ви десь помилилися.</p>
+        <a href="./#" class="back-home" data-i18n="error_404_btn">Повернутися додому</a>
+        <span class="lang-selector" style="margin-top: 20px; color: var(--text-secondary); cursor: pointer; font-weight: 800; font-size: 0.9rem;">UK</span>
+    </div>
+
+    <!-- UI Logic for Cursor -->
+    <script src="i18n.js"></script>
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.classList.contains('lang-selector')) {
+                cursor.classList.add('hover');
+            } else {
+                cursor.classList.remove('hover');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutBtn.addEventListener('click', handleLogout);
     }
 
+    // --- Profile Display ---
+    if (session && session.user && session.user.email) {
+        const email = session.user.email;
+        const userName = email.split('@')[0];
+        const userNameEl = document.querySelector('.user-name');
+        const userAvatarEl = document.querySelector('.user-avatar');
+        
+        if (userNameEl) {
+            userNameEl.textContent = userName;
+        }
+        if (userAvatarEl) {
+            userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+    }
+
     // --- Live Previews for Settings ---
     function updatePreview(id, value) {
         const preview = document.getElementById(`preview-${id}`);
