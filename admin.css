@@ -14,13 +14,13 @@
 
 
 .admin-body, .admin-body * {
-    cursor: auto !important; /* Restore standard cursor */
+    cursor: auto !important;
 }
 
 .admin-body {
     background: var(--admin-bg);
     color: var(--text-main);
-    overflow: hidden; /* Prevent body scroll, use content scroll */
+    overflow: hidden;
     height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -33,7 +33,6 @@
     height: 100vh;
 }
 
-/* Sidebar */
 .admin-sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
@@ -121,7 +120,6 @@
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Content Area */
 .admin-content {
     flex: 1;
     overflow-y: auto;
@@ -174,7 +172,6 @@
     border-radius: 50%;
 }
 
-/* Tab Content */
 .tab-content {
     display: none;
 }
@@ -185,7 +182,6 @@
 }
 
 
-/* Stats Grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -227,7 +223,6 @@
 }
 
 
-/* Tables */
 .table-container {
     background: #fff;
     border: var(--card-border);
@@ -277,8 +272,6 @@ tr:hover td {
     letter-spacing: -0.5px;
 }
 
-
-/* Modal Overlay and Content */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -358,7 +351,6 @@ tr:hover td {
     font-weight: 800;
 }
 
-/* Forms */
 .form-group {
     margin-bottom: 24px;
 }
@@ -408,7 +400,6 @@ tr:hover td {
     width: auto;
 }
 
-/* Action Buttons */
 .btn-action {
     display: inline-flex;
     align-items: center;
@@ -444,7 +435,6 @@ tr:hover td {
 }
 
 
-/* Radio Chip Group */
 .radio-group {
     display: flex;
     flex-wrap: wrap;
@@ -542,7 +532,6 @@ tr:hover td {
 }
 
 
-/* Card Styling */
 .card {
     background: #fff;
     border: var(--card-border);
@@ -553,7 +542,6 @@ tr:hover td {
 }
 
 
-/* Responsive */
 @media (max-width: 1024px) {
     .stats-grid {
         grid-template-columns: 1fr;
@@ -569,7 +557,6 @@ tr:hover td {
         padding: 20px;
     }
 }
-/* Media Explorer Styles */
 .media-item-card {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     background: #fff;
