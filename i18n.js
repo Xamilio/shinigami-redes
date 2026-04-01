@@ -16,6 +16,7 @@ const translations = {
         "status_preorder": "ПЕРЕДЗАМОВЛЕННЯ",
         "status_soldout": "РОЗПРОДАНО",
         "status_new": "НОВИНКА",
+        "label_package": "Комплектація",
         "home": "Головна",
         "breadcrumb_product": "Товар",
         "price_note": "З податком. Вартість доставки розраховується при оформленні замовлення.",
@@ -24,7 +25,21 @@ const translations = {
         "label_recommendations": "Рекомендації",
         "label_configuration": "Комплектація",
         "not_found": "Товар не знайдено",
-        "back_to_shop": "Повернутись до магазину"
+        "back_to_shop": "Повернутись до магазину",
+        "profile_title": "Особистий кабінет — Shinigami Couture",
+        "profile_login": "Вхід",
+        "profile_login_sub": "Без паролів. Введіть свій email, і ми надішлемо вам безпечний 6-значний код для входу.",
+        "profile_email": "Електронна пошта",
+        "profile_send_code": "ОТРИМАТИ КОД",
+        "profile_verify": "Перевірка",
+        "profile_otp_code": "6-значний код",
+        "profile_login_btn": "УВІЙТИ",
+        "profile_back": "← Змінити Email",
+        "profile_cabinet": "Особистий кабінет",
+        "profile_logout": "ВИЙТИ",
+        "profile_your_email": "Ваш Email",
+        "profile_orders": "Історія замовлень",
+        "profile_no_orders": "У вас поки немає замовлень."
     },
     en: {
         "nav_shop": "Shop",
@@ -43,6 +58,7 @@ const translations = {
         "status_preorder": "PRE-ORDER",
         "status_soldout": "SOLD OUT",
         "status_new": "NEW",
+        "label_package": "Package Contents",
         "home": "Home",
         "breadcrumb_product": "Product",
         "price_note": "Tax included. Shipping calculated at checkout.",
@@ -51,7 +67,21 @@ const translations = {
         "label_recommendations": "Care Instructions",
         "label_configuration": "In the Box",
         "not_found": "Product not found",
-        "back_to_shop": "Back to shop"
+        "back_to_shop": "Back to shop",
+        "profile_title": "Profile — Shinigami Couture",
+        "profile_login": "Login",
+        "profile_login_sub": "No passwords. Enter your email and we'll send you a secure 6-digit code to log in.",
+        "profile_email": "Email Address",
+        "profile_send_code": "GET CODE",
+        "profile_verify": "Verification",
+        "profile_otp_code": "6-Digit Code",
+        "profile_login_btn": "LOGIN",
+        "profile_back": "← Change Email",
+        "profile_cabinet": "My Profile",
+        "profile_logout": "LOGOUT",
+        "profile_your_email": "Your Email",
+        "profile_orders": "Order History",
+        "profile_no_orders": "You do not have any orders yet."
     }
 };
 

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="profile_title">Особистий кабінет — Shinigami Couture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        :root {
+            --bg-color: #18181a;
+            --main-black: #f8fafc;
+            --main-white: #202023;
+            --accent-color: #ffffff;
+            --font-main: 'Outfit', sans-serif;
+            --border-radius-lg: 16px;
+            --border-radius-md: 12px;
+        }
+
+        body {
+            cursor: auto !important;
+            background-color: var(--bg-color);
+            color: var(--main-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+
+        /* Nav Header Override for profile page */
+        .profile-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .profile-nav a {
+            text-decoration: none;
+            color: var(--main-black);
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: none;
+            cursor: pointer !important;
+        }
+
+        .login-card {
+            background: var(--main-white);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 60px 40px;
+            width: 100%;
+            max-width: 450px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            position: relative;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dashboard-card {
+            background: var(--main-white);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--main-black);
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            color: #64748b;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--border-radius-md);
+            color: var(--main-black);
+            text-align: center;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+        }
+
+        input.otp-input {
+            letter-spacing: 10px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        button.btn-primary {
+            width: 100%;
+            background: var(--accent-color);
+            color: var(--main-white);
+            border: none;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 5px;
+            letter-spacing: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--border-radius-md);
+        }
+
+        button.btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        button.btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed !important;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #ef4444;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid #ef4444;
+            display: none;
+        }
+
+        .success-message {
+            background: #ecfdf5;
+            color: #10b981;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid #10b981;
+            display: none;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        
+        .back-link:hover {
+            color: var(--main-black);
+            text-decoration: underline;
+        }
+
+        #otp-section {
+            display: none;
+        }
+
+        /* Override custom cursor artifacts from style.css */
+        a, button, input {
+            cursor: auto !important;
+        }
+        button { cursor: pointer !important; }
+        a { cursor: pointer !important; }
+
+        /* Dashboard Styles - Full Page */
+        body.dashboard-active {
+            background-image: none;
+            background-color: var(--bg-color);
+            align-items: flex-start;
+            padding: 0;
+        }
+        body.dashboard-active .profile-nav {
+            display: none; /* Hide default nav when logged in */
+        }
+
+        .dashboard-view {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: var(--bg-color);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dashboard-header {
+            background: var(--bg-color);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .header-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--main-black);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: none;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .header-nav a.active {
+            color: var(--main-black);
+        }
+        
+        .header-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--main-black);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-btn {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #a1a1aa;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        
+        .avatar-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 60px auto;
+            width: 100%;
+            padding: 0 40px;
+        }
+
+        .dashboard-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-title-row h1 {
+            font-size: 24px;
+            margin-bottom: 0;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .gallery-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            color: #333;
+        }
+
+        .filter-btn {
+            background: #fff;
+            border: 1px solid #eaeaea;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            color: #333;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        /* Expected card skeleton for future logic */
+        .order-card-skeleton {
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="profile-nav">
+        <a href="../index.html">SHINIGAMI COUTURE</a>
+        <span class="lang-selector" style="font-weight: 800; cursor: pointer;">UK</span>
+    </div>
+
+    <!-- AUTH CARD -->
+    <div class="login-card" id="auth-card">
+        <div id="error-msg" class="error-message"></div>
+        <div id="success-msg" class="success-message"></div>
+
+        <!-- 1. Email Step -->
+        <div id="email-section">
+            <h1 data-i18n="profile_login">Вхід</h1>
+            <p class="subtitle" data-i18n="profile_login_sub">Без паролів. Введіть свій email, і ми надішлемо вам безпечний 6-значний код для входу.</p>
+            
+            <form id="email-form">
+                <div class="form-group">
+                    <label for="email" data-i18n="profile_email">Електронна пошта</label>
+                    <input type="email" id="email" required placeholder="your.email@example.com" autocomplete="email">
+                </div>
+                <button type="submit" id="send-code-btn" class="btn-primary" data-i18n="profile_send_code">ОТРИМАТИ КОД</button>
+            </form>
+        </div>
+
+        <!-- 2. OTP Step -->
+        <div id="otp-section">
+            <h1 data-i18n="profile_verify">Перевірка</h1>
+            <p class="subtitle" id="otp-subtitle">Ми надіслали 6-значний код на вашу пошту.</p>
+            
+            <form id="otp-form">
+                <div class="form-group">
+                    <label for="otp" data-i18n="profile_otp_code">6-значний код</label>
+                    <input type="text" id="otp" class="otp-input" required placeholder="••••••" maxlength="6" autocomplete="one-time-code" pattern="\d{6}">
+                </div>
+                <button type="submit" id="verify-code-btn" class="btn-primary" data-i18n="profile_login_btn">УВІЙТИ</button>
+            </form>
+            <a class="back-link" id="back-to-email" data-i18n="profile_back">← Змінити Email</a>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CARD (Protected) -->
+    <div class="dashboard-view" id="dashboard-card">
+        <!-- Header from the screenshot -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <a href="../index.html" class="header-logo">Shinigami[UA]</a>
+                <nav class="header-nav">
+                    <a href="#" class="active" data-i18n="profile_orders">Orders</a>
+                    <a href="#" id="display-email">Profile</a> <!-- Simple visual tab -->
+                </nav>
+            </div>
+            <div class="header-right">
+                <span class="lang-selector" style="font-weight: 800; cursor: pointer; margin-right: 15px;">UK</span>
+                <button id="logout-btn" class="avatar-btn" title="Logout">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="dashboard-content">
+            <div class="dashboard-title-row">
+                <h1 data-i18n="profile_orders">Orders</h1>
+
+            </div>
+
+            <!-- Future orders grid container -->
+            <div class="orders-grid" id="orders-grid">
+                <!-- User requested not to add real cards yet, so just placeholder string if empty -->
+                <div class="order-card-skeleton" data-i18n="profile_no_orders">У вас поки немає замовлень.</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../i18n.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
