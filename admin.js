@@ -1,15 +1,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 0.5 Security Check
     const session = await checkAuth();
     if (!session) return;
 
-    // Logout binding
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleLogout);
     }
 
-    // --- Profile Display ---
+
     if (session && session.user && session.user.email) {
         const email = session.user.email;
         const userName = email.split('@')[0];
@@ -24,14 +22,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- Live Previews for Settings ---
+
     function updatePreview(id, value) {
         const preview = document.getElementById(`preview-${id}`);
         if (!preview) return;
         const url = window.resolveImage(value);
         if (url && url !== value) {
             preview.style.backgroundImage = `url('${url}')`;
-            preview.innerHTML = ''; // Clear text
+            preview.innerHTML = ''; 
             preview.style.backgroundSize = 'contain';
             preview.style.backgroundRepeat = 'no-repeat';
         } else if (url && (url.startsWith('http') || url.startsWith('img/'))) {
@@ -64,10 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- Helper for Dynamic Images (Now global in supabase-config.js) ---
-    // window.resolveImage is used instead
-
-    // 1. Tab Switching Logic
+    
     const navItems = document.querySelectorAll('.nav-item[data-tab]');
     const tabContents = document.querySelectorAll('.tab-content');
     const pageTitle = document.getElementById('page-title');
@@ -77,17 +72,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const tabId = item.getAttribute('data-tab');
             
-            // Update active states
             navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
             
             tabContents.forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabId}-tab`).classList.add('active');
             
-            // Update title
             pageTitle.textContent = item.textContent.trim();
 
-            // Toggle Add Product button visibility
+
             const addProductBtn = document.getElementById('add-product-btn');
             if (addProductBtn) {
                 addProductBtn.style.display = tabId === 'products' ? 'block' : 'none';
@@ -95,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 2. Data Management
+
     let products = [];
 
     const fetchProducts = async () => {
@@ -103,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { data, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
-                .order('name', { ascending: true }); // No created_at in screenshot, using name
+                .order('name', { ascending: true }); 
 
             if (error) throw error;
             products = data || [];
@@ -119,14 +112,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const saveProductToDB = async (productData, originalName) => {
         try {
-            // Helper to clean price: "₴2,500" -> 2500
+    
             const cleanPrice = (priceStr) => {
                 if (typeof priceStr === 'string') return priceStr.trim();
                 return priceStr;
             };
 
             const dbData = {
-                name: productData.title, // Map UI title to DB name
+                name: productData.title,
                 name_en: productData.title_en,
                 price: cleanPrice(productData.price),
                 category: productData.category,
@@ -135,22 +128,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 gallery: productData.gallery,
                 description: productData.description,
                 description_en: productData.description_en,
-                specifications: productData.features.join('; '), // Map features to specifications (text)
+                specifications: productData.features.join('; '),
                 specifications_en: productData.features_en.join('; '),
                 material: productData.material,
                 material_en: productData.material_en,
                 delivery: productData.delivery,
                 delivery_en: productData.delivery_en,
-                recommendations: productData.care, // Map care to recommendations
+                recommendations: productData.care, 
                 recommendations_en: productData.care_en,
-                configuration: productData.packageContents, // Map packageContents to configuration
+                configuration: productData.packageContents, 
                 configuration_en: productData.packageContents_en,
                 status: productData.status
             };
 
             let res;
             if (originalName) {
-                // If we are editing, we use the original name to find the record
+            
                 res = await window.supabaseClient.from('products').update(dbData).eq('name', originalName);
             } else {
                 res = await window.supabaseClient.from('products').insert([dbData]);
@@ -177,7 +170,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // 3. UI Rendering
     function updateDashboard() {
         document.getElementById('total-products-count').textContent = products.length;
         const preorderCount = products.filter(p => p.status === 'preorder').length;
@@ -188,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         renderRecentTable();
         renderAllTable();
-        // Skip fetchSettings here as it's called globally above
+    
     }
 
     const renderRecentTable = () => {
@@ -253,7 +245,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     };
 
-    // 4. Modal Control
     const productModal = document.getElementById('product-modal');
     const addBtn = document.getElementById('add-product-btn');
     const productForm = document.getElementById('product-form');
@@ -263,7 +254,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (productModal) {
             productModal.style.display = 'flex';
             setTimeout(() => productModal.classList.add('active'), 10);
-            document.body.style.overflow = 'hidden'; // Prevent scroll
+            document.body.style.overflow = 'hidden'; 
         }
     };
 
@@ -307,7 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const radio = document.querySelector(`input[name="product-status"][value="${p.status || 'none'}"]`);
         if (radio) radio.checked = true;
         
-        // Update Modal Preview
+
         updateProductModalPreview(p.image);
         
         modalTitle.textContent = 'Редагувати товар';
@@ -324,12 +315,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modalTitle = document.getElementById('modal-title');
         productForm.reset();
         document.getElementById('product-index').value = '';
-        updateProductModalPreview(''); // Clear preview
+        updateProductModalPreview('');
         modalTitle.textContent = 'Додати товар';
         openProductModal();
     });
 
-    // Helper for modal preview
+
     function updateProductModalPreview(value) {
         const preview = document.getElementById('product-img-preview');
         if (!preview) return;
@@ -346,7 +337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         modalImgInput.addEventListener('input', (e) => updateProductModalPreview(e.target.value));
     }
 
-    // --- GALLERY UPLOAD LOGIC ---
+    
     const galleryUploadBtn = document.getElementById('gallery-upload-btn');
     const galleryUploadInput = document.getElementById('gallery-upload-input');
     const uploadStatus = document.getElementById('upload-status');
@@ -397,7 +388,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 alert(`Успішно завантажено ${uploadedCount} зображень!`);
                 
-                // Update form fields
+                
                 document.getElementById('gallery').value = `${bucket}/products/${folderName}/`;
                 if (!document.getElementById('image').value) {
                     document.getElementById('image').value = firstImagePath;
@@ -451,10 +442,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeProductModal();
     });
 
-    // 6. Site Settings Logic
     const settingsForm = document.getElementById('settings-form');
     
-    let activeSettingInput = null; // Track which input we are filling
+    let activeSettingInput = null; 
 
     const fetchSettings = async () => {
         try {
@@ -474,7 +464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     updatePreview(s.key, s.value);
                 }
                 
-                // Apply logo to admin sidebar too
+            
                 if (s.key === 'logo') {
                     const logoImg = document.querySelector('.sidebar-header .logo img');
                     if (logoImg) logoImg.src = window.resolveImage(s.value);
@@ -491,7 +481,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let storageBuckets = [];
 
 
-    // Track last focused input in settings
+
     const settingInputs = [
         document.getElementById('setting-main_banner'), 
         document.getElementById('setting-hero_bg'),
@@ -507,7 +497,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (input) input.addEventListener('focus', () => activeSettingInput = input);
     });
 
-    // Helper for direct settings uploads
     const handleSettingUpload = async (fileInputId, targetId) => {
         const fileInput = document.getElementById(fileInputId);
         const targetInput = document.getElementById(targetId);
@@ -598,7 +587,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // 7. Media Manager Logic (The NEW Section)
+
     let currentBucket = '';
     let currentPrefix = ''; // Folder path
     
@@ -610,7 +599,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mediaUploadInput = document.getElementById('media-upload-input');
     const mediaNewFolderBtn = document.getElementById('media-new-folder-btn');
 
-    // 8. Folder Picker Loader
     let pickerBucket = 'products';
     let pickerPrefix = '';
     let pickerTargetInput = null;
@@ -626,18 +614,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         pickerTargetInput = document.getElementById(targetId);
         const currentVal = pickerTargetInput.value.trim();
         
-        // Try to auto-detect bucket and prefix from current value
+    
         if (currentVal && currentVal.includes('/')) {
             const parts = currentVal.split('/');
             pickerBucket = parts[0];
-            // Only set prefix if it's more than just bucket/filename
             if (parts.length > 2) {
                 pickerPrefix = parts.slice(1, -1).join('/') + '/';
             } else {
                 pickerPrefix = '';
             }
         } else {
-            // No valid path, start at bucket selection
             pickerBucket = '';
             pickerPrefix = '';
         }
@@ -649,8 +635,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fetchPickerItems = async () => {
         if (!pickerList) return;
         pickerList.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">Завантаження...</p>';
-        
-        // Update breadcrumb
+    
         if (!pickerBucket) {
             pickerBreadcrumb.textContent = 'Оберіть бакет';
         } else {
@@ -660,7 +645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             if (!window.supabaseClient) throw new Error('Supabase client missing');
 
-            // 1. If no bucket selected, show buckets list
+    
             if (!pickerBucket) {
                 if (storageBuckets.length === 0) {
                     try {
@@ -696,10 +681,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     };
                     pickerList.appendChild(div);
                 });
-                return; // Early return for bucket list
+                return; 
             }
 
-            // 2. If bucket selected, list its items
+        
             const { data, error } = await window.supabaseClient.storage.from(pickerBucket).list(pickerPrefix, {
                 limit: 100,
                 sortBy: { column: 'name', order: 'asc' }
@@ -747,14 +732,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         pickerPrefix += item.name + '/';
                         fetchPickerItems();
                     } else {
-                        // If it's a file, we might want to select it immediately or just highlight
-                        // For 'image' target, we select the file. For 'gallery', we probably want the folder.
+                
                         const fullPath = `${pickerBucket}/${pickerPrefix}${item.name}`;
                         if (confirm(`Вибрати цей файл: ${fullPath}?`)) {
                             pickerTargetInput.value = fullPath;
                             pickerModal.style.display = 'none';
                             
-                            // Trigger preview updates
+            
                             if (pickerTargetInput.id === 'image') {
                                 updateProductModalPreview(fullPath);
                             } else if (pickerTargetInput.id.startsWith('setting-')) {
@@ -781,7 +765,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             pickerTargetInput.value = currentPath;
             pickerModal.style.display = 'none';
             
-            // Trigger preview updates
             if (pickerTargetInput.id === 'image') {
                 updateProductModalPreview(currentPath);
             } else if (pickerTargetInput.id.startsWith('setting-')) {
@@ -799,7 +782,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 pickerPrefix = parts.length > 0 ? parts.join('/') + '/' : '';
                 fetchPickerItems();
             } else if (pickerBucket) {
-                // We are in the root of a bucket, go back to bucket selection
+
                 pickerBucket = '';
                 fetchPickerItems();
             }
@@ -809,8 +792,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (closePickerBtn) {
         closePickerBtn.onclick = () => pickerModal.style.display = 'none';
     }
-
-    // Attach to form buttons
     document.querySelectorAll('.open-picker-btn').forEach(btn => {
         btn.onclick = () => openPicker(btn.getAttribute('data-target'));
     });
@@ -824,7 +805,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error('Supabase client not initialized. Check your credentials.');
             }
 
-            // 1. If NO bucket selected, show buckets list (just like the picker)
             if (!bucket) {
                 if (storageBuckets.length === 0) {
                     try {
@@ -838,8 +818,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
                     }
                 }
-                
-                // Populate select
+            
                 if (mediaBucketSelect) {
                     mediaBucketSelect.innerHTML = '<option value="">📦 Оберіть бакет...</option>' + 
                         storageBuckets.map(b => `<option value="${b.name}">📦 Бакет: ${b.name}</option>`).join('');
@@ -877,7 +856,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            // 2. Fetch buckets if needed anyway (to keep select populated)
 
             const { data, error } = await window.supabaseClient.storage.from(bucket).list(prefix, {
                 limit: 100,
@@ -889,7 +867,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             mediaExplorer.innerHTML = '';
             
-            // Update UI components
             mediaBackBtn.style.display = prefix ? 'block' : 'none';
             mediaBreadcrumb.textContent = prefix ? `Папка: ${prefix}` : 'Коренева папка';
 
@@ -936,16 +913,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                     `;
 
-                    // Copy URL logic
                     card.querySelector('.btn-copy').onclick = (e) => {
                         e.stopPropagation();
-                        // Copy path relative to bucket or absolute URL? Let's do absolute but maybe short path is better for DB
                         const path = `${bucket}/${prefix}${item.name}`;
                         navigator.clipboard.writeText(path);
                         alert('Шлях скопійовано: ' + path);
                     };
 
-                    // Delete file logic
                     card.querySelector('.btn-delete-file').onclick = async (e) => {
                         e.stopPropagation();
                         if (confirm(`Видалити файл "${item.name}"?`)) {
@@ -1052,13 +1026,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
-        // Support Enter key
         folderInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') folderConfirmBtn.click();
         });
     }
 
-    // Initialize Media when tab is clicked
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             if (item.getAttribute('data-tab') === 'media') {
@@ -1066,12 +1038,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
-
-    // Initialize
     setupSettingsPreviews();
     fetchSettings();
     updateDashboard();
-
-    // Initial load
     fetchProducts();
 });
