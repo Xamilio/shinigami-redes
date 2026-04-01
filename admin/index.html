@@ -12,7 +12,6 @@
 </head>
 <body class="admin-body">
     <div class="admin-container">
-        <!-- Sidebar -->
         <aside class="admin-sidebar">
             <div class="sidebar-header">
                 <a href="../" class="logo"><img src="../img/logo/shinigami.webp" alt="logo"></a>
@@ -41,7 +40,6 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="admin-content">
             <header class="content-header">
                 <h1 id="page-title">Дашборд</h1>
@@ -84,7 +82,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Populated by JS -->
                             </tbody>
                         </table>
                     </div>
@@ -92,7 +89,7 @@
             </section>
 
             <section id="products-tab" class="tab-content">
-                <!-- Modal Overlay for Product Form -->
+              
                 <div class="modal-overlay" id="product-modal" style="display: none;">
                     <div class="modal-content" id="form-container">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -255,7 +252,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Populated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -311,7 +307,7 @@
                             </div>
                         </div>
 
-                        <!-- NEW: Hero Banner Text Customization -->
+                       
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div class="form-group">
                                 <label>Заголовок банера (Title)</label>
@@ -323,7 +319,7 @@
                             </div>
                         </div>
 
-                        <!-- Asset Management Section -->
+                       
                         <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
                             <h4 style="margin-bottom: 15px; text-transform: uppercase; font-size: 0.9rem;">Медіа-активи та іконки</h4>
                             
@@ -452,7 +448,7 @@
                     </div>
 
                     <div id="media-explorer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px;">
-                        <!-- Folders and Files will appear here -->
+                       
                         <p style="grid-column: 1/-1; color: #888;">Завантаження...</p>
                     </div>
                 </div>
@@ -460,7 +456,6 @@
         </main>
     </div>
 
-    <!-- Folder Picker Modal -->
     <div class="modal-overlay" id="picker-modal" style="display: none; z-index: 5000;">
         <div class="modal-content" style="width: 500px; max-height: 80vh;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -473,7 +468,7 @@
             </div>
 
             <div id="picker-list" style="border: 2px solid #000; height: 300px; overflow-y: auto; padding: 10px; background: #fff;">
-                <!-- Folders/Files will appear here -->
+               
                 <p style="color: #888;">Завантаження...</p>
             </div>
 
@@ -488,7 +483,7 @@
     <script src="../supabase-config.js"></script>
     <script src="../auth.js"></script>
     <script src="../admin.js"></script>
-    <!-- New Folder Modal -->
+   
     <div class="modal-overlay" id="folder-modal" style="display: none; z-index: 6000;">
         <div class="modal-content" style="width: 400px; padding: 30px;">
             <h2 style="margin-bottom: 20px;">Нова папка</h2>
