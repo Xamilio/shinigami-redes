@@ -32,7 +32,6 @@
             background-size: 24px 24px;
         }
 
-        /* Nav Header Override for profile page */
         .profile-nav {
             position: absolute;
             top: 0;
@@ -213,7 +212,6 @@
             display: none;
         }
 
-        /* Override custom cursor artifacts from style.css */
         a, button, input {
             cursor: auto !important;
         }
@@ -228,7 +226,7 @@
             padding: 0;
         }
         body.dashboard-active .profile-nav {
-            display: none; /* Hide default nav when logged in */
+            display: none; 
         }
 
         .dashboard-view {
@@ -381,7 +379,6 @@
             gap: 30px;
         }
         
-        /* Expected card skeleton for future logic */
         .order-card-skeleton {
             background: transparent;
             border: 1px dashed rgba(255, 255, 255, 0.12);
@@ -402,12 +399,12 @@
         <span class="lang-selector" style="font-weight: 800; cursor: pointer;">UK</span>
     </div>
 
-    <!-- AUTH CARD -->
+
     <div class="login-card" id="auth-card">
         <div id="error-msg" class="error-message"></div>
         <div id="success-msg" class="success-message"></div>
 
-        <!-- 1. Email Step -->
+
         <div id="email-section">
             <h1 data-i18n="profile_login">Вхід</h1>
             <p class="subtitle" data-i18n="profile_login_sub">Без паролів. Введіть свій email, і ми надішлемо вам безпечний 6-значний код для входу.</p>
@@ -421,7 +418,6 @@
             </form>
         </div>
 
-        <!-- 2. OTP Step -->
         <div id="otp-section">
             <h1 data-i18n="profile_verify">Перевірка</h1>
             <p class="subtitle" id="otp-subtitle">Ми надіслали 6-значний код на вашу пошту.</p>
@@ -437,9 +433,9 @@
         </div>
     </div>
 
-    <!-- DASHBOARD CARD (Protected) -->
+
     <div class="dashboard-view" id="dashboard-card">
-        <!-- Header from the screenshot -->
+
         <header class="dashboard-header">
             <div class="header-left">
                 <a href="../#" class="header-logo">Shinigami[UA]</a>
@@ -457,22 +453,19 @@
             </div>
         </header>
 
-        <!-- Main Body -->
+
         <main class="dashboard-content">
             <div class="dashboard-title-row">
                 <h1 data-i18n="profile_orders">Orders</h1>
 
             </div>
 
-            <!-- Future orders grid container -->
             <div class="orders-grid" id="orders-grid">
-                <!-- User requested not to add real cards yet, so just placeholder string if empty -->
                 <div class="order-card-skeleton" data-i18n="profile_no_orders">У вас поки немає замовлень.</div>
             </div>
         </main>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase-config.js"></script>
     <script src="../i18n.js"></script>
