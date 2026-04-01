@@ -155,7 +155,6 @@
     </style>
 </head>
 <body>
-    <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-content">
             <img src="img/running-strip/black-bat.png" alt="Logo" class="preloader-logo">
@@ -184,13 +183,10 @@
             <button type="submit">УВІЙТИ</button>
         </form>
     </div>
-
-    <!-- SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth.js"></script>
     <script>
-        // Preloader hide logic
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             setTimeout(() => {
@@ -198,7 +194,6 @@
             }, 1000);
         });
 
-        // Simple cursor driver for login page
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
