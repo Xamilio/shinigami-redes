@@ -99,7 +99,6 @@ function changeLanguage(lang) {
     localStorage.setItem('shinigami_lang', lang);
     applyTranslations();
     updateLangSelectors();
-    // Dispatch custom event to notify other scripts (like main.js) to re-render dynamic content
     window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
@@ -107,22 +106,14 @@ function applyTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[currentLang][key]) {
-            // For inputs/placeholders we might need to handle them differently
+            
             if (el.tagName === 'INPUT' && el.type === 'text') {
                 el.placeholder = translations[currentLang][key];
             } else {
-                // If the element has child images or spans we don't want to destroy
-                // but since data-i18n should be applied to text nodes or specific spans
-                // we assume it's safe to set outer/inner text. 
-                // However, we must be careful with buttons that contain images (like the cart button).
                 
-                // If it's a node that also contains an image (like the add-to-cart detail button),
-                // we should only replace the text node.
                 let hasImage = el.querySelector('img');
                 if (hasImage) {
-                    // Safe approach: wrap text in a a span with data-i18n instead, 
-                    // or just replace text content but keep the image node.
-                    // To keep it simple, we require data-i18n to be on purely text elements.
+                
                     el.innerHTML = translations[currentLang][key]; 
                 } else {
                     el.textContent = translations[currentLang][key];
@@ -131,7 +122,7 @@ function applyTranslations() {
         }
     });
 
-    // Special logic for the detail button with image
+    
     const btnTextDetail = document.getElementById('add-to-cart-text');
     if (btnTextDetail) {
         btnTextDetail.textContent = translations[currentLang]["btn_add_to_cart"];
@@ -152,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTranslations();
     updateLangSelectors();
 
-    // Toggle logic for the language selector
+    
     document.querySelectorAll('.lang-selector').forEach(sel => {
         sel.addEventListener('click', () => {
             const nextLang = currentLang === 'uk' ? 'en' : 'uk';
