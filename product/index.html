@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="../preloader.css">
 </head>
 <body>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     <button class="scroll-top-btn" id="scroll-top-btn" title="Вгору">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
@@ -55,9 +58,12 @@
         </div>
     </header>
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     <main class="product-page">
         <div class="breadcrumb">
             <a href="../" data-i18n="home">Головна</a>
@@ -72,13 +78,19 @@
 
             <div class="product-gallery-col">
                 <div class="gallery-thumbnails" id="gallery-thumbs">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 </div>
                 
                 <div class="gallery-main-wrap">
                     <div class="product-slider-wrapper" id="product-slider">
                         <div class="product-slides" id="slider-track">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                             <div class="product-slide">
                                 <img src="../img/placeholder.png" alt="Loading...">
                             </div>
@@ -89,8 +101,11 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             <div class="product-detail-info">
                 <div class="product-tags">
                     <span class="tag-available" id="availability-tag">● В НАЯВНОСТІ</span>
@@ -129,7 +144,11 @@
         </div>
     </main>
 
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     <div class="modal-overlay" id="info-modal-overlay" style="display: none; z-index: 6000;">
         <div class="modal-content" style="width: 500px; max-height: 80vh;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -137,12 +156,20 @@
                 <button type="button" class="btn-close-modal" id="close-info-btn">&times;</button>
             </div>
             <div id="info-modal-body" style="font-size: 0.9rem; line-height: 1.6; max-height: 50vh; overflow-y: auto; padding-right: 10px;">
+<<<<<<< HEAD
 
+=======
+               
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     <div class="lightbox-overlay" id="lightbox">
         <div class="lightbox-content">
             <button class="lightbox-close" id="lightbox-close">&times;</button>
@@ -150,7 +177,11 @@
         </div>
     </div>
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     <footer id="about">
         <div class="footer-container">
             <div class="footer-brand">
@@ -237,6 +268,10 @@
             if (typeof price === 'number') {
                 price = `₴${price.toLocaleString('uk-UA')}`;
             } else if (typeof price === 'string' && !isNaN(parseFloat(price.replace(/[^\d.-]/g, '')))) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 if (!price.includes('₴')) price = `₴${price}`;
             }
             const specifications = (currentLang === 'en' && product.specifications_en) ? product.specifications_en : (product.specifications || '');
@@ -248,12 +283,20 @@
             const deliveryObj = (currentLang === 'en' && product.delivery_en) ? product.delivery_en : product.delivery;
 
             document.getElementById('product-detail-view').style.display = 'grid';
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             document.title = `${title} — Shinigami Couture`;
             document.getElementById('breadcrumb-title').textContent = title;
             document.getElementById('detail-title').textContent = title;
             document.getElementById('detail-price').textContent = price;
             
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const tag = document.getElementById('availability-tag');
             const status = product.status || 'none';
             
@@ -266,16 +309,28 @@
                 tag.textContent = `● ${_t('status_preorder')}`;
             } else if (status === 'soldout') {
                 tag.textContent = `● ${_t('status_soldout')}`;
+<<<<<<< HEAD
                 tag.style.color = '#dc2626';
             } else {
                 tag.textContent = `● ${_t('status_instock')}`;
                 tag.style.color = '#4ade80';            }
+=======
+                tag.style.color = '#dc2626'; 
+            } else {
+                tag.textContent = `● ${_t('status_instock')}`;
+                tag.style.color = '#4ade80';
+            }
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
             if (categoryObj) {
                 document.querySelector('.tag-category').textContent = categoryObj;
             }
 
+<<<<<<< HEAD
             if (descriptionObj) {
+=======
+                if (descriptionObj) {
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 const descContainer = document.querySelector('.detail-description');
                 descContainer.querySelectorAll('p.dynamic-desc').forEach(p => p.remove());
 
@@ -297,6 +352,10 @@
                 });
             }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             if (specifications) {
                 const featuresList = document.getElementById('detail-features');
                 featuresList.innerHTML = '';
@@ -320,6 +379,10 @@
                 });
             }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const metaContainer = document.querySelector('.detail-meta');
             metaContainer.innerHTML = '';
             
@@ -327,6 +390,10 @@
                 if (!value) return;
                 const row = document.createElement('div');
                 row.className = 'meta-row';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 const formattedValue = String(value).replace(/;\s*(?![^<]*>)/g, '<br>');
                 row.innerHTML = `<span class="meta-label">${label}</span><span class="meta-val">${formattedValue}</span>`;
                 metaContainer.appendChild(row);
@@ -337,6 +404,10 @@
             addMetaRow(_t('label_recommendations'), recommendations);
             addMetaRow(_t('label_configuration'), configuration);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const detailAddToCartBtn = document.getElementById('add-to-cart-detail');
             if (detailAddToCartBtn) {
                 detailAddToCartBtn.addEventListener('click', () => {
@@ -353,6 +424,10 @@
                 });
             }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const sliderTrack = document.getElementById('slider-track');
             const dotsContainer = document.getElementById('slider-dots');
             const prevBtn = document.getElementById('prev-btn');
@@ -362,9 +437,17 @@
             const imagePath = String(product.image || '').trim();
             const galleryPath = String(product.gallery || '').trim();
             
+<<<<<<< HEAD
             const pathToFetch = galleryPath || (imagePath.endsWith('/') ? imagePath : null);
             
             if (pathToFetch) {
+=======
+
+            const pathToFetch = galleryPath || (imagePath.endsWith('/') ? imagePath : null);
+            
+            if (pathToFetch) {
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 try {
                     const cleanPath = pathToFetch.replace(/\/+$/, '');
                     const slashIdx = cleanPath.indexOf('/');
@@ -383,6 +466,10 @@
                         if (storageError) {
                             console.error('[Gallery] Folder listing error:', storageError);
                         } else if (files && files.length > 0) {
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                             images = files
                                 .filter(f => f.name !== '.emptyFolderPlaceholder' && !f.name.startsWith('.'))
                                 .map(f => `${bucket}/${folder}/${f.name}`.replace(/\/+/g, '/'));
@@ -394,10 +481,18 @@
                 }
             }
             
+<<<<<<< HEAD
+=======
+           
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             if (images.length === 0) {
                 images = [imagePath || '../img/placeholder.png'];
             }
             
+<<<<<<< HEAD
+=======
+           
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             sliderTrack.innerHTML = '';
             dotsContainer.innerHTML = '';
             const thumbsContainer = document.getElementById('gallery-thumbs');
@@ -406,17 +501,29 @@
             images.forEach((imgUrl, index) => {
                 const fullUrl = window.resolveImage(imgUrl);
                 
+<<<<<<< HEAD
+=======
+               
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 const slide = document.createElement('div');
                 slide.className = 'product-slide';
                 slide.innerHTML = `<img src="${fullUrl}" alt="${product.name} - ${index + 1}" class="gallery-clickable">`;
                 sliderTrack.appendChild(slide);
                 
+<<<<<<< HEAD
+=======
+              
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 const thumb = document.createElement('img');
                 thumb.src = fullUrl;
                 thumb.className = `gallery-thumb ${index === 0 ? 'active-thumb' : ''}`;
                 thumb.onclick = () => goToSlide(index);
                 thumbsContainer.appendChild(thumb);
                 
+<<<<<<< HEAD
+=======
+              
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 slide.querySelector('img').addEventListener('click', () => openLightbox(fullUrl));
 
                 if (images.length > 1) {
@@ -442,15 +549,27 @@
                 sliderTrack.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
                 sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
                 
+<<<<<<< HEAD
+=======
+               
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
                     dot.classList.toggle('active', idx === currentSlide);
                 });
                 
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 document.querySelectorAll('.gallery-thumb').forEach((thumb, idx) => {
                     thumb.classList.toggle('active-thumb', idx === currentSlide);
                 });
             }
 
+<<<<<<< HEAD
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxClose = document.getElementById('lightbox-close');
@@ -475,6 +594,10 @@
                 if (e.key === 'Escape') closeLightbox();
             });
 
+<<<<<<< HEAD
+=======
+           
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const allImages = Array.from(document.querySelectorAll('.product-slide img, .gallery-thumbnails img'));
             let loadedCount = 0;
             const totalToLoad = allImages.length;
@@ -487,7 +610,12 @@
                         onImageLoad();
                     } else {
                         img.addEventListener('load', onImageLoad);
+<<<<<<< HEAD
                         img.addEventListener('error', onImageLoad);                    }
+=======
+                        img.addEventListener('error', onImageLoad); 
+                    }
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 });
             }
 
@@ -501,7 +629,11 @@
             function revealPage() {
                 setTimeout(() => {
                     document.querySelector('.product-page').classList.add('loaded');
+<<<<<<< HEAD
                 }, 100);
+=======
+                }, 100); 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             }
 
             window.addEventListener('languageChanged', () => {

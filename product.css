@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .navbar {
     position: absolute !important;
     background: transparent !important;
@@ -124,7 +127,10 @@
     object-fit: cover;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .slider-btn {
     position: absolute;
     top: 50%;
@@ -231,7 +237,10 @@
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .lightbox-overlay {
     position: fixed;
     top: 0;
@@ -291,7 +300,10 @@
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .product-detail-info {
     display: flex;
     flex-direction: column;
@@ -417,14 +429,21 @@
     opacity: 0.9;
 }
 .detail-add-cart:hover img {
+<<<<<<< HEAD
     filter: invert(0);
 }
+=======
+    filter: invert(0); 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
 .detail-add-cart img {
     transition: filter 0.3s;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .detail-meta {
     display: flex;
     flex-direction: column;
@@ -453,7 +472,10 @@
     max-width: 60%;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 @media (max-width: 1024px) {
     .product-detail-container {
         grid-template-columns: 1fr;

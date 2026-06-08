@@ -4,18 +4,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
 window.supabaseClient = supabaseClient;
-
-
 window.resolveImage = function(path) {
     if (!path) return '';
     let sPath = String(path).trim();
     
-
     if (sPath.startsWith('/')) sPath = sPath.substring(1);
-    
-
     if (sPath.startsWith('http') || sPath.startsWith('img/') || sPath.startsWith('assets/') || sPath.startsWith('data:')) {
         return sPath;
     }

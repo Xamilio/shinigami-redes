@@ -33,7 +33,10 @@
     height: 100vh;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .admin-sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
@@ -121,7 +124,10 @@
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .admin-content {
     flex: 1;
     overflow-y: auto;
@@ -174,7 +180,10 @@
     border-radius: 50%;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .tab-content {
     display: none;
 }
@@ -185,7 +194,10 @@
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -227,7 +239,10 @@
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .table-container {
     background: #fff;
     border: var(--card-border);
@@ -277,8 +292,11 @@ tr:hover td {
     letter-spacing: -0.5px;
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .modal-overlay {
     display: none;
     position: fixed;
@@ -358,7 +376,10 @@ tr:hover td {
     font-weight: 800;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .form-group {
     margin-bottom: 24px;
 }
@@ -408,7 +429,10 @@ tr:hover td {
     width: auto;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .btn-action {
     display: inline-flex;
     align-items: center;
@@ -444,7 +468,10 @@ tr:hover td {
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .radio-group {
     display: flex;
     flex-wrap: wrap;
@@ -542,7 +569,10 @@ tr:hover td {
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .card {
     background: #fff;
     border: var(--card-border);
@@ -553,7 +583,10 @@ tr:hover td {
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 @media (max-width: 1024px) {
     .stats-grid {
         grid-template-columns: 1fr;
@@ -569,7 +602,10 @@ tr:hover td {
         padding: 20px;
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .media-item-card {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     background: #fff;

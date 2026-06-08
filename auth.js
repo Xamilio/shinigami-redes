@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (error) throw error;
 
-
                 if (window.location.pathname.includes('/admin/')) {
                     window.location.href = './';
                 } else if (window.location.pathname.includes('/login/')) {
@@ -51,7 +50,6 @@ function safeRedirect(target) {
         window.location.href = target;
     }
 }
-
 
 async function checkAuth() {
     try {

@@ -1,10 +1,19 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const session = await checkAuth();
     if (!session) return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleLogout);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     if (session && session.user && session.user.email) {
         const email = session.user.email;
         const userName = email.split('@')[0];
@@ -18,13 +27,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
         }
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     function updatePreview(id, value) {
         const preview = document.getElementById(`preview-${id}`);
         if (!preview) return;
         const url = window.resolveImage(value);
         if (url && url !== value) {
             preview.style.backgroundImage = `url('${url}')`;
-            preview.innerHTML = ''; // Clear text
+            preview.innerHTML = ''; 
             preview.style.backgroundSize = 'contain';
             preview.style.backgroundRepeat = 'no-repeat';
         } else if (url && (url.startsWith('http') || url.startsWith('img/'))) {
@@ -56,6 +70,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+<<<<<<< HEAD
+=======
+
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const navItems = document.querySelectorAll('.nav-item[data-tab]');
     const tabContents = document.querySelectorAll('.tab-content');
     const pageTitle = document.getElementById('page-title');
@@ -64,11 +83,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             const tabId = item.getAttribute('data-tab');
+<<<<<<< HEAD
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
             
             tabContents.forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabId}-tab`).classList.add('active');
+<<<<<<< HEAD
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             pageTitle.textContent = item.textContent.trim();
 
 
@@ -78,6 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     let products = [];
 
     const fetchProducts = async () => {
@@ -85,7 +117,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { data, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
+<<<<<<< HEAD
                 .order('name', { ascending: true });
+=======
+                .order('name', { ascending: true }); 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
             if (error) throw error;
             products = data || [];
@@ -101,6 +137,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const saveProductToDB = async (productData, originalName) => {
         try {
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const cleanPrice = (priceStr) => {
                 if (typeof priceStr === 'string') return priceStr.trim();
                 return priceStr;
@@ -122,16 +162,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 material_en: productData.material_en,
                 delivery: productData.delivery,
                 delivery_en: productData.delivery_en,
+<<<<<<< HEAD
                 recommendations: productData.care,
                 recommendations_en: productData.care_en,
                 configuration: productData.packageContents,
+=======
+                recommendations: productData.care, 
+                recommendations_en: productData.care_en,
+                configuration: productData.packageContents, 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 configuration_en: productData.packageContents_en,
                 status: productData.status
             };
 
             let res;
             if (originalName) {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 res = await window.supabaseClient.from('products').update(dbData).eq('name', originalName);
             } else {
                 res = await window.supabaseClient.from('products').insert([dbData]);
@@ -157,6 +207,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert('Помилка при видаленні: ' + msg);
         }
     };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     function updateDashboard() {
         document.getElementById('total-products-count').textContent = products.length;
         const preorderCount = products.filter(p => p.status === 'preorder').length;
@@ -167,6 +221,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         renderRecentTable();
         renderAllTable();
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     }
 
     const renderRecentTable = () => {
@@ -230,6 +288,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             allTableBody.appendChild(tr);
         });
     };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const productModal = document.getElementById('product-modal');
     const addBtn = document.getElementById('add-product-btn');
     const productForm = document.getElementById('product-form');
@@ -237,7 +299,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (productModal) {
             productModal.style.display = 'flex';
             setTimeout(() => productModal.classList.add('active'), 10);
+<<<<<<< HEAD
             document.body.style.overflow = 'hidden';
+=======
+            document.body.style.overflow = 'hidden'; 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         }
     };
 
@@ -280,6 +346,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const radio = document.querySelector(`input[name="product-status"][value="${p.status || 'none'}"]`);
         if (radio) radio.checked = true;
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         updateProductModalPreview(p.image);
         
         modalTitle.textContent = 'Редагувати товар';
@@ -316,6 +387,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (modalImgInput) {
         modalImgInput.addEventListener('input', (e) => updateProductModalPreview(e.target.value));
     }
+<<<<<<< HEAD
+=======
+
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const galleryUploadBtn = document.getElementById('gallery-upload-btn');
     const galleryUploadInput = document.getElementById('gallery-upload-input');
     const uploadStatus = document.getElementById('upload-status');
@@ -366,7 +442,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 alert(`Успішно завантажено ${uploadedCount} зображень!`);
                 
-                // Update form fields
+                
                 document.getElementById('gallery').value = `${bucket}/products/${folderName}/`;
                 if (!document.getElementById('image').value) {
                     document.getElementById('image').value = firstImagePath;
@@ -420,10 +496,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeProductModal();
     });
 
+<<<<<<< HEAD
 
     const settingsForm = document.getElementById('settings-form');
     
     let activeSettingInput = null;
+=======
+    const settingsForm = document.getElementById('settings-form');
+    
+    let activeSettingInput = null; 
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
     const fetchSettings = async () => {
         try {
@@ -443,6 +525,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     updatePreview(s.key, s.value);
                 }
                 
+<<<<<<< HEAD
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 if (s.key === 'logo') {
                     const logoImg = document.querySelector('.sidebar-header .logo img');
                     if (logoImg) logoImg.src = window.resolveImage(s.value);
@@ -459,6 +545,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let storageBuckets = [];
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const settingInputs = [
         document.getElementById('setting-main_banner'), 
         document.getElementById('setting-hero_bg'),
@@ -473,6 +563,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     settingInputs.forEach(input => {
         if (input) input.addEventListener('focus', () => activeSettingInput = input);
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const handleSettingUpload = async (fileInputId, targetId) => {
         const fileInput = document.getElementById(fileInputId);
         const targetInput = document.getElementById(targetId);
@@ -560,6 +654,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     let currentBucket = '';
     let currentPrefix = '';    
     const mediaExplorer = document.getElementById('media-explorer');
@@ -570,7 +669,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mediaUploadInput = document.getElementById('media-upload-input');
     const mediaNewFolderBtn = document.getElementById('media-new-folder-btn');
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     let pickerBucket = 'products';
     let pickerPrefix = '';
     let pickerTargetInput = null;
@@ -586,11 +688,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         pickerTargetInput = document.getElementById(targetId);
         const currentVal = pickerTargetInput.value.trim();
         
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         if (currentVal && currentVal.includes('/')) {
             const parts = currentVal.split('/');
             pickerBucket = parts[0];
-            // Only set prefix if it's more than just bucket/filename
             if (parts.length > 2) {
                 pickerPrefix = parts.slice(1, -1).join('/') + '/';
             } else {
@@ -608,8 +713,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fetchPickerItems = async () => {
         if (!pickerList) return;
         pickerList.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">Завантаження...</p>';
+<<<<<<< HEAD
         
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         if (!pickerBucket) {
             pickerBreadcrumb.textContent = 'Оберіть бакет';
         } else {
@@ -619,7 +728,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             if (!window.supabaseClient) throw new Error('Supabase client missing');
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             if (!pickerBucket) {
                 if (storageBuckets.length === 0) {
                     try {
@@ -655,10 +768,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     };
                     pickerList.appendChild(div);
                 });
+<<<<<<< HEAD
                 return;
             }
 
 
+=======
+                return; 
+            }
+
+        
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const { data, error } = await window.supabaseClient.storage.from(pickerBucket).list(pickerPrefix, {
                 limit: 100,
                 sortBy: { column: 'name', order: 'asc' }
@@ -706,12 +826,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                         pickerPrefix += item.name + '/';
                         fetchPickerItems();
                     } else {
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                         const fullPath = `${pickerBucket}/${pickerPrefix}${item.name}`;
                         if (confirm(`Вибрати цей файл: ${fullPath}?`)) {
                             pickerTargetInput.value = fullPath;
                             pickerModal.style.display = 'none';
                             
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                             if (pickerTargetInput.id === 'image') {
                                 updateProductModalPreview(fullPath);
                             } else if (pickerTargetInput.id.startsWith('setting-')) {
@@ -738,7 +866,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             pickerTargetInput.value = currentPath;
             pickerModal.style.display = 'none';
             
-            // Trigger preview updates
             if (pickerTargetInput.id === 'image') {
                 updateProductModalPreview(currentPath);
             } else if (pickerTargetInput.id.startsWith('setting-')) {
@@ -756,6 +883,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 pickerPrefix = parts.length > 0 ? parts.join('/') + '/' : '';
                 fetchPickerItems();
             } else if (pickerBucket) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 pickerBucket = '';
                 fetchPickerItems();
             }
@@ -765,8 +896,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (closePickerBtn) {
         closePickerBtn.onclick = () => pickerModal.style.display = 'none';
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     document.querySelectorAll('.open-picker-btn').forEach(btn => {
         btn.onclick = () => openPicker(btn.getAttribute('data-target'));
     });
@@ -780,7 +914,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error('Supabase client not initialized. Check your credentials.');
             }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             if (!bucket) {
                 if (storageBuckets.length === 0) {
                     try {
@@ -794,7 +931,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         storageBuckets = [{ name: 'products' }, { name: 'site-img' }, { name: 'banner' }];
                     }
                 }
+<<<<<<< HEAD
                 
+=======
+            
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 if (mediaBucketSelect) {
                     mediaBucketSelect.innerHTML = '<option value="">📦 Оберіть бакет...</option>' + 
                         storageBuckets.map(b => `<option value="${b.name}">📦 Бакет: ${b.name}</option>`).join('');
@@ -832,7 +973,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
             const { data, error } = await window.supabaseClient.storage.from(bucket).list(prefix, {
                 limit: 100,
@@ -844,7 +988,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             mediaExplorer.innerHTML = '';
             
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             mediaBackBtn.style.display = prefix ? 'block' : 'none';
             mediaBreadcrumb.textContent = prefix ? `Папка: ${prefix}` : 'Коренева папка';
 
@@ -890,16 +1037,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                     `;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                     card.querySelector('.btn-copy').onclick = (e) => {
                         e.stopPropagation();
-                        // Copy path relative to bucket or absolute URL? Let's do absolute but maybe short path is better for DB
                         const path = `${bucket}/${prefix}${item.name}`;
                         navigator.clipboard.writeText(path);
                         alert('Шлях скопійовано: ' + path);
                     };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                     card.querySelector('.btn-delete-file').onclick = async (e) => {
                         e.stopPropagation();
                         if (confirm(`Видалити файл "${item.name}"?`)) {
@@ -1006,13 +1158,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         folderInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') folderConfirmBtn.click();
         });
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             if (item.getAttribute('data-tab') === 'media') {
@@ -1020,6 +1178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+<<<<<<< HEAD
 
 
     setupSettingsPreviews();
@@ -1027,5 +1186,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateDashboard();
 
 
+=======
+    setupSettingsPreviews();
+    fetchSettings();
+    updateDashboard();
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     fetchProducts();
 });

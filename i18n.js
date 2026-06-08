@@ -99,7 +99,6 @@ function changeLanguage(lang) {
     localStorage.setItem('shinigami_lang', lang);
     applyTranslations();
     updateLangSelectors();
-
     window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
@@ -107,16 +106,24 @@ function applyTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[currentLang][key]) {
-
             if (el.tagName === 'INPUT' && el.type === 'text') {
                 el.placeholder = translations[currentLang][key];
             } else {
-                el.textContent = translations[currentLang][key];
+                let hasImage = el.querySelector('img');
+                if (hasImage) {
+                    el.innerHTML = translations[currentLang][key]; 
+                } else {
+                    el.textContent = translations[currentLang][key];
+                }
             }
         }
     });
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const btnTextDetail = document.getElementById('add-to-cart-text');
     if (btnTextDetail) {
         btnTextDetail.textContent = translations[currentLang]["btn_add_to_cart"];
@@ -137,7 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTranslations();
     updateLangSelectors();
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     document.querySelectorAll('.lang-selector').forEach(sel => {
         sel.addEventListener('click', () => {
             const nextLang = currentLang === 'uk' ? 'en' : 'uk';
