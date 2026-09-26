@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
 function safeRedirect(target) {
     const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/login/');
     if (isSubdir && !target.startsWith('http')) {
@@ -63,7 +62,6 @@ async function checkAuth() {
         return null;
     }
 }
-
 
 async function handleLogout() {
     await window.supabaseClient.auth.signOut();

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutBtn.addEventListener('click', handleLogout);
     }
 
-
     if (session && session.user && session.user.email) {
         const email = session.user.email;
         const userName = email.split('@')[0];
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
         }
     }
-
 
     function updatePreview(id, value) {
         const preview = document.getElementById(`preview-${id}`);
@@ -80,14 +78,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             pageTitle.textContent = item.textContent.trim();
 
-
             const addProductBtn = document.getElementById('add-product-btn');
             if (addProductBtn) {
                 addProductBtn.style.display = tabId === 'products' ? 'block' : 'none';
             }
         });
     });
-
 
     let products = [];
 
@@ -324,7 +320,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         openProductModal();
     });
 
-
     function updateProductModalPreview(value) {
         const preview = document.getElementById('product-img-preview');
         if (!preview) return;
@@ -445,7 +440,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeProductModal();
     });
 
-
     const settingsForm = document.getElementById('settings-form');
     
     let activeSettingInput = null;
@@ -486,8 +480,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const uploadInput = document.getElementById('upload-banner-input');
 
     let storageBuckets = [];
-
-
 
     const settingInputs = [
         document.getElementById('setting-main_banner'), 
@@ -546,8 +538,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         fileInput.onchange = () => handleSettingUpload(inputId, targetId);
     });
 
-
-
     if (settingsForm) {
         settingsForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -592,7 +582,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-
     let currentBucket = '';
     let currentPrefix = '';    
     const mediaExplorer = document.getElementById('media-explorer');
@@ -602,7 +591,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mediaUploadBtn = document.getElementById('media-upload-btn');
     const mediaUploadInput = document.getElementById('media-upload-input');
     const mediaNewFolderBtn = document.getElementById('media-new-folder-btn');
-
 
     let pickerBucket = 'products';
     let pickerPrefix = '';
@@ -653,7 +641,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             if (!window.supabaseClient) throw new Error('Supabase client missing');
 
-
     
             if (!pickerBucket) {
                 if (storageBuckets.length === 0) {
@@ -692,7 +679,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
                 return;
             }
-
 
                 return; 
             }
@@ -807,7 +793,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         closePickerBtn.onclick = () => pickerModal.style.display = 'none';
     }
 
-
     document.querySelectorAll('.open-picker-btn').forEach(btn => {
         btn.onclick = () => openPicker(btn.getAttribute('data-target'));
     });
@@ -820,7 +805,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!window.supabaseClient) {
                 throw new Error('Supabase client not initialized. Check your credentials.');
             }
-
 
             if (!bucket) {
                 if (storageBuckets.length === 0) {
@@ -873,8 +857,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
                 return;
             }
-
-
 
             const { data, error } = await window.supabaseClient.storage.from(bucket).list(prefix, {
                 limit: 100,
@@ -932,14 +914,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                     `;
 
-
                     card.querySelector('.btn-copy').onclick = (e) => {
                         e.stopPropagation();
                         const path = `${bucket}/${prefix}${item.name}`;
                         navigator.clipboard.writeText(path);
                         alert('Шлях скопійовано: ' + path);
                     };
-
 
                     card.querySelector('.btn-delete-file').onclick = async (e) => {
                         e.stopPropagation();
@@ -1047,12 +1027,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
-
         folderInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') folderConfirmBtn.click();
         });
     }
-
 
     navItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -1062,11 +1040,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-
     setupSettingsPreviews();
     fetchSettings();
     updateDashboard();
-
 
     setupSettingsPreviews();
     fetchSettings();

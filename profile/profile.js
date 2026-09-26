@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-<<<<<<< HEAD
 
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const authCard = document.getElementById('auth-card');
     const dashboardCard = document.getElementById('dashboard-card');
     
@@ -25,16 +22,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const verifyCodeBtn = document.getElementById('verify-code-btn');
     const backToEmailBtn = document.getElementById('back-to-email');
 
-
     let currentUserEmail = '';
-
 
     const showMsg = (el, msg) => {
         el.textContent = msg;
         el.style.display = 'block';
         setTimeout(() => el.style.display = 'none', 5000);
     };
-
 
     const checkUser = async () => {
         const { data: { session }, error } = await window.supabaseClient.auth.getSession();
@@ -47,7 +41,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             showAuth();
         }
     };
-
 
     const showAuth = () => {
         document.body.classList.remove('dashboard-active');
@@ -77,10 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     emailForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = emailInput.value.trim();
@@ -93,11 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { error } = await window.supabaseClient.auth.signInWithOtp({
                 email: email,
                 options: {
-<<<<<<< HEAD
-                    shouldCreateUser: true
-=======
                     shouldCreateUser: true 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 }
             });
 
@@ -114,16 +99,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-
     backToEmailBtn.addEventListener('click', () => {
         emailSection.style.display = 'block';
         otpSection.style.display = 'none';
     });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     otpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const code = otpInput.value.trim();
@@ -158,7 +138,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-
     logoutBtn.addEventListener('click', async () => {
         logoutBtn.disabled = true;
         try {
@@ -170,10 +149,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             logoutBtn.disabled = false;
         }
     });
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     checkUser();
 });

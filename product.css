@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .navbar {
     position: absolute !important;
     background: transparent !important;
@@ -55,7 +50,6 @@
 .breadcrumb a:hover { color: var(--text-primary); }
 .breadcrumb span { color: rgba(255,255,255,0.2); }
 
-
 .product-page {
     padding: 120px 0 60px;
     opacity: 0;
@@ -75,7 +69,6 @@
     padding: 0 40px;
     align-items: start;
 }
-
 
 .product-gallery-col {
     width: 100%;
@@ -127,10 +120,6 @@
     object-fit: cover;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .slider-btn {
     position: absolute;
     top: 50%;
@@ -237,10 +226,6 @@
     }
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .lightbox-overlay {
     position: fixed;
     top: 0;
@@ -300,10 +285,6 @@
     }
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .product-detail-info {
     display: flex;
     flex-direction: column;
@@ -401,7 +382,6 @@
     line-height: 1.6;
 }
 
-
 .detail-add-cart {
     display: flex;
     align-items: center;
@@ -429,21 +409,12 @@
     opacity: 0.9;
 }
 .detail-add-cart:hover img {
-<<<<<<< HEAD
-    filter: invert(0);
-}
-=======
     filter: invert(0); 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
 .detail-add-cart img {
     transition: filter 0.3s;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .detail-meta {
     display: flex;
     flex-direction: column;
@@ -472,10 +443,6 @@
     max-width: 60%;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 @media (max-width: 1024px) {
     .product-detail-container {
         grid-template-columns: 1fr;
@@ -498,8 +465,6 @@
         font-size: 2.5rem;
     }
 }
-
-
 
 @media (min-width: 1600px) {
     .breadcrumb,

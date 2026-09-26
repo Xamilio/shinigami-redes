@@ -32,7 +32,6 @@
             background-size: 24px 24px;
         }
 
-
         .profile-nav {
             position: absolute;
             top: 0;
@@ -213,13 +212,11 @@
             display: none;
         }
 
-
         a, button, input {
             cursor: auto !important;
         }
         button { cursor: pointer !important; }
         a { cursor: pointer !important; }
-
 
         body.dashboard-active {
             background-image: none;
@@ -398,11 +395,9 @@
         <span class="lang-selector" style="font-weight: 800; cursor: pointer;">UK</span>
     </div>
 
-
     <div class="login-card" id="auth-card">
         <div id="error-msg" class="error-message"></div>
         <div id="success-msg" class="success-message"></div>
-
 
         <div id="email-section">
             <h1 data-i18n="profile_login">Вхід</h1>
@@ -416,7 +411,6 @@
                 <button type="submit" id="send-code-btn" class="btn-primary" data-i18n="profile_send_code">ОТРИМАТИ КОД</button>
             </form>
         </div>
-
 
         <div id="otp-section">
             <h1 data-i18n="profile_verify">Перевірка</h1>
@@ -432,7 +426,6 @@
             <a class="back-link" id="back-to-email" data-i18n="profile_back">← Змінити Email</a>
         </div>
     </div>
-
 
     <div class="dashboard-view" id="dashboard-card">
 
@@ -453,13 +446,11 @@
             </div>
         </header>
 
-
         <main class="dashboard-content">
             <div class="dashboard-title-row">
                 <h1 data-i18n="profile_orders">Orders</h1>
 
             </div>
-
 
             <div class="orders-grid" id="orders-grid">
 
@@ -468,7 +459,6 @@
             </div>
         </main>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase-config.js"></script>

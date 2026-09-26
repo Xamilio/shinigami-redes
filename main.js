@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     async function applySiteSettings() {
         try {
             const { data, error } = await window.supabaseClient.from('site_settings').select('*');
