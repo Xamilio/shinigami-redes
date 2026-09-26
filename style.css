@@ -43,18 +43,10 @@ a, button {
     text-decoration: none;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .admin-body, .admin-body * {
     cursor: auto !important;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .custom-cursor {
     position: fixed;
     top: 0;
@@ -78,10 +70,6 @@ a, button {
     height: 48px;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .navbar {
     position: fixed;
     top: 0;
@@ -318,10 +306,6 @@ a, button {
     opacity: 0.7;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .product-slider-wrapper {
     position: relative;
     width: 100%;
@@ -418,10 +402,6 @@ a, button {
     justify-content: center;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .hero {
     position: relative;
     min-height: 100vh;
@@ -535,10 +515,6 @@ a, button {
     line-height: 1.6;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -563,10 +539,6 @@ a, button {
     opacity: 0.9;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .marquee-container {
     width: 100%;
     background: var(--bg-light);
@@ -616,10 +588,6 @@ a, button {
     100% { transform: translateX(-50%); }
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .shop-section {
     padding: 160px 40px;
     max-width: 1400px;
@@ -796,10 +764,6 @@ a, button {
     filter: invert(1);
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .reveal {
     opacity: 0;
     transform: translateY(50px);
@@ -811,10 +775,6 @@ a, button {
     transform: translateY(0);
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .cart-drawer-overlay {
     position: fixed;
     top: 0;
@@ -979,10 +939,6 @@ a, button {
     transform: rotate(90deg);
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 .checkout-modal-overlay {
     position: fixed;
     top: 0;

@@ -4,11 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('fade-out');
-<<<<<<< HEAD
-            }, 1000); 
-=======
             }, 1000);
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         });
     }
 
@@ -26,23 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     async function fetchProducts() {
         try {
             console.log('Fetching products from Supabase...');
             const { data, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
-<<<<<<< HEAD
                 .order('name', { ascending: true });
-
-=======
-                .order('name', { ascending: true }); 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
 
             if (error) throw error;
             return data || [];
@@ -106,15 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     icons.forEach(img => img.src = window.resolveImage(s.value));
                 }
 
-
                 if (s.key === 'marquee') {
                     applyMarquee();
                 }
-<<<<<<< HEAD
-=======
-                
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 function applyMarquee() {
                     const marqueeContents = document.querySelectorAll('.marquee-content');
                     if (marqueeContents.length === 0) return;
@@ -139,12 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const links = document.querySelectorAll('.social-link.tiktok');
                     links.forEach(l => l.href = s.value);
                 }
-                
-<<<<<<< HEAD
 
-=======
- 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
                 if (s.key.startsWith('info_')) {
                     const type = s.key.replace('info_', '');
                     if (infoContent[type]) {
@@ -161,23 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Dynamic settings not available:', err);
         }
     }
-    
-<<<<<<< HEAD
-
-    applySiteSettings();
-=======
 
     applySiteSettings();
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const productGrid = document.getElementById('product-grid');
     
     if (productGrid) {
         fetchProducts().then(products => {
             renderProducts(products);
         });
-
 
         window.addEventListener('languageChanged', () => {
             fetchProducts().then(products => renderProducts(products));
@@ -191,11 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         products.forEach((product) => {
             const card = document.createElement('div');
             card.className = 'product-card reveal';
-<<<<<<< HEAD
-=======
-            
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             let badgeHTML = '';
             const status = product.status || 'none';
             
@@ -211,28 +176,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const stripeSize = 20;
             const pattern = `repeating-linear-gradient(45deg, #e0e0e0, #e0e0e0 ${stripeSize}px, #f5f5f5 ${stripeSize}px, #f5f5f5 ${stripeSize * 2}px)`;
-<<<<<<< HEAD
-            let imageSource = product.image || '';
-            if (String(imageSource).endsWith('/')) {
-                imageSource = `${imageSource}/1.jpg`;
-=======
-
 
             let imageSource = product.image || '';
             if (String(imageSource).endsWith('/')) {
                 imageSource = `${imageSource}/1.jpg`.replace(/\/+/g, '/');
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             }
             const image = window.resolveImage(imageSource);
             
             const currentLang = localStorage.getItem('shinigami_lang') || 'uk';
             const title = (currentLang === 'en' && product.name_en) ? product.name_en : (product.name || product.title);
             const price = typeof product.price === 'number' ? `₴${product.price}` : product.price;
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const productId = product.name || product.title || product.id;
 
             const basePrefix = (window.location.pathname.includes('/product/') || window.location.pathname.includes('/admin/')) ? '../' : '';
@@ -259,10 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             productGrid.appendChild(card);
-<<<<<<< HEAD
-=======
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             const imageWrap = card.querySelector('.product-image-wrap');
             const infoTitle = card.querySelector('.product-title');
             const addToCartBtn = card.querySelector('.add-to-cart-btn');
@@ -292,10 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         const revealElements = document.querySelectorAll('.reveal');
         if (typeof IntersectionObserver !== 'undefined') {
             const observer = new IntersectionObserver((entries) => {
@@ -308,11 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             revealElements.forEach(el => observer.observe(el));
         }
     }
-<<<<<<< HEAD
-=======
 
-   
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -327,29 +270,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
-<<<<<<< HEAD
-=======
 
-   
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const navbar = document.getElementById('navbar');
     const marqueeContainer = document.querySelector('.marquee-container');
 
     window.addEventListener('scroll', () => {
-<<<<<<< HEAD
-=======
-       
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         if (marqueeContainer) {
             const hideThreshold = marqueeContainer.offsetTop - navbar.offsetHeight - 50;
             if (window.scrollY > hideThreshold) {
@@ -359,35 +290,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const burgerMenu = document.getElementById('burger-menu');
     const navLinks = document.getElementById('nav-links');
     
     burgerMenu.addEventListener('click', () => {
         navLinks.classList.toggle('active');
-<<<<<<< HEAD
-
-    });
-=======
-
     });
 
-  
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
         });
     });
-<<<<<<< HEAD
-=======
 
-   
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const cartBtn = document.getElementById('cart-btn');
     const closeCart = document.getElementById('close-cart');
     const cartDrawer = document.getElementById('cart-drawer');
@@ -397,10 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cartDrawer.classList.toggle('active');
         cartOverlay.classList.toggle('active');
         if(cartDrawer.classList.contains('active')) {
-<<<<<<< HEAD
-=======
-            document.body.style.overflow = 'hidden'; 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
+            document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
@@ -409,11 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cartBtn.addEventListener('click', toggleCart);
     closeCart.addEventListener('click', toggleCart);
     cartOverlay.addEventListener('click', toggleCart);
-<<<<<<< HEAD
-=======
 
-   
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     window.cart = JSON.parse(localStorage.getItem('shinigami_cart')) || [];
 
     window.saveCart = () => {
@@ -432,11 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         window.saveCart();
-<<<<<<< HEAD
-=======
-        
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         if (!cartDrawer.classList.contains('active')) toggleCart();
     };
 
@@ -460,11 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartBody = document.querySelector('.cart-body');
         const cartTotal = document.querySelector('.cart-total span:last-child');
         const cartBadges = document.querySelectorAll('.cart-badge');
-<<<<<<< HEAD
-=======
-        
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
         const totalItems = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         cartBadges.forEach(badge => {
             if (totalItems > 0) {
@@ -514,11 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const finalTotal = document.getElementById('final-total');
         if (finalTotal) finalTotal.textContent = `₴${total.toLocaleString('uk-UA')}`;
     };
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const checkoutBtn = document.querySelector('.checkout-btn');
     const checkoutModal = document.getElementById('checkout-modal');
     const closeCheckout = document.getElementById('close-checkout');
@@ -531,11 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Кошик порожній!');
                 return;
             }
-<<<<<<< HEAD
-
-=======
             toggleCart();
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             checkoutModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
@@ -551,10 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-<<<<<<< HEAD
-=======
-            
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
+
             const orderData = {
                 customer: {
                     name: document.getElementById('cust-name').value,
@@ -566,26 +456,15 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             console.log('Order placed:', orderData);
-<<<<<<< HEAD
-            checkoutForm.style.display = 'none';
-            orderSuccess.style.display = 'block';
-=======
-            
 
             checkoutForm.style.display = 'none';
             orderSuccess.style.display = 'block';
-            
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
             window.cart = [];
             window.saveCart();
         });
     }
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const infoModal = document.getElementById('info-modal-overlay');
     const infoBody = document.getElementById('info-modal-body');
     const infoTitle = document.getElementById('info-modal-title');
@@ -639,11 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
             openInfoModal(link.getAttribute('data-info'));
         };
     });
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     const scrollTopBtn = document.getElementById('scroll-top-btn');
     if (scrollTopBtn) {
         window.addEventListener('scroll', () => {
@@ -661,9 +536,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 94e4e700d34fa35e82091bf70bbecd3d8551a0de
     window.updateCartUI();
 });
